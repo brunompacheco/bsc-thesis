@@ -53,8 +53,10 @@ nopostdot  % Não é colocado ponto ao final da entrada
 ]{glossaries}
 % Fonte helvética (e euler para letras gregas) para matemática
 \renewcommand{\rmdefault}{phv}
-\RequirePackage[italic,defaultmathsizes,eulergreek]{mathastext}
+% \RequirePackage[italic,defaultmathsizes,eulergreek]{mathastext}
 \RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
 \RequirePackage{bm}
 % ---
 
@@ -421,3 +423,8 @@ nopostdot  % Não é colocado ponto ao final da entrada
 % ---
 % FIM DAS CUSTOMIZACOES PARA A UNIVERSIDADE FEDERAL DE SANTA CATARINA
 % ---
+
+% Math
+
+\newcommand{\R}{\mathbb{R}} 
+\newcommand\bm[1]{\textbf{\textit{#1}}}

@@ -1,86 +1,696 @@
-@manual{NBR10520:2002,
-	Address = {Rio de Janeiro},
-	Month = {08},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Citações
-	em documentos --- Apresentação},
-	Title = {{NBR} 10520},
-	Year = 2002}
 
-@manual{NBR6023:2002,
-	Address = {Rio de Janeiro},
-	Month = {08},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Referências --- Apresentação},
-	Title = {{NBR} 6023},
-	Year = 2002}
+@inproceedings{he_deep_2016,
+	title = {Deep {Residual} {Learning} for {Image} {Recognition}},
+	doi = {10.1109/CVPR.2016.90},
+	abstract = {Deeper neural networks are more difficult to train. We present a residual learning framework to ease the training of networks that are substantially deeper than those used previously. We explicitly reformulate the layers as learning residual functions with reference to the layer inputs, instead of learning unreferenced functions. We provide comprehensive empirical evidence showing that these residual networks are easier to optimize, and can gain accuracy from considerably increased depth. On the ImageNet dataset we evaluate residual nets with a depth of up to 152 layers - 8× deeper than VGG nets [40] but still having lower complexity. An ensemble of these residual nets achieves 3.57\% error on the ImageNet test set. This result won the 1st place on the ILSVRC 2015 classification task. We also present analysis on CIFAR-10 with 100 and 1000 layers. The depth of representations is of central importance for many visual recognition tasks. Solely due to our extremely deep representations, we obtain a 28\% relative improvement on the COCO object detection dataset. Deep residual nets are foundations of our submissions to ILSVRC \& COCO 2015 competitions1, where we also won the 1st places on the tasks of ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation.},
+	booktitle = {2016 {IEEE} {Conference} on {Computer} {Vision} and {Pattern} {Recognition} ({CVPR})},
+	author = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+	month = jun,
+	year = {2016},
+	note = {ISSN: 1063-6919},
+	keywords = {Complexity theory, Degradation, Image recognition, Image segmentation, Neural networks, Training, Visualization},
+	pages = {770--778},
+}
 
-@manual{NBR6024:2012,
-	Address = {Rio de Janeiro},
-	Month = {02},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Numeração progressiva das seções de um documento escrito --- Apresentação},
-	Title = {{NBR} 6024},
-	Year = 2012}
+@article{Ghaoui2019,
+	title = {Implicit {Deep} {Learning}},
+	volume = {3},
+	url = {https://arxiv.org/abs/1908.06315v4},
+	doi = {10.48550/arxiv.1908.06315},
+	abstract = {Implicit deep learning prediction rules generalize the recursive rules of
+feedforward neural networks. Such rules are based on the solution of a
+fixed-point equation involving a single vector of hidden features, which is
+thus only implicitly defined. The implicit framework greatly simplifies the
+notation of deep learning, and opens up many new possibilities, in terms of
+novel architectures and algorithms, robustness analysis and design,
+interpretability, sparsity, and network architecture optimization.},
+	number = {3},
+	urldate = {2022-04-05},
+	journal = {SIAM Journal on Mathematics of Data Science},
+	author = {Ghaoui, Laurent El and Gu, Fangda and Travacca, Bertrand and Askari, Armin and Tsai, Alicia Y.},
+	month = aug,
+	year = {2019},
+	note = {arXiv: 1908.06315
+Publisher: Society for Industrial \& Applied Mathematics (SIAM)},
+	keywords = {26B10, 49M99, 62M45, 65K10, Deep learning, Perron-Frobenius theory, adversarial attacks AMS subject classifications 69, implicit models, robustness},
+	pages = {930--958},
+}
 
-@manual{NBR6027:2012,
-	Address = {Rio de Janeiro},
-	Month = {12},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Sumário --- Apresentação},
-	Title = {{NBR} 6027},
-	Year = 2012}
+@article{Bai2019,
+	title = {Deep {Equilibrium} {Models}},
+	volume = {32},
+	issn = {10495258},
+	url = {https://arxiv.org/abs/1909.01377v2},
+	doi = {10.48550/arxiv.1909.01377},
+	abstract = {We present a new approach to modeling sequential data: the deep equilibrium
+model (DEQ). Motivated by an observation that the hidden layers of many
+existing deep sequence models converge towards some fixed point, we propose the
+DEQ approach that directly finds these equilibrium points via root-finding.
+Such a method is equivalent to running an infinite depth (weight-tied)
+feedforward network, but has the notable advantage that we can analytically
+backpropagate through the equilibrium point using implicit differentiation.
+Using this approach, training and prediction in these networks require only
+constant memory, regardless of the effective "depth" of the network. We
+demonstrate how DEQs can be applied to two state-of-the-art deep sequence
+models: self-attention transformers and trellis networks. On large-scale
+language modeling tasks, such as the WikiText-103 benchmark, we show that DEQs
+1) often improve performance over these state-of-the-art models (for similar
+parameter counts); 2) have similar computational requirements to existing
+models; and 3) vastly reduce memory consumption (often the bottleneck for
+training large sequence models), demonstrating an up-to 88\% memory reduction in
+our experiments. The code is available at https://github.com/locuslab/deq .},
+	urldate = {2022-04-07},
+	journal = {Advances in Neural Information Processing Systems},
+	author = {Bai, Shaojie and Zico Kolter, J. and Koltun, Vladlen},
+	month = sep,
+	year = {2019},
+	note = {arXiv: 1909.01377
+Publisher: Neural information processing systems foundation},
+}
 
-@manual{NBR6028:2003,
-	Address = {Rio de Janeiro},
-	Month = {11},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Resumo --- Apresentação},
-	Title = {{NBR} 6028},
-	Year = 2003}
+@article{Raissi2019,
+	title = {Physics-informed neural networks: {A} deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations},
+	volume = {378},
+	issn = {0021-9991},
+	doi = {10.1016/J.JCP.2018.10.045},
+	abstract = {We introduce physics-informed neural networks – neural networks that are trained to solve supervised learning tasks while respecting any given laws of physics described by general nonlinear partial differential equations. In this work, we present our developments in the context of solving two main classes of problems: data-driven solution and data-driven discovery of partial differential equations. Depending on the nature and arrangement of the available data, we devise two distinct types of algorithms, namely continuous time and discrete time models. The first type of models forms a new family of data-efficient spatio-temporal function approximators, while the latter type allows the use of arbitrarily accurate implicit Runge–Kutta time stepping schemes with unlimited number of stages. The effectiveness of the proposed framework is demonstrated through a collection of classical problems in fluids, quantum mechanics, reaction–diffusion systems, and the propagation of nonlinear shallow-water waves.},
+	urldate = {2022-03-20},
+	journal = {Journal of Computational Physics},
+	author = {Raissi, M. and Perdikaris, P. and Karniadakis, G. E.},
+	month = feb,
+	year = {2019},
+	note = {Publisher: Academic Press},
+	keywords = {Data-driven scientific computing, Machine learning, Nonlinear dynamics, Predictive modeling, Runge–Kutta methods},
+	pages = {686--707},
+}
 
-@manual{NBR14724:2011,
-	Address = {Rio de Janeiro},
-	Month = {03},
-	Org-Short = {ABNT},
-	Organization = {Associação Brasileira de Normas Técnicas},
-	Subtitle = {Informação e documentação --- Trabalhos acadêmicos --- Apresentação},
-	Title = {{NBR} 14724},
-	Year = 2011}
+@book{leary_unity_1955,
+	series = {Bicentennial conference series},
+	title = {The {Unity} of {Knowledge}},
+	url = {https://books.google.com.br/books?id=3rgtAAAAMAAJ},
+	publisher = {Doubleday},
+	author = {Leary, L.},
+	year = {1955},
+	lccn = {55005488},
+}
 
-@book{ibge1993,
-	Address = {Rio de Janeiro},
-	Author = {IBGE},
-	Edition = {3},
-	Org-Short = {IBGE},
-	Organization = {Fundação Instituto Brasileiro de Geografia e Estatística},
-	Publisher = {Centro de Documentação e Disseminação de Informações.},
-	Title = {Normas de apresentação tabular},
-	Url = {http://biblioteca.ibge.gov.br/visualizacao/livros/liv23907.pdf},
-	urldate = {2019-08-16},
-	Year = {1993}}
+@article{erichson_physics-informed_2019,
+	title = {Physics-informed {Autoencoders} for {Lyapunov}-stable {Fluid} {Flow} {Prediction}},
+	url = {https://arxiv.org/abs/1905.10866v1},
+	doi = {10.48550/arxiv.1905.10866},
+	abstract = {In addition to providing high-profile successes in computer vision and
+natural language processing, neural networks also provide an emerging set of
+techniques for scientific problems. Such data-driven models, however, typically
+ignore physical insights from the scientific system under consideration. Among
+other things, a physics-informed model formulation should encode some degree of
+stability or robustness or well-conditioning (in that a small change of the
+input will not lead to drastic changes in the output), characteristic of the
+underlying scientific problem. We investigate whether it is possible to include
+physics-informed prior knowledge for improving the model quality (e.g.,
+generalization performance, sensitivity to parameter tuning, or robustness in
+the presence of noisy data). To that extent, we focus on the stability of an
+equilibrium, one of the most basic properties a dynamic system can have, via
+the lens of Lyapunov analysis. For the prototypical problem of fluid flow
+prediction, we show that models preserving Lyapunov stability improve the
+generalization error and reduce the prediction uncertainty.},
+	urldate = {2022-03-10},
+	author = {Erichson, N. Benjamin and Muehlebach, Michael and Mahoney, Michael W.},
+	month = may,
+	year = {2019},
+	note = {arXiv: 1905.10866},
+}
 
-@book{ibge2016,
-	Address = {Rio de Janeiro},
-	Author = {IBGE},
-	Edition = {2},
-	Org-Short = {IBGE},
-	Organization = {Instituto Brasileiro de Geografia e Estatística},
-	Title = {Arranjos populacionais e concentrações urbanas no Brasil},
-	Url = {https://biblioteca.ibge.gov.br/visualizacao/livros/liv99700.pdf},
-	urldate = {2019-08-16},
-	Year={2016}}
+@article{karniadakis_physics-informed_2021,
+	title = {Physics-informed machine learning},
+	volume = {3},
+	issn = {2522-5820},
+	url = {https://www.nature.com/articles/s42254-021-00314-5},
+	doi = {10.1038/s42254-021-00314-5},
+	abstract = {Despite great progress in simulating multiphysics problems using the numerical discretization of partial differential equations (PDEs), one still cannot seamlessly incorporate noisy data into existing algorithms, mesh generation remains complex, and high-dimensional problems governed by parameterized PDEs cannot be tackled. Moreover, solving inverse problems with hidden physics is often prohibitively expensive and requires different formulations and elaborate computer codes. Machine learning has emerged as a promising alternative, but training deep neural networks requires big data, not always available for scientific problems. Instead, such networks can be trained from additional information obtained by enforcing the physical laws (for example, at random points in the continuous space-time domain). Such physics-informed learning integrates (noisy) data and mathematical models, and implements them through neural networks or other kernel-based regression networks. Moreover, it may be possible to design specialized network architectures that automatically satisfy some of the physical invariants for better accuracy, faster training and improved generalization. Here, we review some of the prevailing trends in embedding physics into machine learning, present some of the current capabilities and limitations and discuss diverse applications of physics-informed learning both for forward and inverse problems, including discovering hidden physics and tackling high-dimensional problems. The rapidly developing field of physics-informed learning integrates data and mathematical models seamlessly, enabling accurate inference of realistic and high-dimensional multiphysics problems. This Review discusses the methodology and provides diverse examples and an outlook for further developments.},
+	number = {6},
+	urldate = {2022-03-10},
+	journal = {Nature Reviews Physics 2021 3:6},
+	author = {Karniadakis, George Em and Kevrekidis, Ioannis G. and Lu, Lu and Perdikaris, Paris and Wang, Sifan and Yang, Liu},
+	month = may,
+	year = {2021},
+	note = {Publisher: Nature Publishing Group
+ISBN: 0123456789},
+	keywords = {Applied mathematics, Computational science},
+	pages = {422--440},
+}
 
-@manual{abntex2classe,
-	Author = {Lauro César Araujo},
-	Organization = {Equipe abnTeX2},
-	Title = {A classe abntex2},
-	Subtitle = {Modelo canônico de trabalhos acadêmicos brasileiros compatível com as normas ABNT NBR 14724:2011, ABNT NBR 6024:2012 e outras},
-	Url = {http://www.abntex.net.br/},
-	urldate = {2019-08-16},
-	Year = {2015}}
+@article{jagtap_extended_2020,
+	title = {Extended physics-informed neural networks ({XPINNs}): {A} generalized space-time domain decomposition based deep learning framework for nonlinear partial differential equations},
+	volume = {28},
+	issn = {19917120},
+	doi = {10.4208/CICP.OA-2020-0164},
+	abstract = {We propose a generalized space-time domain decomposition approach for the physics-informed neural networks (PINNs) to solve nonlinear partial differential equations (PDEs) on arbitrary complex-geometry domains. The proposed framework, named eXtended PINNs (XPINNs), further pushes the boundaries of both PINNs as well as conservative PINNs (cPINNs), which is a recently proposed domain decomposition approach in the PINN framework tailored to conservation laws. Compared to PINN, the XPINN method has large representation and parallelization capacity due to the inherent property of deployment of multiple neural networks in the smaller subdomains. Unlike cPINN, XPINN can be extended to any type of PDEs. Moreover, the domain can be decomposed in any arbitrary way (in space and time), which is not possible in cPINN. Thus, XPINN offers both space and time parallelization, thereby reducing the training cost more effectively. In each subdomain, a separate neural network is employed with optimally selected hyperparameters, e.g., depth/width of the network, number and location of residual points, activation function, optimization method, etc. A deep network can be employed in a subdomain with complex solution, whereas a shallow neural network can be used in a subdomain with relatively simple and smooth solutions. We demonstrate the versatility of XPINN by solving both forward and inverse PDE problems, ranging from one-dimensional to three-dimensional problems, from time-dependent to time-independent problems, and from continuous to discontinuous problems, which clearly shows that the XPINN method is promising in many practical problems. The proposed XPINN method is the generalization of PINN and cPINN methods, both in terms of applicability as well as domain decomposition approach, which efficiently lends itself to parallelized computation. The XPINN code is available on https://github.com/AmeyaJagtap/XPINNs.},
+	number = {5},
+	urldate = {2022-03-10},
+	journal = {Communications in Computational Physics},
+	author = {Jagtap, Ameya D. and Karniadakis, George Em},
+	month = nov,
+	year = {2020},
+	note = {Publisher: Global Science Press},
+	keywords = {Domain decomposition, Irregular domains, Machine learning, PINN, Physics-informed learning, XPINN},
+	pages = {2002--2041},
+}
+
+@article{Yucesan2022,
+	title = {A hybrid physics-informed neural network for main bearing fatigue prognosis under grease quality variation},
+	volume = {171},
+	issn = {0888-3270},
+	doi = {10.1016/J.YMSSP.2022.108875},
+	abstract = {Fatigue life of a wind turbine main bearing is drastically affected by the state of the grease used as lubricant. Unfortunately monitoring the grease condition through predictive models can be a daunting task due to uncertainties associated with degradation mechanism and variations in grease batch quality. Eventually, discrepancies in the grease life predictions caused by variable grease quality may lead up to inaccurate bearing fatigue life predictions. The convoluted nature of the problem requires a novel solution approach; and in this contribution, we propose a new hybrid physics-informed neural network model. We construct a hybrid model for bearing fatigue damage accumulation embedded as a recurrent neural network cell, where reduced-order physics models used for bearing fatigue damage accumulation, and neural networks represent grease degradation mechanism that quantifies grease damage that ultimately accelerates bearing fatigue. We outline a two-step probabilistic approach to quantify the grease quality variation. In the first step, we make use of the hybrid model to learn the grease degradation when the quality is the median of the distribution. In the second step, we take the median predictor from the first step and track the quantiles of the quality distribution by examining grease samples of each wind turbine. We finally showcase our approach with a numerical experiment, where we test the effect of the random realizations of quality variation and the number of sampled turbines on the performance of the model. Results of the numerical experiment indicate that given enough samples from different wind turbines, our method can successfully learn the median grease degradation and uncertainty about it. With this predictive model, we are able to optimize the regreasing intervals on a turbine-by-turbine basis. The source codes and links to the data can be found in the following GitHub repository https://github.com/PML-UCF/pinn\_wind\_bearing.},
+	urldate = {2022-03-20},
+	journal = {Mechanical Systems and Signal Processing},
+	author = {Yucesan, Yigit A. and Viana, Felipe A.C.},
+	month = may,
+	year = {2022},
+	note = {Publisher: Academic Press},
+	keywords = {Applied machine learning, Uncertainty quantification, Wind turbine bearing fatigue, hybrid physics-informed neural network},
+	pages = {108875},
+}
+
+@article{zhang_physics-informed_2020,
+	title = {Physics-informed multi-{LSTM} networks for metamodeling of nonlinear structures},
+	volume = {369},
+	issn = {0045-7825},
+	doi = {10.1016/J.CMA.2020.113226},
+	abstract = {This paper introduces an innovative physics-informed deep learning framework for metamodeling of nonlinear structural systems with scarce data. The basic concept is to incorporate available, yet incomplete, physics knowledge (e.g., laws of physics, scientific principles) into deep long short-term memory (LSTM) networks, which constrains and boosts the learning within a feasible solution space. The physics constraints are embedded in the loss function to enforce the model training which can accurately capture latent system nonlinearity even with very limited available training datasets. Specifically for dynamic structures, physical laws of equation of motion, state dependency and hysteretic constitutive relationship are considered to construct the physics loss. In particular, two physics-informed multi-LSTM network architectures are proposed for structural metamodeling. The satisfactory performance of the proposed framework is successfully demonstrated through two illustrative examples (e.g., nonlinear structures subjected to ground motion excitation). It turns out that the embedded physics can alleviate overfitting issues, reduce the need of big training datasets, and improve the robustness of the trained model for more reliable prediction with extrapolation ability. As a result, the physics-informed deep learning paradigm outperforms classical non-physics-guided data-driven neural networks.},
+	urldate = {2022-04-06},
+	journal = {Computer Methods in Applied Mechanics and Engineering},
+	author = {Zhang, Ruiyang and Liu, Yang and Sun, Hao},
+	month = sep,
+	year = {2020},
+	note = {arXiv: 2002.10253
+Publisher: North-Holland},
+	keywords = {Long short-term memory (LSTM), Metamodeling, Nonlinear structures, PhyLSTM2, PhyLSTM3, Physics-informed deep learning},
+	pages = {113226},
+}
+
+@article{noakoasteen_physics-informed_2020,
+	title = {Physics-{Informed} {Deep} {Neural} {Networks} for {Transient} {Electromagnetic} {Analysis}},
+	volume = {1},
+	issn = {26376431},
+	doi = {10.1109/OJAP.2020.3013830},
+	abstract = {In this paper, we propose a deep neural network based model to predict the time evolution of field values in transient electrodynamics. The key component of our model is a recurrent neural network, which learns representations of long-term spatial-temporal dependencies in the sequence of its input data. We develop an encoder-recurrent-decoder architecture, which is trained with finite difference time domain simulations of plane wave scattering from distributed, perfect electric conducting objects. We demonstrate that, the trained network can emulate a transient electrodynamics problem with more than 17 times speed-up in simulation time compared to traditional finite difference time domain solvers.},
+	number = {1},
+	urldate = {2022-04-06},
+	journal = {IEEE Open Journal of Antennas and Propagation},
+	author = {Noakoasteen, Oameed and Wang, Shu and Peng, Zhen and Christodoulou, Christos},
+	year = {2020},
+	note = {Publisher: Institute of Electrical and Electronics Engineers Inc.},
+	keywords = {Computer vision, Electromagnetics, Finite difference methods, Machine learning, Recurrent neural networks, Unsupervised learning},
+	pages = {404--412},
+}
+
+@article{schnell_half-inverse_2022,
+	title = {Half-{Inverse} {Gradients} for {Physical} {Deep} {Learning}},
+	url = {https://arxiv.org/abs/2203.10131v1},
+	doi = {10.48550/arxiv.2203.10131},
+	abstract = {Recent works in deep learning have shown that integrating differentiable
+physics simulators into the training process can greatly improve the quality of
+results. Although this combination represents a more complex optimization task
+than supervised neural network training, the same gradient-based optimizers are
+typically employed to minimize the loss function. However, the integrated
+physics solvers have a profound effect on the gradient flow as manipulating
+scales in magnitude and direction is an inherent property of many physical
+processes. Consequently, the gradient flow is often highly unbalanced and
+creates an environment in which existing gradient-based optimizers perform
+poorly. In this work, we analyze the characteristics of both physical and
+neural network optimizations to derive a new method that does not suffer from
+this phenomenon. Our method is based on a half-inversion of the Jacobian and
+combines principles of both classical network and physics optimizers to solve
+the combined optimization task. Compared to state-of-the-art neural network
+optimizers, our method converges more quickly and yields better solutions,
+which we demonstrate on three complex learning problems involving nonlinear
+oscillators, the Schroedinger equation and the Poisson problem.},
+	urldate = {2022-04-06},
+	author = {Schnell, Patrick and Holl, Philipp and Thuerey, Nils},
+	month = mar,
+	year = {2022},
+	note = {arXiv: 2203.10131},
+}
+
+@article{lu_machine_2021,
+	title = {Machine {Learning} {For} {Elliptic} {PDEs}: {Fast} {Rate} {Generalization} {Bound}, {Neural} {Scaling} {Law} and {Minimax} {Optimality}},
+	url = {https://arxiv.org/abs/2110.06897v2},
+	doi = {10.48550/arxiv.2110.06897},
+	abstract = {In this paper, we study the statistical limits of deep learning techniques
+for solving elliptic partial differential equations (PDEs) from random samples
+using the Deep Ritz Method (DRM) and Physics-Informed Neural Networks (PINNs).
+To simplify the problem, we focus on a prototype elliptic PDE: the
+Schr{\textbackslash}"odinger equation on a hypercube with zero Dirichlet boundary condition,
+which has wide application in the quantum-mechanical systems. We establish
+upper and lower bounds for both methods, which improves upon concurrently
+developed upper bounds for this problem via a fast rate generalization bound.
+We discover that the current Deep Ritz Methods is sub-optimal and propose a
+modified version of it. We also prove that PINN and the modified version of DRM
+can achieve minimax optimal bounds over Sobolev spaces. Empirically, following
+recent work which has shown that the deep model accuracy will improve with
+growing training sets according to a power law, we supply computational
+experiments to show a similar behavior of dimension dependent power law for
+deep PDE solvers.},
+	urldate = {2022-04-06},
+	author = {Lu, Yiping and Chen, Haoxuan and Lu, Jianfeng and Ying, Lexing and Blanchet, Jose},
+	month = oct,
+	year = {2021},
+	note = {arXiv: 2110.06897},
+}
+
+@article{Arnold2021,
+	title = {State–space modeling for control based on physics-informed neural networks},
+	volume = {101},
+	issn = {0952-1976},
+	doi = {10.1016/J.ENGAPPAI.2021.104195},
+	abstract = {Dynamic system models, based on partial differential equations (PDEs), are often unsuitable for direct use in control or state estimation purposes, due to the high computational cost arising from the necessity to apply sophisticated numerical methods for a solution, such as semi-discretization, also known as spatial discretization. Hence, there is often an inevitable trade-off between accuracy and computational efficiency during the model reduction step to ensure real-time applicability. In this contribution, we propose a state–space model formulation, using so-called physics-informed neural networks. This modeling approach enables a highly efficient inclusion of complex physical system descriptions within the design of control or state estimation setups. The resulting state–space model does not require any numerical solution techniques during the state propagation, as each time step is based on the evaluation of a reasonably sized neural net that approximates the solution of the PDE. Thus, this approach is suitable for real-time applications of various complex dynamic systems that can be described by one or a set of PDEs. Besides the modeling approach itself, the contribution also provides an illustrative example of the state–space modeling method in the context of model predictive control, as well as state estimation with an extended Kalman filter. These methods will be applied to a system based on a numerical solution of the Burgers equation.},
+	urldate = {2022-03-10},
+	journal = {Engineering Applications of Artificial Intelligence},
+	author = {Arnold, Florian and King, Rudibert},
+	month = may,
+	year = {2021},
+	note = {Publisher: Pergamon},
+	keywords = {Machine learning, Model predictive control, Neural networks, State estimation, State–space},
+	pages = {104195},
+}
+
+@article{Antonelo2021,
+	title = {Physics-{Informed} {Neural} {Nets} for {Control} of {Dynamical} {Systems}},
+	url = {https://arxiv.org/abs/2104.02556v2},
+	doi = {10.48550/arxiv.2104.02556},
+	abstract = {Physics-informed neural networks (PINNs) impose known physical laws into the
+learning of deep neural networks, making sure they respect the physics of the
+process while decreasing the demand of labeled data. For systems represented by
+Ordinary Differential Equations (ODEs), the conventional PINN has a continuous
+time input variable and outputs the solution of the corresponding ODE. In their
+original form, PINNs do not allow control inputs neither can they simulate for
+long-range intervals without serious degradation in their predictions. In this
+context, this work presents a new framework called Physics-Informed Neural Nets
+for Control (PINC), which proposes a novel PINN-based architecture that is
+amenable to {\textbackslash}emph\{control\} problems and able to simulate for longer-range time
+horizons that are not fixed beforehand. The framework has new inputs to account
+for the initial state of the system and the control action. In PINC, the
+response over the complete time horizon is split such that each smaller
+interval constitutes a solution of the ODE conditioned on the fixed values of
+initial state and control action for that interval. The whole response is
+formed by feeding back the predictions of the terminal state as the initial
+state for the next interval. This proposal enables the optimal control of
+dynamic systems, integrating a priori knowledge from experts and data collected
+from plants into control applications. We showcase our proposal in the control
+of two nonlinear dynamic systems: the Van der Pol oscillator and the four-tank
+system.},
+	urldate = {2022-04-05},
+	author = {Antonelo, Eric Aislan and Camponogara, Eduardo and Seman, Laio Oriel and Rehbein De Souza, Eduardo and Panaioti Jordanou, Jean and Hübner, Fred},
+	month = apr,
+	year = {2021},
+	note = {arXiv: 2104.02556},
+	keywords = {deep learning, nonlinear model predictive control, physics-informed neural networks},
+}
+
+@book{noauthor_nonlinear_nodate,
+	title = {Nonlinear {Model} {Predictive} {Control}},
+	url = {https://link.springer.com/book/10.1007/978-0-85729-501-9},
+	language = {en},
+	urldate = {2022-05-23},
+}
+
+@misc{noauthor_deep_nodate,
+	title = {Deep {Implicit} {Layers} - {Neural} {ODEs}, {Deep} {Equilibirum} {Models}, and {Beyond}},
+	url = {http://implicit-layers-tutorial.org/},
+	urldate = {2022-04-06},
+}
+
+@article{revay_lipschitz_2020,
+	title = {Lipschitz {Bounded} {Equilibrium} {Networks}},
+	url = {https://arxiv.org/abs/2010.01732v1},
+	doi = {10.48550/arxiv.2010.01732},
+	abstract = {This paper introduces new parameterizations of equilibrium neural networks,
+i.e. networks defined by implicit equations. This model class includes standard
+multilayer and residual networks as special cases. The new parameterization
+admits a Lipschitz bound during training via unconstrained optimization: no
+projections or barrier functions are required. Lipschitz bounds are a common
+proxy for robustness and appear in many generalization bounds. Furthermore,
+compared to previous works we show well-posedness (existence of solutions)
+under less restrictive conditions on the network weights and more natural
+assumptions on the activation functions: that they are monotone and slope
+restricted. These results are proved by establishing novel connections with
+convex optimization, operator splitting on non-Euclidean spaces, and
+contracting neural ODEs. In image classification experiments we show that the
+Lipschitz bounds are very accurate and improve robustness to adversarial
+attacks.},
+	urldate = {2022-04-06},
+	author = {Revay, Max and Wang, Ruigang and Manchester, Ian R.},
+	month = oct,
+	year = {2020},
+	note = {arXiv: 2010.01732},
+}
+
+@article{reshniak_robust_2020,
+	title = {Robust {Learning} with {Implicit} {Residual} {Networks}},
+	volume = {3},
+	issn = {2504-4990},
+	url = {https://www.mdpi.com/2504-4990/3/1/3/htm},
+	doi = {10.3390/MAKE3010003},
+	abstract = {In this effort, we propose a new deep architecture utilizing residual blocks inspired by implicit discretization schemes. As opposed to the standard feed-forward networks, the outputs of the proposed implicit residual blocks are defined as the fixed points of the appropriately chosen nonlinear transformations. We show that this choice leads to the improved stability of both forward and backward propagations, has a favorable impact on the generalization power, and allows for control the robustness of the network with only a few hyperparameters. In addition, the proposed reformulation of ResNet does not introduce new parameters and can potentially lead to a reduction in the number of required layers due to improved forward stability. Finally, we derive the memory-efficient training algorithm, propose a stochastic regularization technique, and provide numerical results in support of our findings.},
+	number = {1},
+	urldate = {2022-04-06},
+	journal = {Machine Learning and Knowledge Extraction 2021, Vol. 3, Pages 34-55},
+	author = {Reshniak, Viktor and Webster, Clayton G.},
+	month = dec,
+	year = {2020},
+	note = {arXiv: 1905.10479
+Publisher: Multidisciplinary Digital Publishing Institute},
+	keywords = {ResNet, robust, stability},
+	pages = {34--55},
+}
+
+@article{Kawaguchi2021,
+	title = {On the {Theory} of {Implicit} {Deep} {Learning}: {Global} {Convergence} with {Implicit} {Layers}},
+	url = {https://arxiv.org/abs/2102.07346v2},
+	doi = {10.48550/arxiv.2102.07346},
+	abstract = {A deep equilibrium model uses implicit layers, which are implicitly defined
+through an equilibrium point of an infinite sequence of computation. It avoids
+any explicit computation of the infinite sequence by finding an equilibrium
+point directly via root-finding and by computing gradients via implicit
+differentiation. In this paper, we analyze the gradient dynamics of deep
+equilibrium models with nonlinearity only on weight matrices and non-convex
+objective functions of weights for regression and classification. Despite
+non-convexity, convergence to global optimum at a linear rate is guaranteed
+without any assumption on the width of the models, allowing the width to be
+smaller than the output dimension and the number of data points. Moreover, we
+prove a relation between the gradient dynamics of the deep implicit layer and
+the dynamics of trust region Newton method of a shallow explicit layer. This
+mathematically proven relation along with our numerical observation suggests
+the importance of understanding implicit bias of implicit layers and an open
+problem on the topic. Our proofs deal with implicit layers, weight tying and
+nonlinearity on weights, and differ from those in the related literature.},
+	urldate = {2022-04-06},
+	author = {Kawaguchi, Kenji},
+	month = feb,
+	year = {2021},
+	note = {arXiv: 2102.07346},
+}
+
+@article{li_kohn-sham_2021,
+	title = {Kohn-{Sham} {Equations} as {Regularizer}: {Building} {Prior} {Knowledge} into {Machine}-{Learned} {Physics}},
+	volume = {126},
+	issn = {10797114},
+	url = {https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.036401},
+	doi = {10.1103/PHYSREVLETT.126.036401/FIGURES/5/MEDIUM},
+	abstract = {Including prior knowledge is important for effective machine learning models in physics and is usually achieved by explicitly adding loss terms or constraints on model architectures. Prior knowledge embedded in the physics computation itself rarely draws attention. We show that solving the Kohn-Sham equations when training neural networks for the exchange-correlation functional provides an implicit regularization that greatly improves generalization. Two separations suffice for learning the entire one-dimensional H2 dissociation curve within chemical accuracy, including the strongly correlated region. Our models also generalize to unseen types of molecules and overcome self-interaction error.},
+	number = {3},
+	urldate = {2022-04-06},
+	journal = {Physical Review Letters},
+	author = {Li, Li and Hoyer, Stephan and Pederson, Ryan and Sun, Ruoxi and Cubuk, Ekin D. and Riley, Patrick and Burke, Kieron},
+	month = jan,
+	year = {2021},
+	pmid = {33543980},
+	note = {arXiv: 2009.08551
+Publisher: American Physical Society},
+	keywords = {doi:10.1103/PhysRevLett.126.036401 url:https://doi.org/10.1103/PhysRevLett.126.036401},
+	pages = {036401},
+}
+
+@article{bai_multiscale_2020,
+	title = {Multiscale {Deep} {Equilibrium} {Models}},
+	volume = {2020-December},
+	issn = {10495258},
+	url = {https://arxiv.org/abs/2006.08656v2},
+	doi = {10.48550/arxiv.2006.08656},
+	abstract = {We propose a new class of implicit networks, the multiscale deep equilibrium
+model (MDEQ), suited to large-scale and highly hierarchical pattern recognition
+domains. An MDEQ directly solves for and backpropagates through the equilibrium
+points of multiple feature resolutions simultaneously, using implicit
+differentiation to avoid storing intermediate states (and thus requiring only
+\$O(1)\$ memory consumption). These simultaneously-learned multi-resolution
+features allow us to train a single model on a diverse set of tasks and loss
+functions, such as using a single MDEQ to perform both image classification and
+semantic segmentation. We illustrate the effectiveness of this approach on two
+large-scale vision tasks: ImageNet classification and semantic segmentation on
+high-resolution images from the Cityscapes dataset. In both settings, MDEQs are
+able to match or exceed the performance of recent competitive computer vision
+models: the first time such performance and scale have been achieved by an
+implicit deep learning approach. The code and pre-trained models are at
+https://github.com/locuslab/mdeq .},
+	urldate = {2022-04-07},
+	journal = {Advances in Neural Information Processing Systems},
+	author = {Bai, Shaojie and Koltun, Vladlen and Kolter, J. Zico},
+	month = jun,
+	year = {2020},
+	note = {arXiv: 2006.08656
+Publisher: Neural information processing systems foundation},
+}
+
+@article{seo_differentiable_2019,
+	title = {Differentiable {Physics}-informed {Graph} {Networks}},
+	url = {https://arxiv.org/abs/1902.02950v2},
+	doi = {10.48550/arxiv.1902.02950},
+	abstract = {While physics conveys knowledge of nature built from an interplay between
+observations and theory, it has been considered less importantly in deep neural
+networks. Especially, there are few works leveraging physics behaviors when the
+knowledge is given less explicitly. In this work, we propose a novel
+architecture called Differentiable Physics-informed Graph Networks (DPGN) to
+incorporate implicit physics knowledge which is given from domain experts by
+informing it in latent space. Using the concept of DPGN, we demonstrate that
+climate prediction tasks are significantly improved. Besides the experiment
+results, we validate the effectiveness of the proposed module and provide
+further applications of DPGN, such as inductive learning and multistep
+predictions.},
+	urldate = {2022-04-07},
+	author = {Seo, Sungyong and Liu, Yan},
+	month = feb,
+	year = {2019},
+	note = {arXiv: 1902.02950},
+}
+
+@article{Amos,
+	title = {Differentiable {MPC} for {End}-to-end {Planning} and {Control}},
+	doi = {10.5555/3327757},
+	abstract = {We present foundations for using Model Predictive Control (MPC) as a differen-tiable policy class for reinforcement learning. This provides one way of leveraging and combining the advantages of model-free and model-based approaches. Specifically , we differentiate through MPC by using the KKT conditions of the convex approximation at a fixed point of the controller. Using this strategy, we are able to learn the cost and dynamics of a controller via end-to-end learning. Our experiments focus on imitation learning in the pendulum and cartpole domains, where we learn the cost and dynamics terms of an MPC policy class. We show that our MPC policies are significantly more data-efficient than a generic neural network and that our method is superior to traditional system identification in a setting where the expert is unrealizable.},
+	urldate = {2022-04-07},
+	author = {Amos, Brandon and Dario Jimenez Rodriguez, Ivan and Sacks, Jacob and Boots, Byron and Kolter, J Zico},
+}
+
+@article{Chen2019,
+	title = {Gnu-{RL}: {A} precocial reinforcement learning solution for building {HVAC} control using a differentiable {MPC} policy},
+	url = {https://doi.org/10.1145/3360322.3360849},
+	doi = {10.1145/3360322.3360849},
+	abstract = {Reinforcement learning (RL) was first demonstrated to be a feasible approach to controlling heating, ventilation, and air conditioning (HVAC) systems more than a decade ago. However, there has been limited progress towards a practical and scalable RL solution for HVAC control. While one can train an RL agent in simulation, it is not cost-effective to create a model for each thermal zone or building. Likewise, existing RL agents generally take a long time to learn and are opaque to expert interrogation, making them unattractive for real-world deployment. To tackle these challenges, we propose Gnu-RL: a novel approach that enables practical deployment of RL for HVAC control and requires no prior information other than historical data from existing HVAC controllers. To achieve this, Gnu-RL adopts a recently-developed Differentiable Model Predictive Control (MPC) policy, which encodes domain knowledge on planning and system dynamics, making it both sample-efficient and interpretable. Prior to any interaction with the environment, a Gnu-RL agent is pre-trained on historical data using imitation learning, which enables it to match the behavior of the existing controller. Once it is put in charge of controlling the environment, the agent continues to improve its policy end-to-end, using a policy gradient algorithm. We evaluate Gnu-RL on both an EnergyPlus model and a real-world testbed. In both experiments, our agents were directly deployed in the environment after offline pre-training on expert demonstration. In the simulation experiment, our approach saved 6.6\% energy compared to the best published RL result for the same environment, while maintaining a higher level of occupant comfort. Next, Gnu-RL was deployed to control the HVAC of a real-world conference room for a three-week period. Our results show that Gnu-RL saved 16.7\% of cooling demand compared to the existing controller and tracked temperature set-point better.},
+	urldate = {2022-04-07},
+	journal = {BuildSys 2019 - Proceedings of the 6th ACM International Conference on Systems for Energy-Efficient Buildings, Cities, and Transportation},
+	author = {Chen, Bingqing and Cai, Zicheng and Bergés, Mario},
+	month = nov,
+	year = {2019},
+	note = {Publisher: Association for Computing Machinery, Inc
+ISBN: 9781450370059},
+	keywords = {Deep Reinforcement Learning, HVAC Control},
+	pages = {316--325},
+}
+
+@article{chen_neural_2018,
+	title = {Neural {Ordinary} {Differential} {Equations}},
+	volume = {109},
+	issn = {20385757},
+	url = {https://arxiv.org/abs/1806.07366v5},
+	doi = {10.48550/arxiv.1806.07366},
+	abstract = {We introduce a new family of deep neural network models. Instead of
+specifying a discrete sequence of hidden layers, we parameterize the derivative
+of the hidden state using a neural network. The output of the network is
+computed using a black-box differential equation solver. These continuous-depth
+models have constant memory cost, adapt their evaluation strategy to each
+input, and can explicitly trade numerical precision for speed. We demonstrate
+these properties in continuous-depth residual networks and continuous-time
+latent variable models. We also construct continuous normalizing flows, a
+generative model that can train by maximum likelihood, without partitioning or
+ordering the data dimensions. For training, we show how to scalably
+backpropagate through any ODE solver, without access to its internal
+operations. This allows end-to-end training of ODEs within larger models.},
+	number = {NeurIPS},
+	urldate = {2022-04-08},
+	journal = {NIPs},
+	author = {Chen, Ricky T. Q. and Rubanova, Yulia and Bettencourt, Jesse and Duvenaud, David},
+	month = jun,
+	year = {2018},
+	note = {arXiv: 1806.07366},
+	pages = {31--60},
+}
+
+@article{bai_neural_2022,
+	title = {Neural {Deep} {Equilibrium} {Solvers}},
+	abstract = {A deep equilibrium (DEQ) model abandons traditional depth by solving for the fixed point of a single nonlinear layer f θ. This structure enables decoupling the internal structure of the layer (which controls representational capacity) from how the fixed point is actually computed (which impacts inference-time efficiency), which is usually via classic techniques such as Broyden's method or Anderson acceleration. In this paper, we show that one can exploit such decoupling and substantially enhance this fixed point computation using a custom neural solver. Specifically, our solver uses a parameterized network to both guess an initial value of the optimization and perform iterative updates, in a method that generalizes a learnable form of Anderson acceleration and can be trained end-to-end in an unsupervised manner. Such a solution is particularly well suited to the implicit model setting, because inference in these models requires repeatedly solving for a fixed point of the same nonlinear layer for different inputs, a task at which our network excels. Our experiments show that these neural equilibrium solvers are fast to train (only taking an extra 0.9-1.1\% over the original DEQ's training time), require few additional parameters (1-3\% of the original model size), yet lead to a 2× speedup in DEQ network inference without any degradation in accuracy across numerous domains and tasks.},
+	urldate = {2022-04-26},
+	author = {Bai, Shaojie and Koltun, Vladlen and Zico Kolter, Apple J},
+	year = {2022},
+}
+
+@article{iserles_first_2008,
+	title = {A first course in the numerical analysis of differential equations, second edition},
+	url = {https://www.cambridge.org/core/books/first-course-in-the-numerical-analysis-of-differential-equations/2B4E05F5CFC58CFDC7BBBC6D1150661B},
+	doi = {10.1017/CBO9780511995569},
+	abstract = {Numerical analysis presents different faces to the world. For mathematicians it is a bona fide mathematical theory with an applicable flavour. For scientists and engineers it is a practical, applied subject, part of the standard repertoire of modelling techniques. For computer scientists it is a theory on the interplay of computer architecture and algorithms for real-number calculations. The tension between these standpoints is the driving force of this book, which presents a rigorous account of the fundamentals of numerical analysis of both ordinary and partial differential equations. The exposition maintains a balance between theoretical, algorithmic and applied aspects. This new edition has been extensively updated, and includes new chapters on emerging subject areas: geometric numerical integration, spectral methods and conjugate gradients. Other topics covered include multistep and Runge-Kutta methods; finite difference and finite elements techniques for the Poisson equation; and a variety of algorithms to solve large, sparse algebraic systems.},
+	urldate = {2022-05-15},
+	journal = {A First Course in the Numerical Analysis of Differential Equations, Second Edition},
+	author = {Iserles, Arieh},
+	month = jan,
+	year = {2008},
+	note = {Publisher: Cambridge University Press
+ISBN: 9780511995569},
+	pages = {1--459},
+}
+
+@article{bai_stabilizing_2021,
+	title = {Stabilizing {Equilibrium} {Models} by {Jacobian} {Regularization}},
+	url = {https://arxiv.org/abs/2106.14342v1},
+	doi = {10.48550/arxiv.2106.14342},
+	abstract = {Deep equilibrium networks (DEQs) are a new class of models that eschews
+traditional depth in favor of finding the fixed point of a single nonlinear
+layer. These models have been shown to achieve performance competitive with the
+state-of-the-art deep networks while using significantly less memory. Yet they
+are also slower, brittle to architectural choices, and introduce potential
+instability to the model. In this paper, we propose a regularization scheme for
+DEQ models that explicitly regularizes the Jacobian of the fixed-point update
+equations to stabilize the learning of equilibrium models. We show that this
+regularization adds only minimal computational cost, significantly stabilizes
+the fixed-point convergence in both forward and backward passes, and scales
+well to high-dimensional, realistic domains (e.g., WikiText-103 language
+modeling and ImageNet classification). Using this method, we demonstrate, for
+the first time, an implicit-depth model that runs with approximately the same
+speed and level of performance as popular conventional deep networks such as
+ResNet-101, while still maintaining the constant memory footprint and
+architectural simplicity of DEQs. Code is available at
+https://github.com/locuslab/deq .},
+	urldate = {2022-05-16},
+	author = {Bai, Shaojie and Koltun, Vladlen and Kolter, J. Zico},
+	month = jun,
+	year = {2021},
+	note = {arXiv: 2106.14342},
+}
+
+@article{gatzke_model_2000,
+	title = {Model based control of a four-tank system},
+	volume = {24},
+	issn = {0098-1354},
+	doi = {10.1016/S0098-1354(00)00555-X},
+	abstract = {A multi-disciplinary laboratory for control education has been developed at the University of Delaware to expose students to realistic process system applications and advanced control methods. One of the experiments is level control of a four-tank system. This paper describes two model-based methods students can implement for control of this interacting four-tank system. Sub- space identification is used to develop an empirical state space model of the experimental apparatus. This model is then used for model based control using internal model control (IMC). This represents an application of inner-outer factorization for non- minimum phase multivariable IMC design. Modeling is also performed using step tests and aspen software for use with dynamic matrix control (DMC). (C) 2000 Elsevier Science Ltd.},
+	number = {2-7},
+	urldate = {2022-04-11},
+	journal = {Computers \& Chemical Engineering},
+	author = {Gatzke, Edward P. and Meadows, Edward S. and Wang, Chung and Doyle, Francis J.},
+	month = jul,
+	year = {2000},
+	note = {Publisher: Pergamon},
+	keywords = {Experimental apparatus, Internal model control, Predictive control, Process control education},
+	pages = {1503--1509},
+}
+
+@article{prusty_novel_2015,
+	title = {A novel fuzzy based adaptive control of the four tank system},
+	doi = {10.1109/C3IT.2015.7060161},
+	abstract = {The paper has analyzed the four tank system (FTS) from the mechanism modeling and has also established the nonlinear and linear mathematical model. The FTS is a typical control system with nonlinear, coupling and time delay characteristics which can be used to test the applications of different control algorithms on complex systems. The aim of the process is to keep the liquid level in the tanks at the desired values. Here, Fuzzy Modified Model Reference Adaptive Control (FMMRAC) is proposed and is applied to the tank system to test its effectiveness. The response of the FMMRAC controller is verified and is compared with other control algorithms through simulation. The performance of the closed loop system is simulated using LabVIEW software. The method used here is validated using the simulated results.},
+	urldate = {2022-04-11},
+	journal = {Proceedings of the 2015 3rd International Conference on Computer, Communication, Control and Information Technology, C3IT 2015},
+	author = {Prusty, Sankata B. and Pati, Umesh C. and Mahapatra, Kamala K.},
+	month = mar,
+	year = {2015},
+	note = {Publisher: Institute of Electrical and Electronics Engineers Inc.
+ISBN: 9781479944460},
+	keywords = {Four Tank System, Fuzzy system, Model Reference Adaptive Control, Proportional-integral-derivative controller},
+}
+
+@inproceedings{krizhevsky_imagenet_2012,
+	title = {{ImageNet} {Classification} with {Deep} {Convolutional} {Neural} {Networks}},
+	volume = {25},
+	url = {https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html},
+	abstract = {We trained a large, deep convolutional neural network to classify the 1.3 million high-resolution images in the LSVRC-2010 ImageNet training set into the 1000 different classes. On the test data, we achieved top-1 and top-5 error rates of 39.7{\textbackslash}\% and 18.9{\textbackslash}\% which is considerably better than the previous state-of-the-art results. The neural network, which has 60 million parameters and 500,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and two globally connected layers with a final 1000-way softmax. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally connected layers we employed a new regularization method that proved to be very effective.},
+	urldate = {2022-05-25},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
+	publisher = {Curran Associates, Inc.},
+	author = {Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+	year = {2012},
+}
+
+@article{johansson_quadruple-tank_2000,
+	title = {The quadruple-tank process: {A} multivariable laboratory process with an adjustable zero},
+	volume = {8},
+	issn = {10636536},
+	doi = {10.1109/87.845876},
+	abstract = {A novel multivariable laboratory process that consists of four interconnected water tanks is presented. The linearized dynamics of the system have a multivariable zero that is possible to move along the real axis by changing a valve. The zero can be placed in both the left and the right half-plane. In this way the quadruple-tank process is ideal for illustrating many concepts in multivariable control, particularly performance limitations due to multivariable right half-plane zeros. The location and the direction of the zero have an appealing physical interpretation. Accurate models are derived from both physical and experimental data and decentralized control is demonstrated on the process. © 2000 IEEE.},
+	number = {3},
+	urldate = {2022-04-11},
+	journal = {IEEE Transactions on Control Systems Technology},
+	author = {Johansson, Karl Henrik},
+	month = may,
+	year = {2000},
+	keywords = {Education, Laboratory process, Multivariable control, Multivariable zeros},
+	pages = {456--465},
+}
+
+@article{silver_mastering_2016,
+	title = {Mastering the game of {Go} with deep neural networks and tree search},
+	volume = {529},
+	copyright = {2016 Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved.},
+	issn = {1476-4687},
+	url = {https://www.nature.com/articles/nature16961},
+	doi = {10.1038/nature16961},
+	abstract = {The game of Go has long been viewed as the most challenging of classic games for artificial intelligence owing to its enormous search space and the difficulty of evaluating board positions and moves. Here we introduce a new approach to computer Go that uses ‘value networks’ to evaluate board positions and ‘policy networks’ to select moves. These deep neural networks are trained by a novel combination of supervised learning from human expert games, and reinforcement learning from games of self-play. Without any lookahead search, the neural networks play Go at the level of state-of-the-art Monte Carlo tree search programs that simulate thousands of random games of self-play. We also introduce a new search algorithm that combines Monte Carlo simulation with value and policy networks. Using this search algorithm, our program AlphaGo achieved a 99.8\% winning rate against other Go programs, and defeated the human European Go champion by 5 games to 0. This is the first time that a computer program has defeated a human professional player in the full-sized game of Go, a feat previously thought to be at least a decade away.},
+	language = {en},
+	number = {7587},
+	urldate = {2022-05-25},
+	journal = {Nature},
+	author = {Silver, David and Huang, Aja and Maddison, Chris J. and Guez, Arthur and Sifre, Laurent and van den Driessche, George and Schrittwieser, Julian and Antonoglou, Ioannis and Panneershelvam, Veda and Lanctot, Marc and Dieleman, Sander and Grewe, Dominik and Nham, John and Kalchbrenner, Nal and Sutskever, Ilya and Lillicrap, Timothy and Leach, Madeleine and Kavukcuoglu, Koray and Graepel, Thore and Hassabis, Demis},
+	month = jan,
+	year = {2016},
+	note = {Number: 7587
+Publisher: Nature Publishing Group},
+	keywords = {Computational science, Computer science, Reward},
+	pages = {484--489},
+}
+
+@inproceedings{ciregan_multi-column_2012,
+	title = {Multi-column deep neural networks for image classification},
+	doi = {10.1109/CVPR.2012.6248110},
+	abstract = {Traditional methods of computer vision and machine learning cannot match human performance on tasks such as the recognition of handwritten digits or traffic signs. Our biologically plausible, wide and deep artificial neural network architectures can. Small (often minimal) receptive fields of convolutional winner-take-all neurons yield large network depth, resulting in roughly as many sparsely connected neural layers as found in mammals between retina and visual cortex. Only winner neurons are trained. Several deep neural columns become experts on inputs preprocessed in different ways; their predictions are averaged. Graphics cards allow for fast training. On the very competitive MNIST handwriting benchmark, our method is the first to achieve near-human performance. On a traffic sign recognition benchmark it outperforms humans by a factor of two. We also improve the state-of-the-art on a plethora of common image classification benchmarks.},
+	booktitle = {2012 {IEEE} {Conference} on {Computer} {Vision} and {Pattern} {Recognition}},
+	author = {Ciregan, Dan and Meier, Ueli and Schmidhuber, Jürgen},
+	month = jun,
+	year = {2012},
+	note = {ISSN: 1063-6919},
+	keywords = {Benchmark testing, Computer architecture, Error analysis, Graphics processing unit, Neurons, Training},
+	pages = {3642--3649},
+}
+
+@book{goodfellow_deep_2016,
+	address = {Cambridge, MA, USA},
+	series = {Adaptive {Computation} and {Machine} {Learning} series},
+	title = {Deep {Learning}},
+	isbn = {978-0-262-03561-3},
+	abstract = {An introduction to a broad range of topics in deep learning, covering mathematical and conceptual background, deep learning techniques used in industry, and research perspectives.},
+	language = {en},
+	publisher = {MIT Press},
+	author = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+	editor = {Bach, Francis},
+	month = nov,
+	year = {2016},
+}
+
+@article{lecun_deep_2015,
+	title = {Deep learning},
+	volume = {521},
+	copyright = {2015 Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved.},
+	issn = {1476-4687},
+	url = {https://www.nature.com/articles/nature14539},
+	doi = {10.1038/nature14539},
+	abstract = {Deep learning allows computational models that are composed of multiple processing layers to learn representations of data with multiple levels of abstraction. These methods have dramatically improved the state-of-the-art in speech recognition, visual object recognition, object detection and many other domains such as drug discovery and genomics. Deep learning discovers intricate structure in large data sets by using the backpropagation algorithm to indicate how a machine should change its internal parameters that are used to compute the representation in each layer from the representation in the previous layer. Deep convolutional nets have brought about breakthroughs in processing images, video, speech and audio, whereas recurrent nets have shone light on sequential data such as text and speech.},
+	language = {en},
+	number = {7553},
+	urldate = {2022-05-25},
+	journal = {Nature},
+	author = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+	month = may,
+	year = {2015},
+	note = {Number: 7553
+Publisher: Nature Publishing Group},
+	keywords = {Computer science, Mathematics and computing},
+	pages = {436--444},
+}
