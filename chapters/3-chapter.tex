@@ -110,31 +110,31 @@ Yet, this integral could be costly to compute and might not even be easily defin
 Instead, one could evaluate the model on a finite set of points from the domain $X=\{(\bm{x},y)\in U\times\R : y=f^*(\bm{x})\}$ (the data that forms the experience $E$), defining a loss function $l:\R\times\R\to\R$ that can be evaluated per sample, e.g., the $\ell^2$-norm.
 This way, the return of the deep learning algorithm would be a model $f_{\theta^*}$, such that \[
 \theta^* = \arg\min_\theta \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y)
-,\] therefore, one can solve the optimization problem
+.\] Usually, though, given the data $X$ and the model $f_\theta$, one defines a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \theta \right) = \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y)$.
+Therefore, to train a model one can solve the optimization problem
 \begin{align*}
-    \min_\theta \quad & \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y) \\
+    \min_\theta \quad & J\left( \theta \right)  \\
     \text{s.t.} \quad & \theta \in \Theta
 ,\end{align*}
 where $\Theta$ is the set of feasible parameters for the model.
 
 The most common way to solve this optimization for deep learning models is to use the \textit{gradient descent} algorithm.
 This method was first proposed by Cauchy in the XIX century\cite{lemarechal_cauchy_2012} based on the definition of the gradient of a differentiable function.
-It is known that, given a differentiable function $f:A\to\R$ and $\bm{a} \in A$, if $\| \nabla_{\bm{a}} f(\bm{a}) \| \neq 0$\footnotemark, $\exists \gamma > 0$ such that $f(\bm{a} - \gamma \nabla_{\bm{a}} f(\bm{a})) < f(\bm{a})$, that is, if one takes a small enough step in the opposite direction of the gradient, the function is certain to decrease.
+It is known that, given a differentiable function $f:A\to\R$ and $\bm{a} \in A$, if $\| \nabla f(\bm{a}) \| \neq 0,\,\exists \gamma > 0$ such that $f(\bm{a} - \gamma \nabla f(\bm{a})) < f(\bm{a})$, that is, if one takes a small enough step in the opposite direction of the gradient, the function is certain to decrease.
 The scalar $\gamma$ is called the \textit{learning rate}, and defines the size of the step that is taken\cite{goodfellow_deep_2016}.
-\footnotetext{The notation $\nabla_{\bm{a}} f$ represents the gradient of $f$ \textit{with respect to} the input $\bm{a}$, which could be omitted as the functions has only this input.}
 
-Therefore, following the notation of the previous example, if we assume that both the model and the loss function are differentiable, for a given pair $(\bm{x},y)$ and parameters $\theta_k$ such that $\| \nabla_\theta l(f_{\theta_k}(\bm{x}),y) \| \neq 0$, if we set \[
-\theta_{k+1} \gets \theta_k - \gamma \nabla_\theta l(f_{\theta_k}(\bm{x}),y) \tag{$*$}\label{eq:gradient-descent-step}
+Therefore, following the notation of the previous example, if we assume that both the model and the cost function are differentiable, for a given pair $(\bm{x},y)$ and parameters $\theta_k$ such that $\| \nabla J(\theta_k) \| \neq 0$, if we set \[
+\theta_{k+1} \gets \theta_k - \gamma \nabla J(\theta_k) \tag{$*$}\label{eq:gradient-descent-step}
 ,\] then, for a sufficiently small $\gamma$, we know that \[
-l(f_{\theta_{k+1}}(\bm{x}),y) < l(f_{\theta_k}(\bm{x}),y)
-,\] i.e., the loss will decrease.
-Notice how it seems that if one takes enough steps like \eqref{eq:gradient-descent-step} with small enough $\gamma$, the parameters will converge to a point that is a local minimum of the loss function.
+J\left( \theta_{k+1} \right) < J\left( \theta_k \right) 
+,\] i.e., the cost will decrease.
+Notice how it seems that if one takes enough steps like \eqref{eq:gradient-descent-step} with small enough $\gamma$, the parameters will converge to a point that is a local minimum of the cost function.
 
 % Maybe introduce the gradient step with regards to the cost function = sum of per-sample loss function?
 
 Yet, gradient descent provides poor convergence conditions\cite{wolfe_convergence_1969}, being considered unreliable and slow for many practical problems.
 Still, gradient descent is known to work very well for deep learning.
-In this area, it has shown to low values of the loss function fast enough to be useful, even if it does not find a local minimum.
+In this area, it has shown to low values of the cost function fast enough to be useful, even if it does not find a local minimum.
 \cite{goodfellow_deep_2016}
 
 \subsection{Gradient Descent Variations}
@@ -144,18 +144,18 @@ In particular, the use of \textit{momentum} on the update of the parameters.
 Computing a velocity vector over the parameter update steps, and taking this into account when performing the update, has shown to accelerate significantly the learning\cite{sutskever_importance_2013}.
 The classical way of doing this is to replace the update in \eqref{eq:gradient-descent-step} by
 \begin{align*}
-    v_{k+1} &\gets \mu v_k - \gamma \nabla_\theta l(f_{\theta_k}(\bm{x}),y) \\
+    v_{k+1} &\gets \mu v_k - \gamma \nabla J(\theta_k) \\
     \theta_{k+1} &\gets \theta_k + v_{k+1}
 ,\end{align*}
 where $v_k$ is the velocity at the $k$ step, and $\mu$ is the momentum coefficient.
 
 A major challenge of the gradient descent as a learning algorithm is that it introduces a parameter that is not learned in the process (which are commonly called \emph{hyperparameters}) and that is crucial to finding a good model: the learning rate.
 Using momentum reduces a little the sensitivity of the results to the choice of the learning rate, but does so while introducing a new hyperparameter (the momentum coefficient $\mu$).
-Furthermore, it is known that the loss function can be sensitive to some of the parameters while being numb to others \cite{goodfellow_deep_2016}.
+Furthermore, it is known that the cost function can be sensitive to some of the parameters while being numb to others \cite{goodfellow_deep_2016}.
 
 It was natural, in the face of these challenges, to think of strategies that use different learning rates for each parameter and automatically change these learning rates throughout the learning process.
 The most simple way of doing this is following the idea that, if the gradient with respect to a given parameter does not change sign, its associated learning rate should increase; otherwise, it should decrease.
-This way, if the loss function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
+This way, if the cost function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
 
 Adam\cite{kingma_adam_2015} combined two impactful implementations \cite{duchi_adaptive_2011,tieleman_lecture_2012}, encompassing both adaptive learning rates and momentum and taking them one step further.
 For this reason, Adam is one of the most commonly used algorithms and is seen as one of the best choices overall \cite{ruder_overview_2017}.
@@ -164,4 +164,10 @@ For this reason, Adam is one of the most commonly used algorithms and is seen as
 
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
 The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
+One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \theta \right) = \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y) + \Omega\left( \theta \right) $, where $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
+It can be seen as penalizing the more complex features extracted by the model, in an effort of approximating the training data with the simplest model possible [REFTO goodfellow, 2016].
+% A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
+One may ponder why this may be useful when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
+Unfortunately, properly defining these hard constraints is not trivial, as finding the "simplest" model that is still able to approximate the target function can be hard.
+Furthermore, often times complex models learn faster than simpler ones [NEEDS REFERENCE].
 
