@@ -96,6 +96,7 @@ Thus, the experience $E$ usually comes from data in the form of a (finite) set o
 % The performance is also usually measured on the data, discarding the need to evaluate the target function and the model on the entirety of the domain.
 
 Roughly speaking, the deep learning algorithms of interest for this work are those that, given data on the target function, provide a deep learning model that maximizes a performance measure.
+This is usually called \emph{training} a model.
 
 \subsection{Gradient Descent}
 
@@ -156,8 +157,11 @@ It was natural, in the face of these challenges, to think of strategies that use
 The most simple way of doing this is following the idea that, if the gradient with respect to a given parameter does not change sign, its associated learning rate should increase; otherwise, it should decrease.
 This way, if the loss function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
 
-Adam[REFTO Kingma, 2015] combined two impactful implementations [REFTO Duchi, 2011; Tieleman_Hinton, 2012], encompassing both adaptive learning rates and momentum and taking them one step further.
+Adam[REFTO Kingma, 2015] combined two impactful implementations [REFTO Duchi, 2011; Tieleman\_Hinton, 2012], encompassing both adaptive learning rates and momentum and taking them one step further.
 For this reason, Adam is one of the most commonly used algorithms and is seen as one of the best choices overall [REFTO Ruder, 2016].
 
 \section{Regularization}
+
+One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
+The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} [REFTO goodfellow, 2016].
 
