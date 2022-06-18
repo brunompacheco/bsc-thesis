@@ -30,7 +30,6 @@ This way, one can train a deep learning model to approximate the dynamics of a s
 Therefore, only minimal data is necessary, covering the initial and contour conditions which are usually known beforehand.
 
 At the same time, \textcite{Bai2019} and \textcite{Ghaoui2019} proposed a novel approach that is to define the output of a model implicitly, in the form of a solution to an equilibrium equation.
-% In this work, such a model is referred to as a \gls{DEQ}.
 Given a function $f:\R^{n+m}\to\R^m$, the output $z = F(x)$ of a so-called \gls{DEQ} $N:\R^n\to \R^m$, given an input $x\in\R^n$, is defined implicitly as the solution of $z = f(x,z)$.
 A model defined this way is effectively an infinite-depth network\cite{Bai2019} with residual connections\cite{he_deep_2016}.
 As to generate the output of an equilibrium model one has to solve an equilibrium equation, these models present an iterative behavior, hence similar to commonly used differential equation solvers such as the Runge-Kutta algorithm.

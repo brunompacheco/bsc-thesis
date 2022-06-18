@@ -136,9 +136,28 @@ Still, gradient descent is known to work very well for deep learning.
 In this area, it has shown to low values of the loss function fast enough to be useful, even if it does not find a local minimum.
 \cite{goodfellow_deep_2016}
 
-- briefly expose improvements in the gradient descent algorithm (adaptive learning rate/momentum) (maybe it is better to write Adam first and then revisit this section)
+\subsection{Gradient Descent Variations}
 
-\subsection{Adam}
+Over the year, many improvements on the gradient descent algorithms made it even more reliable and efficient for learning deep networks.
+In particular, the use of \textit{momentum} on the update of the parameters.
+Computing a velocity vector over the parameter update steps, and taking this into account when performing the update, has shown to accelerate significantly the learning[REFTO Sutskever, 2013].
+The classical way of doing this is to replace the update in \eqref{eq:gradient-descent-step} by
+\begin{align*}
+    v_{k+1} &\gets \mu v_k - \gamma \nabla_\theta l(f_{\theta_k}(\bm{x}),y) \\
+    \theta_{k+1} &\gets \theta_k + v_{k+1}
+,\end{align*}
+where $v_k$ is the velocity at the $k$ step, and $\mu$ is the momentum coefficient.
+
+A major challenge of the gradient descent as a learning algorithm is that it introduces a parameter that is not learned in the process (which are commonly called \emph{hyperparameters}) and that is crucial to finding a good model: the learning rate.
+Using momentum reduces a little the sensitivity of the results to the choice of the learning rate, but does so while introducing a new hyperparameter (the momentum coefficient $\mu$).
+Furthermore, it is known that the loss function can be sensitive to some of the parameters while being numb to others \cite{goodfellow_deep_2016}.
+
+It was natural, in the face of these challenges, to think of strategies that use different learning rates for each parameter and automatically change these learning rates throughout the learning process.
+The most simple way of doing this is following the idea that, if the gradient with respect to a given parameter does not change sign, its associated learning rate should increase; otherwise, it should decrease.
+This way, if the loss function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
+
+Adam[REFTO Kingma, 2015] combined two impactful implementations [REFTO Duchi, 2011; Tieleman_Hinton, 2012], encompassing both adaptive learning rates and momentum and taking them one step further.
+For this reason, Adam is one of the most commonly used algorithms and is seen as one of the best choices overall [REFTO Ruder, 2016].
 
 \section{Regularization}
 
