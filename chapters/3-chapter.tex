@@ -2,7 +2,10 @@
 \chapter{Deep Learning}\label{cap:deep-learning}
 % ----------------------------------------------------------
 
-In this chapter, a brief overview of the foundations of deep learning will be presented. As deep learning is such a broad area of knowledge, this chapter will focus on the subjects related to the thesis' objectives. At the same time, even though physics-informed learning and implicit models can be seen as branches of deep learning, they will be introduced in separated chapters for their relevance to the presented work.
+In this chapter, a brief overview of the necessary elements of deep learning is presented.
+Deep Learning is a broad area of knowledge that can be seen (and presented) through many viewpoints, which results in a multitude of notations and few well-established naming conventions.
+Here, the approach of \textcite{goodfellow_deep_2016} is followed, being altered only to make it consistent with the other chapters.
+Furthermore, even though physics-informed learning and implicit models can be seen as branches of deep learning, they are introduced in separated chapters for their relevance.
 
 % ----------------------------------------------------------
 \section{Origin/Introduction/Definition?}
@@ -37,19 +40,18 @@ We can construct this model's layers as functions $f^{[1]}:\R^2\to\R^2$ and $f^{
 .\end{align*}
 Note how these functions are extracting simple information from the input, yet their stacking can approximate very well the desired behavior.
 
-\section{Deep Feedforward Networks}
+\section{Deep Feedforward Networks}\label{sec:neural-nets}
 
 Deep Feedforward Networks are the most essential deep learning models.
 They were inspired by the works of \textcite{rosenblatt_perceptron_1957} and refined through the many decades since, culminating in one of the most important deep learning models for practitioners and the basis of of the most proeminent results seen in the recent years\cite{goodfellow_deep_2016}.
 
-One can say that the goal of a feedforward network is to approximate a given function through a mapping from a set of parameters and input data.
-The way this is achieved is through the stacking of simple linear combinations followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network with $L$ layers as a \textit{parametrized} function $f_\theta$ such that, for a given input $\bm{x}$,
+In this model, each component is a simple affine operator followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network with $L$ layers as a \textit{parametrized} function $f_\theta$ such that, for a given input $\bm{x}$,
 \begin{align*}
     \bm{z}^{[0]} &= \bm{x} \\
-    \bm{z}^{[i]} &= f_\theta^{[i]}(\bm{z}^{[i-1]}) = g^{[i]}\left(A^{[i]}\bm{z}^{[i-1]} + \bm{b}^{[i]}\right) ,\,i=1,\ldots,L \\
+    \bm{z}^{[i]} &= f_{\theta^i}^{[i]}(\bm{z}^{[i-1]}) = g^{[i]}\left(A^{[i]}\bm{z}^{[i-1]} + \bm{b}^{[i]}\right) ,\,i=1,\ldots,L \\
     f_\theta(\bm{x}) &= \bm{z}^{[L]}
 ,\end{align*}
-in which $\theta$ is the set of parameters and $g^{[i]}$ are the activation functions. In here, the parameters can be described as $\theta = \left(A^{[1]},\bm{b}^{[1]},\ldots,A^{[L]},\bm{b}^{[L]}\right)$. Using this notation, we can say that, given a \textit{target} function $f^*$ and a set of input data $X$, a deep feedforward network $f_\theta$ must learn a set of parameters $\theta$ such that $f_\theta(x) \approx f^*(x),\,\forall x \in X$.
+in which $\theta=\left( \theta^1,\ldots,\theta^L \right) $ are the vectors of parameters and $g^{[i]}$ are the activation functions. It is common to see $\theta$ and each of the $\theta^i$ as a vectors composed of the individual elements of the respective $A^{[i]},\bm{b}^{[i]}$. Using this notation, we can say that, given a \textit{target} function $f^*$ and input data $X$, a deep feedforward network $f_\theta$ must learn a set of parameters $\theta$ such that $f_\theta(x) \approx f^*(x),\,\forall x \in X$.
 
 Let us recall the Exclusive-OR example from the previous section. One can construct a two-layer deep feedforward network such that the functions $f_\theta^{[1]}:\R^2\to\R^2$ and $f_\theta^{[2]}:\R^2\to\R$ are
 \begin{align*}
@@ -164,10 +166,58 @@ For this reason, Adam is one of the most commonly used algorithms and is seen as
 
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
 The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
-One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \theta \right) = \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y) + \Omega\left( \theta \right) $, where $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
-It can be seen as penalizing the more complex features extracted by the model, in an effort of approximating the training data with the simplest model possible \cite{goodfellow_deep_2016}.
+
+One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \theta \right) = \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y) + \alpha\Omega\left( \theta \right) $, where $\alpha$ is an hyperparameter that weights the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
+It can be seen as an incentive for the model to be built on simple features, in an effort to approximate the training data with the simplest model possible \cite{goodfellow_deep_2016}.
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
 Unfortunately, properly defining these hard constraints is not trivial, as finding the "simplest" model that is still able to approximate the target function can be hard.
-Furthermore, often times complex models learn faster than simpler ones [NEEDS REFERENCE].
+Furthermore, in practice, more complex models properly regularized almost always perform better than simpler models[REFTO goodfellow].
+
+Another way to improve generalization is to use regularization to drive the learning towards models that present some desired characteristics.
+One of the most common of such characteristics is noise robustness.
+If one wants to train a model that is robust to noise in its input, one way to achieve this is to reduce the output's sensitivity.
+The output can be said less sensitive to variations of the input if its derivative with respect to a this input has a small magnitude.
+This can be enforced through a regularization term on the gradients of the model's outputs[REFTO Drucker \& LeCun, 1992].
+E.g., given a model $f_\theta:\R^n\to\R$, one can use a regularization term of the form \[
+    \Omega\left( \theta \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla f_\theta\left( \bm{x} \right) \|
+.\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $f_\theta$.
+
+\section{Back-Propagation}
+
+Even from the most simplistic description of the gradient descent algorithm (as in equation \eqref{eq:gradient-descent-step}) it is clear that the challenge lies in computing the gradient of the cost function.
+Taking deep feedforward networks as an example, the analytical formula for this gradient can be derived without much effort.
+Yet, evaluating this formula can be quite expensive, given that, as already seen, deep learning models can have millions of parameters, thus making even the computation of a linear application non-trivial.
+The \emph{back-propagation} algorithm [REFTO Rumelhart, 1986] provides a clever way of computing the gradient with respect to each parameter without great computational costs.
+
+Back-propagation works based on the \emph{chain-rule} for the derivatives.
+We first note that, from \eqref{eq:gradient-descent-step} and the definition of the cost function, $\nabla J$ can be reduced to evaluating the gradient of the loss function at several points.
+Therefore, if we want to compute the derivative of the cost function with respect to each of the parameters $\theta^i$, we need to look at the derivative of the loss function with respect to these parameters.
+Now, by the chain-rule, let us take the case for $\theta^L$ and see that
+ \begin{align*}
+     \frac{\partial l}{\partial\theta^L} &= \nabla_{f_\theta} l \frac{d f_\theta}{d \theta^L} \\
+     &= \nabla_{f_\theta} l \frac{d f^L_{\theta^L}}{d \theta^L}
+,\end{align*}
+where $\nabla_{f_\theta} l$ is the gradient of the loss function with respect to the model's output and $\frac{d f^L_{\theta^L}}{d \theta^L}$ is the Jacobian of the last layer of the model. Now, if we consider the case for $\theta^{L-1}$ and $\theta^{L-2}$
+ \begin{align*}
+     \frac{\partial l}{\partial\theta^{L-1}} &= \nabla_{f_\theta} l \frac{d f^L_{\theta^L}}{d f^{L-1}_{\theta^{L-1}}} \frac{d f^{L-1}_{\theta^{L-1}}}{d \theta^{L-1}} \\
+     \frac{\partial l}{\partial\theta^{L-2}} &= \nabla_{f_\theta} l \frac{d f^L_{\theta^L}}{d f^{L-1}_{\theta^{L-1}}} \frac{d f^{L-1}_{\theta^{L-1}}}{d f^{L-2}_{\theta^{L-2}}} \frac{d f^{L-2}_{\theta^{L-2}}}{d \theta^{L-2}}
+,\end{align*}
+it is easy to see repeating terms, that is, the result of $\nabla_{f_\theta} l \frac{d f^L_{\theta^L}}{d f^{L-1}_{\theta^{L-1}}}$, necessary to compute $\frac{\partial l}{\partial\theta^{L-1}}$ can be reused to compute $\frac{\partial l}{\partial\theta^{L-2}}$ and all of $\theta^{L-3},\ldots,\theta^1$.
+
+Back-propagation exploits this by computing the gradients with respect to each parameter "from left to right", that is, starting by computing the gradient of the outermost component of the composition and storing the intermediate result.
+Applied to the equations above, the first operation would be to compute $\bm{u}\gets\nabla_{f_\theta} l$, which would be used in the vector-Jacobian product $\bm{u} \frac{d f_\theta}{d \theta^L}$ to compute the gradient with respect to $\theta^{L}$.
+Then, the intermediate result can be updated through the vector-Jacobian product $\bm{u}\gets \bm{u} \frac{d f^L_{\theta^L}}{d f^{L-1}_{\theta^{L-1}}}$, which is useful to compute the gradient with respect to $\theta^{L-1}$.
+
+It is easy to see that this procedure can be repeated, propagating the gradient through each layer of the network until every parameter is covered, effectively reducing the evaluation of the gradient to computing several vector-Jacobian product.
+Furthermore, back-propagation can be also very memory efficient, as the chain-rule can be applied to each $f^i_{\theta^i}$ and, thus, the stored values are limited by the layer size\footnotemark.
+\footnotetext{The presented approach considers the $\theta^i$ vectors as the parameters of interest, when in a practical application the gradients would be computed with respect to each of the $A^{[i]}$ and $\bm{b}^{[i]}$ parameters. Therefore, the Jacobian matrices computed would be limited by the sizes of each of these parameters. Finally, it is easy to see that the intermediate value stored $\bm{u}$ will have the same dimension as the next layer used in the vector-Jacobian product to update it.}
+
+
+% % The great results that deep learning techniques have achieved come not only from the great theoretical guarantees, but also from the practical considerations that make these models an efficient alternative.
+% 
+% Even from the most simplistic description of the gradient descent algorithm (as in equation \eqref{eq:gradient-descent-step}) it is clear that its computational cost comes majorly from computing derivatives.
+% For this reason, the efficiency of performing this operation is a major driver of deep learning's success.
+% Even though it is not the only alternative, \emph{automatic differentiation} is the most successful technique for deep learning, being used by the two most used packages[REFTO Pytorch \& TensorFlow].
+% % This pairing comes from the flexibility of automatic differentiation to computing derivatives of compositions of many functions, which is in deep learning's core.
 
