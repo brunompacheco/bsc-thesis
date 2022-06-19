@@ -165,7 +165,7 @@ For this reason, Adam is one of the most commonly used algorithms and is seen as
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
 The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \theta \right) = \sum_{(\bm{x},y)\in X} l(f_\theta(\bm{x}), y) + \Omega\left( \theta \right) $, where $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
-It can be seen as penalizing the more complex features extracted by the model, in an effort of approximating the training data with the simplest model possible [REFTO goodfellow, 2016].
+It can be seen as penalizing the more complex features extracted by the model, in an effort of approximating the training data with the simplest model possible \cite{goodfellow_deep_2016}.
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
 Unfortunately, properly defining these hard constraints is not trivial, as finding the "simplest" model that is still able to approximate the target function can be hard.
