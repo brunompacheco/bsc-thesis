@@ -172,13 +172,13 @@ It can be seen as an incentive for the model to be built on simple features, in 
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
 Unfortunately, properly defining these hard constraints is not trivial, as finding the "simplest" model that is still able to approximate the target function can be hard.
-Furthermore, in practice, more complex models properly regularized almost always perform better than simpler models[REFTO goodfellow].
+Furthermore, in practice, more complex models properly regularized almost always perform better than simpler models\cite{goodfellow_deep_2016}.
 
 Another way to improve generalization is to use regularization to drive the learning towards models that present some desired characteristics.
 One of the most common of such characteristics is noise robustness.
 If one wants to train a model that is robust to noise in its input, one way to achieve this is to reduce the output's sensitivity.
 The output can be said less sensitive to variations of the input if its derivative with respect to a this input has a small magnitude.
-This can be enforced through a regularization term on the gradients of the model's outputs[REFTO Drucker \& LeCun, 1992].
+This can be enforced through a regularization term on the gradients of the model's outputs\cite{drucker_improving_1992}.
 E.g., given a model $f_\theta:\R^n\to\R$, one can use a regularization term of the form \[
     \Omega\left( \theta \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla f_\theta\left( \bm{x} \right) \|
 .\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $f_\theta$.
@@ -188,7 +188,7 @@ E.g., given a model $f_\theta:\R^n\to\R$, one can use a regularization term of t
 Even from the most simplistic description of the gradient descent algorithm (as in equation \eqref{eq:gradient-descent-step}) it is clear that the challenge lies in computing the gradient of the cost function.
 Taking deep feedforward networks as an example, the analytical formula for this gradient can be derived without much effort.
 Yet, evaluating this formula can be quite expensive, given that, as already seen, deep learning models can have millions of parameters, thus making even the computation of a linear application non-trivial.
-The \emph{back-propagation} algorithm [REFTO Rumelhart, 1986] provides a clever way of computing the gradient with respect to each parameter without great computational costs.
+The \emph{back-propagation} algorithm \cite{rumelhart_learning_1986} provides a clever way of computing the gradient with respect to each parameter without great computational costs.
 
 Back-propagation works based on the \emph{chain-rule} for the derivatives.
 We first note that, from \eqref{eq:gradient-descent-step} and the definition of the cost function, $\nabla J$ can be reduced to evaluating the gradient of the loss function at several points.

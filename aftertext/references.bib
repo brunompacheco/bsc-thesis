@@ -1,4 +1,94 @@
 
+@article{rumelhart_learning_1986,
+	title = {Learning representations by back-propagating errors},
+	volume = {323},
+	copyright = {1986 Nature Publishing Group},
+	issn = {1476-4687},
+	url = {https://www.nature.com/articles/323533a0},
+	doi = {10.1038/323533a0},
+	abstract = {We describe a new learning procedure, back-propagation, for networks of neurone-like units. The procedure repeatedly adjusts the weights of the connections in the network so as to minimize a measure of the difference between the actual output vector of the net and the desired output vector. As a result of the weight adjustments, internal ‘hidden’ units which are not part of the input or output come to represent important features of the task domain, and the regularities in the task are captured by the interactions of these units. The ability to create useful new features distinguishes back-propagation from earlier, simpler methods such as the perceptron-convergence procedure1.},
+	language = {en},
+	number = {6088},
+	urldate = {2022-06-19},
+	journal = {Nature},
+	author = {Rumelhart, David E. and Hinton, Geoffrey E. and Williams, Ronald J.},
+	month = oct,
+	year = {1986},
+	note = {Number: 6088
+Publisher: Nature Publishing Group},
+	keywords = {Humanities and Social Sciences, Science, multidisciplinary},
+	pages = {533--536},
+}
+
+@inproceedings{abadi_tensorflow_2016,
+	address = {USA},
+	series = {{OSDI}'16},
+	title = {{TensorFlow}: a system for large-scale machine learning},
+	isbn = {978-1-931971-33-1},
+	shorttitle = {{TensorFlow}},
+	abstract = {TensorFlow is a machine learning system that operates at large scale and in heterogeneous environments. Tensor-Flow uses dataflow graphs to represent computation, shared state, and the operations that mutate that state. It maps the nodes of a dataflow graph across many machines in a cluster, and within a machine across multiple computational devices, including multicore CPUs, general-purpose GPUs, and custom-designed ASICs known as Tensor Processing Units (TPUs). This architecture gives flexibility to the application developer: whereas in previous "parameter server" designs the management of shared state is built into the system, TensorFlow enables developers to experiment with novel optimizations and training algorithms. TensorFlow supports a variety of applications, with a focus on training and inference on deep neural networks. Several Google services use TensorFlow in production, we have released it as an open-source project, and it has become widely used for machine learning research. In this paper, we describe the TensorFlow dataflow model and demonstrate the compelling performance that TensorFlow achieves for several real-world applications.},
+	urldate = {2022-06-19},
+	booktitle = {Proceedings of the 12th {USENIX} conference on {Operating} {Systems} {Design} and {Implementation}},
+	publisher = {USENIX Association},
+	author = {Abadi, Martín and Barham, Paul and Chen, Jianmin and Chen, Zhifeng and Davis, Andy and Dean, Jeffrey and Devin, Matthieu and Ghemawat, Sanjay and Irving, Geoffrey and Isard, Michael and Kudlur, Manjunath and Levenberg, Josh and Monga, Rajat and Moore, Sherry and Murray, Derek G. and Steiner, Benoit and Tucker, Paul and Vasudevan, Vijay and Warden, Pete and Wicke, Martin and Yu, Yuan and Zheng, Xiaoqiang},
+	month = nov,
+	year = {2016},
+	pages = {265--283},
+}
+
+@book{workshop_on_wireless_traffic_measurements_and_modeling_papers_2005,
+	address = {Berkeley, CA},
+	title = {Papers presented at the {Workshop} on {Wireless} {Traffic} {Measurements} and {Modeling}: {June} 5, 2005, {Seattle}, {WA}, {USA}},
+	isbn = {978-1-931971-33-1},
+	shorttitle = {Papers presented at the {Workshop} on {Wireless} {Traffic} {Measurements} and {Modeling}},
+	url = {http://portal.acm.org/toc.cfm?id=1072430},
+	language = {English},
+	urldate = {2022-06-19},
+	publisher = {USENIX Association},
+	author = {Workshop on Wireless Traffic Measurements {and} Modeling, USENIX Association and {ACM SIGMOBILE} and {ACM Special Interest Group in Operating Systems} and {ACM Digital Library}},
+	year = {2005},
+	note = {OCLC: 83296063},
+}
+
+@misc{developers_tensorflow_2022,
+	title = {{TensorFlow}},
+	url = {https://zenodo.org/record/6574269},
+	abstract = {TensorFlow is an end-to-end open source platform for machine learning. It has a comprehensive, flexible ecosystem of tools, libraries, and community resources that lets researchers push the state-of-the-art in ML and developers easily build and deploy ML-powered applications.},
+	urldate = {2022-06-19},
+	publisher = {Zenodo},
+	author = {Developers, TensorFlow},
+	month = may,
+	year = {2022},
+	doi = {10.5281/zenodo.6574269},
+}
+
+@incollection{paszke_pytorch_2019,
+	title = {{PyTorch}: {An} {Imperative} {Style}, {High}-{Performance} {Deep} {Learning} {Library}},
+	url = {http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems} 32},
+	publisher = {Curran Associates, Inc.},
+	author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+	editor = {Wallach, H. and Larochelle, H. and Beygelzimer, A. and Alché-Buc, F. d' and Fox, E. and Garnett, R.},
+	year = {2019},
+	pages = {8024--8035},
+}
+
+@article{drucker_improving_1992,
+	title = {Improving generalization performance using double backpropagation},
+	volume = {3},
+	issn = {1941-0093},
+	doi = {10.1109/72.165600},
+	abstract = {In order to generalize from a training set to a test set, it is desirable that small changes in the input space of a pattern do not change the output components. This can be done by forcing this behavior as part of the training algorithm. This is done in double backpropagation by forming an energy function that is the sum of the normal energy term found in backpropagation and an additional term that is a function of the Jacobian. Significant improvement is shown with different architectures and different test sets, especially with architectures that had previously been shown to have very good performance when trained using backpropagation. It is shown that double backpropagation, as compared to backpropagation, creates weights that are smaller, thereby causing the output of the neurons to spend more time in the linear region.{\textless}{\textgreater}},
+	number = {6},
+	journal = {IEEE Transactions on Neural Networks},
+	author = {Drucker, H. and Le Cun, Y.},
+	month = nov,
+	year = {1992},
+	note = {Conference Name: IEEE Transactions on Neural Networks},
+	keywords = {Backpropagation algorithms, Jacobian matrices, Neural networks, Neurons, Signal to noise ratio, Testing},
+	pages = {991--997},
+}
+
 @misc{ruder_overview_2017,
 	title = {An overview of gradient descent optimization algorithms},
 	url = {http://arxiv.org/abs/1609.04747},
@@ -273,6 +363,62 @@ construction in MSL.},
 	pages = {770--778},
 }
 
+@article{Bai2019,
+	title = {Deep {Equilibrium} {Models}},
+	volume = {32},
+	issn = {10495258},
+	url = {https://arxiv.org/abs/1909.01377v2},
+	doi = {10.48550/arxiv.1909.01377},
+	abstract = {We present a new approach to modeling sequential data: the deep equilibrium
+model (DEQ). Motivated by an observation that the hidden layers of many
+existing deep sequence models converge towards some fixed point, we propose the
+DEQ approach that directly finds these equilibrium points via root-finding.
+Such a method is equivalent to running an infinite depth (weight-tied)
+feedforward network, but has the notable advantage that we can analytically
+backpropagate through the equilibrium point using implicit differentiation.
+Using this approach, training and prediction in these networks require only
+constant memory, regardless of the effective "depth" of the network. We
+demonstrate how DEQs can be applied to two state-of-the-art deep sequence
+models: self-attention transformers and trellis networks. On large-scale
+language modeling tasks, such as the WikiText-103 benchmark, we show that DEQs
+1) often improve performance over these state-of-the-art models (for similar
+parameter counts); 2) have similar computational requirements to existing
+models; and 3) vastly reduce memory consumption (often the bottleneck for
+training large sequence models), demonstrating an up-to 88\% memory reduction in
+our experiments. The code is available at https://github.com/locuslab/deq .},
+	urldate = {2022-04-07},
+	journal = {Advances in Neural Information Processing Systems},
+	author = {Bai, Shaojie and Zico Kolter, J. and Koltun, Vladlen},
+	month = sep,
+	year = {2019},
+	note = {arXiv: 1909.01377
+Publisher: Neural information processing systems foundation},
+}
+
+@article{Ghaoui2019,
+	title = {Implicit {Deep} {Learning}},
+	volume = {3},
+	url = {https://arxiv.org/abs/1908.06315v4},
+	doi = {10.48550/arxiv.1908.06315},
+	abstract = {Implicit deep learning prediction rules generalize the recursive rules of
+feedforward neural networks. Such rules are based on the solution of a
+fixed-point equation involving a single vector of hidden features, which is
+thus only implicitly defined. The implicit framework greatly simplifies the
+notation of deep learning, and opens up many new possibilities, in terms of
+novel architectures and algorithms, robustness analysis and design,
+interpretability, sparsity, and network architecture optimization.},
+	number = {3},
+	urldate = {2022-04-05},
+	journal = {SIAM Journal on Mathematics of Data Science},
+	author = {Ghaoui, Laurent El and Gu, Fangda and Travacca, Bertrand and Askari, Armin and Tsai, Alicia Y.},
+	month = aug,
+	year = {2019},
+	note = {arXiv: 1908.06315
+Publisher: Society for Industrial \& Applied Mathematics (SIAM)},
+	keywords = {26B10, 49M99, 62M45, 65K10, Deep learning, Perron-Frobenius theory, adversarial attacks AMS subject classifications 69, implicit models, robustness},
+	pages = {930--958},
+}
+
 @article{lecun_deep_2015,
 	title = {Deep learning},
 	volume = {521},
@@ -306,62 +452,6 @@ Publisher: Nature Publishing Group},
 	editor = {Bach, Francis},
 	month = nov,
 	year = {2016},
-}
-
-@article{Ghaoui2019,
-	title = {Implicit {Deep} {Learning}},
-	volume = {3},
-	url = {https://arxiv.org/abs/1908.06315v4},
-	doi = {10.48550/arxiv.1908.06315},
-	abstract = {Implicit deep learning prediction rules generalize the recursive rules of
-feedforward neural networks. Such rules are based on the solution of a
-fixed-point equation involving a single vector of hidden features, which is
-thus only implicitly defined. The implicit framework greatly simplifies the
-notation of deep learning, and opens up many new possibilities, in terms of
-novel architectures and algorithms, robustness analysis and design,
-interpretability, sparsity, and network architecture optimization.},
-	number = {3},
-	urldate = {2022-04-05},
-	journal = {SIAM Journal on Mathematics of Data Science},
-	author = {Ghaoui, Laurent El and Gu, Fangda and Travacca, Bertrand and Askari, Armin and Tsai, Alicia Y.},
-	month = aug,
-	year = {2019},
-	note = {arXiv: 1908.06315
-Publisher: Society for Industrial \& Applied Mathematics (SIAM)},
-	keywords = {26B10, 49M99, 62M45, 65K10, Deep learning, Perron-Frobenius theory, adversarial attacks AMS subject classifications 69, implicit models, robustness},
-	pages = {930--958},
-}
-
-@article{Bai2019,
-	title = {Deep {Equilibrium} {Models}},
-	volume = {32},
-	issn = {10495258},
-	url = {https://arxiv.org/abs/1909.01377v2},
-	doi = {10.48550/arxiv.1909.01377},
-	abstract = {We present a new approach to modeling sequential data: the deep equilibrium
-model (DEQ). Motivated by an observation that the hidden layers of many
-existing deep sequence models converge towards some fixed point, we propose the
-DEQ approach that directly finds these equilibrium points via root-finding.
-Such a method is equivalent to running an infinite depth (weight-tied)
-feedforward network, but has the notable advantage that we can analytically
-backpropagate through the equilibrium point using implicit differentiation.
-Using this approach, training and prediction in these networks require only
-constant memory, regardless of the effective "depth" of the network. We
-demonstrate how DEQs can be applied to two state-of-the-art deep sequence
-models: self-attention transformers and trellis networks. On large-scale
-language modeling tasks, such as the WikiText-103 benchmark, we show that DEQs
-1) often improve performance over these state-of-the-art models (for similar
-parameter counts); 2) have similar computational requirements to existing
-models; and 3) vastly reduce memory consumption (often the bottleneck for
-training large sequence models), demonstrating an up-to 88\% memory reduction in
-our experiments. The code is available at https://github.com/locuslab/deq .},
-	urldate = {2022-04-07},
-	journal = {Advances in Neural Information Processing Systems},
-	author = {Bai, Shaojie and Zico Kolter, J. and Koltun, Vladlen},
-	month = sep,
-	year = {2019},
-	note = {arXiv: 1909.01377
-Publisher: Neural information processing systems foundation},
 }
 
 @article{Raissi2019,
