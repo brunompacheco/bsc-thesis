@@ -1,4 +1,77 @@
 
+@misc{ruder_overview_2017,
+	title = {An overview of gradient descent optimization algorithms},
+	url = {http://arxiv.org/abs/1609.04747},
+	doi = {10.48550/arXiv.1609.04747},
+	abstract = {Gradient descent optimization algorithms, while increasingly popular, are often used as black-box optimizers, as practical explanations of their strengths and weaknesses are hard to come by. This article aims to provide the reader with intuitions with regard to the behaviour of different algorithms that will allow her to put them to use. In the course of this overview, we look at different variants of gradient descent, summarize challenges, introduce the most common optimization algorithms, review architectures in a parallel and distributed setting, and investigate additional strategies for optimizing gradient descent.},
+	urldate = {2022-06-18},
+	collaborator = {Ruder, Sebastian},
+	month = jun,
+	year = {2017},
+	note = {Number: arXiv:1609.04747
+arXiv:1609.04747 [cs]},
+	keywords = {Computer Science - Machine Learning},
+}
+
+@misc{tieleman_lecture_2012,
+	title = {Lecture 6.5-rmsprop: {Divide} the {Gradient} by a {Running} {Average} of {Its} {Recent} {Magnitude}},
+	journal = {COURSERA: Neural Networks for Machine Learning},
+	author = {Tieleman, T and Hinton, G},
+	year = {2012},
+}
+
+@article{duchi_adaptive_2011,
+	title = {Adaptive {Subgradient} {Methods} for {Online} {Learning} and {Stochastic} {Optimization}},
+	volume = {12},
+	url = {http://jmlr.org/papers/v12/duchi11a.html},
+	number = {61},
+	journal = {Journal of Machine Learning Research},
+	author = {Duchi, John and Hazan, Elad and Singer, Yoram},
+	year = {2011},
+	pages = {2121--2159},
+}
+
+@inproceedings{kingma_adam_2015,
+	title = {Adam: {A} {Method} for {Stochastic} {Optimization}},
+	url = {http://arxiv.org/abs/1412.6980},
+	booktitle = {3rd {International} {Conference} on {Learning} {Representations}, {ICLR} 2015, {San} {Diego}, {CA}, {USA}, {May} 7-9, 2015, {Conference} {Track} {Proceedings}},
+	author = {Kingma, Diederik P. and Ba, Jimmy},
+	editor = {Bengio, Yoshua and LeCun, Yann},
+	year = {2015},
+}
+
+@inproceedings{sutskever_importance_2013,
+	address = {Atlanta, Georgia, USA},
+	series = {Proceedings of {Machine} {Learning} {Research}},
+	title = {On the importance of initialization and momentum in deep learning},
+	volume = {28},
+	url = {https://proceedings.mlr.press/v28/sutskever13.html},
+	abstract = {Deep and recurrent neural networks (DNNs and RNNs respectively) are powerful models that were considered to be almost impossible to train using stochastic gradient descent with momentum. In this paper, we show that when stochastic gradient descent with momentum uses a well-designed random initialization and a particular type of slowly increasing schedule for the momentum parameter, it can train both DNNs and RNNs (on datasets with long-term dependencies) to levels of performance that were previously achievable only with Hessian-Free optimization. We find that both the initialization and the momentum are crucial since poorly initialized networks cannot be trained with momentum and well-initialized networks perform markedly worse when the momentum is absent or poorly tuned. Our success training these models suggests that previous attempts to train deep and recurrent neural networks from random initializations have likely failed due to poor initialization schemes. Furthermore, carefully tuned momentum methods suffice for dealing with the curvature issues in deep and recurrent network training objectives without the need for sophisticated second-order methods.},
+	booktitle = {Proceedings of the 30th {International} {Conference} on {Machine} {Learning}},
+	publisher = {PMLR},
+	author = {Sutskever, Ilya and Martens, James and Dahl, George and Hinton, Geoffrey},
+	editor = {Dasgupta, Sanjoy and McAllester, David},
+	month = jun,
+	year = {2013},
+	note = {Issue: 3},
+	pages = {1139--1147},
+}
+
+@article{kingma_adam_2014,
+	title = {Adam: {A} {Method} for {Stochastic} {Optimization}},
+	copyright = {arXiv.org perpetual, non-exclusive license},
+	shorttitle = {Adam},
+	url = {https://arxiv.org/abs/1412.6980},
+	doi = {10.48550/ARXIV.1412.6980},
+	abstract = {We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments. The method is straightforward to implement, is computationally efficient, has little memory requirements, is invariant to diagonal rescaling of the gradients, and is well suited for problems that are large in terms of data and/or parameters. The method is also appropriate for non-stationary objectives and problems with very noisy and/or sparse gradients. The hyper-parameters have intuitive interpretations and typically require little tuning. Some connections to related algorithms, on which Adam was inspired, are discussed. We also analyze the theoretical convergence properties of the algorithm and provide a regret bound on the convergence rate that is comparable to the best known results under the online convex optimization framework. Empirical results demonstrate that Adam works well in practice and compares favorably to other stochastic optimization methods. Finally, we discuss AdaMax, a variant of Adam based on the infinity norm.},
+	urldate = {2022-06-18},
+	author = {Kingma, Diederik P. and Ba, Jimmy},
+	year = {2014},
+	note = {Publisher: arXiv
+Version Number: 9},
+	keywords = {FOS: Computer and information sciences, Machine Learning (cs.LG)},
+}
+
 @article{wolfe_convergence_1969,
 	title = {Convergence {Conditions} for {Ascent} {Methods}},
 	volume = {11},

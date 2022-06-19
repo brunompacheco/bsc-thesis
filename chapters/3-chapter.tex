@@ -141,7 +141,7 @@ In this area, it has shown to low values of the loss function fast enough to be 
 
 Over the year, many improvements on the gradient descent algorithms made it even more reliable and efficient for learning deep networks.
 In particular, the use of \textit{momentum} on the update of the parameters.
-Computing a velocity vector over the parameter update steps, and taking this into account when performing the update, has shown to accelerate significantly the learning[REFTO Sutskever, 2013].
+Computing a velocity vector over the parameter update steps, and taking this into account when performing the update, has shown to accelerate significantly the learning\cite{sutskever_importance_2013}.
 The classical way of doing this is to replace the update in \eqref{eq:gradient-descent-step} by
 \begin{align*}
     v_{k+1} &\gets \mu v_k - \gamma \nabla_\theta l(f_{\theta_k}(\bm{x}),y) \\
@@ -157,11 +157,11 @@ It was natural, in the face of these challenges, to think of strategies that use
 The most simple way of doing this is following the idea that, if the gradient with respect to a given parameter does not change sign, its associated learning rate should increase; otherwise, it should decrease.
 This way, if the loss function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
 
-Adam[REFTO Kingma, 2015] combined two impactful implementations [REFTO Duchi, 2011; Tieleman\_Hinton, 2012], encompassing both adaptive learning rates and momentum and taking them one step further.
-For this reason, Adam is one of the most commonly used algorithms and is seen as one of the best choices overall [REFTO Ruder, 2016].
+Adam\cite{kingma_adam_2015} combined two impactful implementations \cite{duchi_adaptive_2011,tieleman_lecture_2012}, encompassing both adaptive learning rates and momentum and taking them one step further.
+For this reason, Adam is one of the most commonly used algorithms and is seen as one of the best choices overall \cite{ruder_overview_2017}.
 
 \section{Regularization}
 
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
-The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} [REFTO goodfellow, 2016].
+The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 
