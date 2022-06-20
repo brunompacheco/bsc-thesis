@@ -125,9 +125,11 @@ This method was first proposed by Cauchy in the XIX century\cite{lemarechal_cauc
 It is known that, given a differentiable function $f:A\to\R$ and $\bm{a} \in A$, if $\| \nabla f(\bm{a}) \| \neq 0,\,\exists \gamma > 0$ such that $f(\bm{a} - \gamma \nabla f(\bm{a})) < f(\bm{a})$, that is, if one takes a small enough step in the opposite direction of the gradient, the function is certain to decrease.
 The scalar $\gamma$ is called the \textit{learning rate}, and defines the size of the step that is taken\cite{goodfellow_deep_2016}.
 
-Therefore, following the notation of the previous example, if we assume that both the model and the cost function are differentiable, for a given pair $(\bm{x},y)$ and parameters $\theta_k$ such that $\| \nabla J(\theta_k) \| \neq 0$, if we set \[
-\theta_{k+1} \gets \theta_k - \gamma \nabla J(\theta_k) \tag{$*$}\label{eq:gradient-descent-step}
-,\] then, for a sufficiently small $\gamma$, we know that \[
+Therefore, following the notation of the previous example, if we assume that both the model and the cost function are differentiable, for a given pair $(\bm{x},y)$ and parameters $\theta_k$ such that $\| \nabla J(\theta_k) \| \neq 0$, if we set
+\begin{equation}\label{eq:gradient-descent-step}
+\theta_{k+1} \gets \theta_k - \gamma \nabla J(\theta_k) 
+,\end{equation}
+then, for a sufficiently small $\gamma$, we know that \[
 J\left( \theta_{k+1} \right) < J\left( \theta_k \right) 
 ,\] i.e., the cost will decrease.
 Notice how it seems that if one takes enough steps like \eqref{eq:gradient-descent-step} with small enough $\gamma$, the parameters will converge to a point that is a local minimum of the cost function.
@@ -212,7 +214,6 @@ Then, the intermediate result can be updated through the vector-Jacobian product
 It is easy to see that this procedure can be repeated, propagating the gradient through each layer of the network until every parameter is covered, effectively reducing the evaluation of the gradient to computing several vector-Jacobian product.
 Furthermore, back-propagation can be also very memory efficient, as the chain-rule can be applied to each $f^i_{\theta^i}$ and, thus, the stored values are limited by the layer size\footnotemark.
 \footnotetext{The presented approach considers the $\theta^i$ vectors as the parameters of interest, when in a practical application the gradients would be computed with respect to each of the $A^{[i]}$ and $\bm{b}^{[i]}$ parameters. Therefore, the Jacobian matrices computed would be limited by the sizes of each of these parameters. Finally, it is easy to see that the intermediate value stored $\bm{u}$ will have the same dimension as the next layer used in the vector-Jacobian product to update it.}
-
 
 % % The great results that deep learning techniques have achieved come not only from the great theoretical guarantees, but also from the practical considerations that make these models an efficient alternative.
 % 
