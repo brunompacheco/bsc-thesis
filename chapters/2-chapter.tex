@@ -62,7 +62,7 @@ It is a common problem to find an explicit definition of the unknown functions i
 For \gls{ODE}s, it is often the case that, if one knowns side conditions on the unknown function, than a solution exists and it is unique.
 More precisely, for an \gls{ODE} defined as in \eqref{eq:ode}, conditions of the form \[
 \bm{y}\left( t_0 \right) =\bm{y}_0
-,\] in which $t_0\in I\subset \R$ and $\bm{y}_0\in R\subset \R^m$, $R$ a rectangle, guarantee the existence and uniqueness of a (analytic) solution in $I$ if $\mathcal{N}$ is an analytic function\footnotemark in $I\times R$, which is the case for many practical applications.[REFTO Iserles, 2008]
+,\] in which $t_0\in I\subset \R$ and $\bm{y}_0\in R\subset \R^m$, $R$ a rectangle, guarantee the existence and uniqueness of a (analytic) solution in $I$ if $\mathcal{N}$ is an analytic function\footnotemark in $I\times R$, which is the case for many practical applications.\cite{iserles_first_2008}
 \footnotetext{A function is said analytic if and only if its Taylor series expansion converges in the entirety of its domain.}
 The problem of finding the solution given conditions as above is called the \gls{IVP}.
 
@@ -92,7 +92,7 @@ Let us assume that $I=\left[ t_0,t_N \right]$ and one desires an approximation o
 Given a sequence $t_0,\ldots,t_i,\ldots,t_N$ such that $t_{i+1}-t_i=h,\,i=1,\ldots,N$, let us call $\bm{y}_{i}$ the approximation of an exact solution at $t_i$ for $i=1,\ldots,N$.
 One can use the first order approximation recursively to compute \[
 \bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right),\,i=1,\ldots,N
-\] with, in theory, arbitrary precision, once $h$, in here called the \emph{time step}, can be made arbitrarily small.[REFTO Iserles, 2008]
+\] with, in theory, arbitrary precision, once $h$, in here called the \emph{time step}, can be made arbitrarily small.\cite{iserles_first_2008}
 This approach is the \emph{Euler's method}, and forms the basis of most of the commonly used advanced numerical solvers for \gls{ODE}s.
 
 \section{Van der Pol Oscillator}
