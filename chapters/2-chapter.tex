@@ -39,13 +39,14 @@ As an example, given Newton's second law of motion with constant force ($F(x)=C$
     \phi\left( t \right) = \frac{C}{2m}t^2 + a_1t + a_0,\, a_0,a_1\in \R
 \] is a solution.
 
-Yet, for the case of ODEs, it is often the case that if one has $n$ side conditions on the (lowest order) derivatives of the unknown function the solution exists and is unique, i.e., for an ODE defined as in \eqref{eq:ode}, conditions of the form \[
+Yet, for ODEs, it is often the case that if one has $n$ side conditions on the (lowest order) derivatives of the unknown function, than the solution exists and is unique. More precisely, for an ODE defined as in \eqref{eq:ode}, conditions of the form \[
 \bm{y}\left( t_0 \right) =\bm{y}_0,\frac{d\bm{y}\left( t_1 \right) }{dt_1}=\bm{y}_1,\ldots,\frac{d^{n-1}\bm{y}\left( t_{n-1} \right) }{dt^{n-1}}= \bm{y}_{n-1}
-,\] in which $t_0,\ldots,t_{n-1}\in I$ and $y_0,\ldots,y_{n-1}\in \R^m$, guarantee the uniqueness of the solution in an interval $I$ if $\mathcal{N}$ is Lipschitz continuous\footnote{Lipschitz continuity is a stronger form of continuity, with a certain limit to a function's rate of change. Refer to \textcite{sohrab_basic_2003} for a proper definition.} on a subset of $\R\times \R^{n}$\footnotemark. \cite{coddington_theory_2012}
-\footnotetext{This is a brief and rude description of the Picard-Lindelöf theorem, which actually only guarantees that the solution exists and is unique on neighborhoods of $t_i$. Yet, in many practical applications it is the case that a unique solution exists for the trivial subsets of $\R$.}
+,\] in which $t_0,\ldots,t_{n-1}\in I\subset \R$ and $y_0,\ldots,y_{n-1}\in R\subset \R^m$, $R$ a rectangle, guarantee the existence and uniqueness of the solution in $I$ if $\mathcal{N}$ is an analytic function\footnotemark in $I\times R$, which is the case for many practical applications.
+\footnotetext{A function is said analytic if and only if its Taylor series expansion converges in the entirety of its domain.[REFTO Iserles, 2008]}
 The problem of finding the solution given conditions as above is called the \gls{IVP}.
 
-\gls{IVP} shows up frequently when the current (or past) state of a system is known and the future state is desired. Recalling Newton's second law example, suppose that, besides $F(x)=C$, it is also known that the object lies still at $t=0$, i.e., \[
+\gls{IVP} shows up frequently when the current (or past) state of a system is known and the future state is desired.
+Recalling Newton's second law example, suppose that, besides $F(x)=C$, it is also known that the object lies still at $t=0$, i.e., \[
 y(0) = 0,\,\frac{d y(0)}{dt}=0
 ,\] and we are interested in the solution in the interval $I=\left[ 0,T \right] $, for $T>0$. Then, the only solution is that with $a_0=a_1=0$, that is, \[
     \phi\left( t \right) = \frac{C}{2m}t^2
@@ -54,3 +55,4 @@ y(0) = 0,\,\frac{d y(0)}{dt}=0
 \section{Numerical Solvers}
 
 \section{Van der Pol Oscillator}
+
