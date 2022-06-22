@@ -88,12 +88,48 @@ Then, the approximate solution is
 
 Of course, the performance of this naïve approach (for any non-constant $\mathcal{N}$) is satisfactory only for small $h$.
 However, one can perform many of such approximations with arbitrarily small $h$.
-Let us assume that $I=\left[ t_0,t_N \right]$ and one desires an approximation of an exact solution $\bm{\phi}\left( t \right) $ on $I$.
+Let us assume that $I=\left[ t_0,t_N \right]$\footnotemark and that one desires an approximation of an exact solution $\bm{\phi}\left( t \right) $ on $I$.
+\footnotetext{If $t_0$ is not the extrema of the interval, one can just apply the method in both directions.}
 Given a sequence $t_0,\ldots,t_i,\ldots,t_N$ such that $t_{i+1}-t_i=h,\,i=1,\ldots,N$, let us call $\bm{y}_{i}$ the approximation of an exact solution at $t_i$ for $i=1,\ldots,N$.
 One can use the first order approximation recursively to compute \[
 \bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right),\,i=1,\ldots,N
 \] with, in theory, arbitrary precision, once $h$, in here called the \emph{time step}, can be made arbitrarily small.\cite{iserles_first_2008}
-This approach is the \emph{Euler's method}, and forms the basis of most of the commonly used advanced numerical solvers for \gls{ODE}s.
+This approach is the \emph{Euler's method}, and besides being the most simple way of effectively solving the \gls{IVP}, it forms the basis of most of the commonly used advanced numerical solvers for \gls{ODE}s.
+
+\subsection{Runge-Kutta Method}
+
+Euler's method comes short in that it uses \emph{only} the information from the previous step at each iteration, i.e., it discards the information from the previous steps.
+The \emph{Runge-Kutta methods}, on the other hand, feeds from the rich theory on numerical integration and uses multiple approximations of $\bm{y}\left( t \right)$ to take a step.
+More precisely, the classical Runge-Kutta (RK4) uses 4 approximations of the solution to estimate $\bm{y}_{i+1}$.
+
+Similar to Euler's method, Runge-Kutta is also an iterative approach, which means that given $\bm{y}_i$ (an approximation of the solution at $t_i$) it will compute $\bm{y}_{i+1}$ (an approximation of the solution at $t_{i+1}=t_i + h$).
+The intuition of RK4 is to iteratively approximate $\mathcal{N}$ (the slope) for the solution \emph{within} the step (i.e, the interval $\left[ t_i,t_{i+1} \right] $) and use this information to compute $\bm{y}_{i+1}$.
+Let us denote $\bm{k}_1,\ldots,\bm{k}_4$ these intermediate approximations of $\mathcal{N}$ such that
+\begin{align*}
+    \bm{k}_1 &= \mathcal{N}\left( t_i , \bm{y}_i \right)  \\
+    \bm{k}_2 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_1 \right)  \\
+    \bm{k}_3 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_2 \right)  \\
+    \bm{k}_4 &= \mathcal{N}\left( t_i+h, \bm{y}_i + h \bm{k}_3 \right)
+.\end{align*}
+Note that each approximation depends on the previous ones, being computed in sequence.
+Furthermore, one can see that $\bm{k}_1$ is the approximation of $\mathcal{N}$ at the beginning of the step ($t_i$ ), while $\bm{k}_2$ and $\bm{k}_3$ are at the middle and $\bm{k}_4$ is at the end ($t_{i+1}$).
+Finally, $\bm{y}_{i+1}$ is computed taking a weighted average of these approximations as \[
+    \bm{y}_{i+1} = \bm{y}_i + h \frac{\bm{k}_1 + 2\bm{k}_2 + 2 \bm{k}_3 + \bm{k}_4}{6}
+.\]
+
+Even though Runge-Kutta's approach seems quite simple and magic, it provides a significant error reduction in a still very lean algorithm.
+In fact, even when one bases around the number of evaluations of the $\mathcal{N}$ function (which tends to be the costlier operations for more complex functions), it still outperforms the Euler's method, even with a step size 5 times larger\footnotemark.
+\footnotetext{Once each iteration of RK4 makes 5 $\mathcal{N}$ function evaluations while Euler's method's makes only one evaluation for iteration.}
+This combination makes RK4 one of the most used ODE solvers yet.
+An example can be seen in Figure \ref{fig:ode_comparison}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{images/ode_solver_comparison_zoom.png}
+    \includegraphics{images/ode_solver_comparison.png}
+    \caption{Comparison of RK4 and Euler's method for $\frac{d y\left( t \right) }{dt} = y(t)\sin(t)^2$ with $y(0)=1$. The analytical solution $\phi(t)$ is shown in the solid line while the solvers with different step sizes are shown in broken lines. The image on the right shows the impact in a long-term run, highlighting the comparison between RK4 with $h=5$ and Euler's with $h=1$.}
+    \label{fig:ode_comparison}
+\end{figure}
 
 \section{Van der Pol Oscillator}
 
