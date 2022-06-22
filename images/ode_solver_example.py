@@ -30,6 +30,8 @@ if __name__ == '__main__':
 
     y0 = 1
 
+    plt.figure(figsize=(3.,3.),dpi=300)
+
     # solution
     t = np.linspace(0,200,1000)
     phi = lambda t: np.exp((t - np.sin(t)*np.cos(t))/2)
@@ -61,13 +63,17 @@ if __name__ == '__main__':
     plt.plot(rk_x, rk_y, '--', marker='o', markersize=2, label='RK4 ($h=5.0$)')
 
     plt.yscale('log')
-    plt.grid()
     plt.legend()
+    plt.grid()
+    plt.xlabel('$t$')
+    plt.ylabel('$y(t)$')
+    plt.gca().set_yticklabels([])
 
     plt.xlim([0,200])
     plt.ylim([1,1e45])
-    plt.savefig('ode_solver_comparison.png')
+    plt.savefig('ode_solver_comparison.png', bbox_inches='tight')
 
+    plt.legend().set_visible(False)
     plt.xlim([0,20])
     plt.ylim([1,1e5])
-    plt.savefig('ode_solver_comparison_zoom.png')
+    plt.savefig('ode_solver_comparison_zoom.png', bbox_inches='tight')
