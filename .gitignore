@@ -341,3 +341,4 @@ tags
 # ignore compiled files
 *.loq
 *.pdf
+!images/*.pdf
