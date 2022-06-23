@@ -71,9 +71,9 @@ if __name__ == '__main__':
 
     plt.xlim([0,200])
     plt.ylim([1,1e45])
-    plt.savefig('ode_solver_comparison.png', bbox_inches='tight')
+    plt.savefig('ode_solver_comparison.pdf', bbox_inches='tight')
 
     plt.legend().set_visible(False)
     plt.xlim([0,20])
     plt.ylim([1,1e5])
-    plt.savefig('ode_solver_comparison_zoom.png', bbox_inches='tight')
+    plt.savefig('ode_solver_comparison_zoom.pdf', bbox_inches='tight')
