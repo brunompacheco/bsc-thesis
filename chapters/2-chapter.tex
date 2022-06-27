@@ -15,14 +15,16 @@ Furthermore, the approach to numerically solve \gls{ODE}s and the Van der Pol os
 \section{Introduction and Definitions}
 
 A differential equation can be seen as a description of the relationship between unknown quantities and their rates of changes.
-Because of this broader definition and direct relationship to applications, differential equations arise naturally in many fields of applied sciences\cite{hairer_solving_1993}, as it is often the case that the rate of change of a certain quantity of interest is related to the rate of change of other quantities.
-A classical example of a differential equation is Newton's second law of motion \[
-F\left( x\left( t \right) \right) = m \frac{d^2 y(t)}{d t^2}
-,\] in which $x\left( t \right) $ is the position of an object at time $t$, $m$ is its mass, and $F(x)$ is the force under which the object is at a given position.
+Because of this broader definition and direct relationship to applications, differential equations arise naturally in many fields of applied sciences \cite{hairer_solving_1993}, as it is often the case that the rate of change of a certain quantity of interest is related to the rate of change of other quantities.
+A classical example of a differential equation is Newton's second law of motion, 
+\[
+   F\left( x\left( t \right) \right) = M \frac{d^2}{d t^2} x(t)
+,\] 
+in which $x\left( t \right) $ is the position of an object at time $t$, $M$ is its mass, and $F(x)$ is the force under which the object is at a given position.
 This example highlights one of the great powers of the differential equations, which is to describe the dynamics of a certain phenomenon without explicitly defining it.
 
 
-For a more tangible definition, any equation that contains the derivatives of (at least) one unknown function with respect to (at least) one independent variable is called a \emph{differential equation}\cite{zill_first_2013}.
+For a more tangible definition, any equation that contains the derivatives of (at least) one unknown function with respect to (at least) one independent variable is called a \emph{differential equation} \cite{zill_first_2013}.
 A differential equation that involves only \emph{ordinary} derivatives, that is, only derivatives of functions with respect to a single variable, (such as the one above) is called an \gls{ODE}.
 % A differential equation can also be classified through its \emph{order} (the order of its highest derivative)
 \gls{ODE}s can be represented in the normal form \[
@@ -30,18 +32,18 @@ A differential equation that involves only \emph{ordinary} derivatives, that is,
 .\] 
 in which $\bm{x}:\R\to \R^{m'} $, $\mathcal{N}':\R\times \R^{nm'}\to \R^{m'}$ is a continuous function, $\frac{d^n \bm{x}(t)}{d t^{n}}$ is the vector containing the derivatives with respect to $t$ of all $\bm{x}\left( t \right) $ components\footnotetext{I.e., the first (and only) row-vector of the Jacobian of $\bm{x}\left( t \right) $.}, and $n$ is the order of the highest derivative in the equation and is commonly referred to as the \emph{order of the differential equation}.
 
-Any function $\bm{\phi}:I\subset\R\to \R^{m'}$ is said to be a \emph{solution} of an $n$-th order \gls{ODE} if it satisfies \[
+Any function $\bm{\phi}:I\subset\R\to \R^{m'}$, $I$ an interval, is said to be a \emph{solution} of an $n$-th order \gls{ODE} if it is $n$-times differentiable on $I$ and it satisfies \[
     \frac{d^n \bm{\phi}(t)}{d t^{n}} = \mathcal{N}\left( t, \bm{\phi}\left( t \right) , \frac{d \bm{\phi}(t)}{d t}, \ldots,\frac{d^{n-1}\bm{\phi}(t)}{d t^{n-1}} \right),\,\forall t\in I
 .\] Note, however, that the solutions are not necessarily unique.
-As an example, given Newton's second law of motion with constant force ($F(x)=C$), then it is easy to see that any second-order polynomial of the form \[
-    \phi\left( t \right) = \frac{C}{2m}t^2 + a_1t + a_0,\, a_0,a_1\in \R
+As an example, given Newton's second law of motion with constant force ($F(x)=C$), then it is easy to see that any second-order polynomial of the form: \[
+    \phi\left( t \right) = \frac{C}{2M}t^2 + a_1t + a_0,\, a_0,a_1\in \R
 \] is a solution.
 
 Now, given an $n$-th order \gls{ODE}, let $\bm{y}_1\left( t \right) =\bm{x}\left( t \right),\,\bm{y}_2\left( t \right) = \frac{d \bm{x}\left( t \right) }{d t} ,\ldots, \bm{y}_n\left( t \right) = \frac{d^{n-1} \bm{x}\left( t \right) }{d t^{n-1}}$.
-Note that we can now write the following \emph{system} of first-order differential equations
+Note that we can now write the following \emph{system} of first-order differential equations:
 \begin{align*}
     \frac{d \bm{y_1}\left( t \right) }{dt} &= \frac{d \bm{x}\left( t \right) }{d t} = \bm{y}_2\left( t \right) \\
-    &\vdots \\
+    &~~\vdots \\
     \frac{d \bm{y_{n-1}}\left( t \right) }{dt} &= \frac{d^{n-1} \bm{x}\left( t \right) }{d t^{n-1}} = \bm{y}_n\left( t \right) \\
     \frac{d \bm{y_n}\left( t \right) }{dt} &= \frac{d^{n} \bm{x}\left( t \right) }{d t^{n}} = \mathcal{N}'\left( t, \bm{x}\left( t \right), \frac{d \bm{x}(t)}{d t}, \ldots,\frac{d^{n-1}\bm{x}(t)}{d t^{n-1}} \right) = \mathcal{N}'\left( t, \bm{y}_1\left( t \right), \ldots, \bm{y}_n\left( t \right) \right)
 .\end{align*}
@@ -50,12 +52,12 @@ Then, for $m=n m'$, define $\bm{y}:\R\to \R^{m}$ such that \[
 \bm{y}_1\left( t \right) \\ \vdots \\ \bm{y}_n\left( t \right) 
 \end{bmatrix} 
 ,\] and $\mathcal{N}:\R\times \R^{m}\to \R^{m}$ such that \[
-    \mathcal{N}'\left( t,\bm{y}\left( t \right)  \right) = \begin{bmatrix} 
+    \mathcal{N}\left( t,\bm{y}\left( t \right)  \right) = \begin{bmatrix} 
     \bm{y}_2 \\ \vdots \\ \bm{y}_n \\ \mathcal{N}'\left( t, \bm{y}_1\left( t \right), \ldots, \bm{y}_n\left( t \right) \right)
     \end{bmatrix} 
 .\] With this, it is easy to see that the first-order \gls{ODE}
 \begin{equation}\label{eq:ode}
-\frac{d \bm{y}\left( t \right) }{d t} = \mathcal{N}\left( t, \bm{y}\left( t \right)  \right) 
+    \frac{d \bm{y}\left( t \right) }{d t} = \mathcal{N}\left( t, \bm{y}\left( t \right)  \right) 
 \end{equation}
 is equivalent to the original $n$-th order \gls{ODE}, that is, given a solution for one of the equations, one can trivially derive the solution for the other.
 This allows us to focus on first-order \gls{ODE}s for the remaining of the chapter.
@@ -63,10 +65,10 @@ This allows us to focus on first-order \gls{ODE}s for the remaining of the chapt
 \section{Initial Value Problems}
 
 It is a common problem to find an explicit definition of the unknown functions in a differential equation.
-For \gls{ODE}s, it is often the case that, if one knowns side conditions on the unknown function, than a solution exists and it is unique.
+For \gls{ODE}s, it is often the case that, if one knowns side conditions on the unknown function, then a solution exists and it is unique.
 More precisely, for an \gls{ODE} defined as in \eqref{eq:ode}, conditions of the form \[
-\bm{y}\left( t_0 \right) =\bm{y}_0
-,\] in which $t_0\in I\subset \R$ and $\bm{y}_0\in R\subset \R^m$, $R$ a rectangle, guarantee the existence and uniqueness of a (analytic) solution in $I$ if $\mathcal{N}$ is an analytic function\footnotemark in $I\times R$, which is the case for many practical applications.\cite{iserles_first_2008}
+   \bm{y}\left( t_0 \right) =\bm{y}_0
+\] guarantee the existence and uniqueness of an (analytic) solution in the interval $I\subset \R$, $t_0\in I$, if $\mathcal{N}$ is an analytic function\footnotemark\, in $I\times R$, $R\subset \R^m$ with $\bm{y}_0\in R$, guarantee the existence and uniqueness of an (analytic) solution in $I$ if $\mathcal{N}$ is an analytic function\footnotemark in $I\times R$, which is the case for many practical applications \cite{iserles_first_2008}.
 \footnotetext{A function is said analytic if and only if its Taylor series expansion converges in the entirety of its domain.}
 The problem of finding the solution given conditions as above is called the \gls{IVP}.
 
@@ -74,7 +76,7 @@ The problem of finding the solution given conditions as above is called the \gls
 Recalling Newton's second law example, suppose that, besides $F(x)=C$, it is also known that the object lies still at $t=0$, i.e., \[
 y(0) = 0,\,\frac{d y(0)}{dt}=0
 ,\] and we are interested in the solution in the interval $I=\left[ 0,T \right] $, for $T>0$. Then, the only solution is that with $a_0=a_1=0$, that is, \[
-    \phi\left( t \right) = \frac{C}{2m}t^2
+    \phi\left( t \right) = \frac{C}{2M}t^2
 .\] 
 
 \section{Numerical Solvers}
@@ -83,21 +85,22 @@ y(0) = 0,\,\frac{d y(0)}{dt}=0
 
 In an \gls{IVP}, one effectively has the value of $\bm{y}\left( t \right) $ at a given instant in time $t_0$ and can find the slope at that time through $\mathcal{N}$.
 Therefore, it is natural that an efficient numerical solution is derived from the linear approximation of $\bm{y}\left( t \right) $ at $t_0$.
-    In practice, this means to approximate $\mathcal{N}\left( t, \bm{y}\left( t \right) \right) \approx \mathcal{N}\left( t_0, \bm{y}_0 \right) $ in a neighborhood of $t_0$, i.e., an interval $I^h \subset I$ with length $h$ such that $t_0\in I^h$.
+In practice, this means to approximate $\mathcal{N}\left( t, \bm{y}\left( t \right) \right) \approx \mathcal{N}\left( t_0, \bm{y}_0 \right),\,\forall t\in I^h $, where $I^h$ is a neighborhood of $t_0$ (i.e., $I^h \subset I$ is an interval with length $h$ such that $t_0\in I^h$).
 Then, the approximate solution is
 \begin{align*}
-    \bm{\phi}\left( t \right) &= \bm{y}\left( t_0 \right) + \int_{t_0}^{t}\mathcal{N}\left( \tau, \bm{y}\left( \tau \right) \right) \\
+    \bm{\phi}\left( t \right) &= \bm{y}\left( t_0 \right) + \int_{t_0}^{t}\mathcal{N}\left( \tau, \bm{y}\left( \tau \right) \right)d\tau \\
     &\approx \bm{y}\left( t_0 \right) + \left( t-t_0 \right)\mathcal{N}\left( t_0, \bm{y}_0 \right),\,t\in I^h
 .\end{align*}
 
 Of course, the performance of this naïve approach (for any non-constant $\mathcal{N}$) is satisfactory only for small $h$.
 However, one can perform many of such approximations with arbitrarily small $h$.
-Let us assume that $I=\left[ t_0,t_N \right]$\footnotemark and that one desires an approximation of an exact solution $\bm{\phi}\left( t \right) $ on $I$.
+Let us assume that $I=\left[ t_0,t_N \right]$\footnotemark\, and that one desires an approximation of an exact solution $\bm{\phi}\left( t \right) $ on $I$.
 \footnotetext{If $t_0$ is not the extrema of the interval, one can just apply the method in both directions.}
-Given a sequence $t_0,\ldots,t_i,\ldots,t_N$ such that $t_{i+1}-t_i=h,\,i=1,\ldots,N$, let us call $\bm{y}_{i}$ the approximation of an exact solution at $t_i$ for $i=1,\ldots,N$.
+Given a sequence $t_0,\ldots,t_i,\ldots,t_N$ such that $t_{i+1}-t_i=h,\,i=1,\ldots,N$, let us call $\bm{y}_{i}$ the approximation of an exact solution at $t_i$ for $i=1,\ldots,N$, i.e., $\bm{y}_{i}\approx \bm{\phi}(t_i)$.
 One can use the first order approximation recursively to compute \[
 \bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right),\,i=1,\ldots,N
-\] with, in theory, arbitrary precision, once $h$, in here called the \emph{time step}, can be made arbitrarily small.\cite{iserles_first_2008}
+\] with (theoretically) arbitrary precision \cite{iserles_first_2008}.
+This is true because $\|\bm{y}_{i+1}-\bm{\phi}(t_{i+1})\|$ is related to the size of the \textit{time step} $h$.
 This approach is the \emph{Euler's method}, and besides being the most simple way of effectively solving the \gls{IVP}, it forms the basis of most of the commonly used advanced numerical solvers for \gls{ODE}s.
 
 \subsection{Runge-Kutta Method}
@@ -108,7 +111,7 @@ More precisely, the classical Runge-Kutta (RK4) uses 4 approximations of the sol
 
 Similar to Euler's method, Runge-Kutta is also an iterative approach, which means that given $\bm{y}_i$ (an approximation of the solution at $t_i$) it will compute $\bm{y}_{i+1}$ (an approximation of the solution at $t_{i+1}=t_i + h$).
 The intuition of RK4 is to iteratively approximate $\mathcal{N}$ (the slope) for the solution \emph{within} the step (i.e, the interval $\left[ t_i,t_{i+1} \right] $) and use this information to compute $\bm{y}_{i+1}$.
-Let us denote $\bm{k}_1,\ldots,\bm{k}_4$ these intermediate approximations of $\mathcal{N}$ such that
+Let us denote $\bm{k}_1,\ldots,\bm{k}_4$ as intermediate approximations of $\mathcal{N}$ such that
 \begin{align*}
     \bm{k}_1 &= \mathcal{N}\left( t_i , \bm{y}_i \right)  \\
     \bm{k}_2 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_1 \right)  \\
