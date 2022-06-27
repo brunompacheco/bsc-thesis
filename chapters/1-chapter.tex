@@ -27,14 +27,14 @@ This makes training deep learning models in such context challenging.
 
 \textcite{Raissi2019} proposed to optimize the dynamics of the model instead of its outputs.
 This way, one can train a deep learning model to approximate the dynamics of a system, given that an accurate description of these dynamics is known (e.g., in the form of differential equations).
-Therefore, only minimal data is necessary, covering the initial and contour conditions which are usually known beforehand.
+Therefore, only minimal data is necessary, covering the initial and boundary conditions which are usually known beforehand.
 
 At the same time, \textcite{Bai2019} and \textcite{Ghaoui2019} proposed a novel approach that is to define the output of a model implicitly, in the form of a solution to an equilibrium equation.
 Given a function $f:\R^{n+m}\to\R^m$, the output $z = F(x)$ of a so-called \gls{DEQ} $N:\R^n\to \R^m$, given an input $x\in\R^n$, is defined implicitly as the solution of $z = f(x,z)$.
-A model defined this way is effectively an infinite-depth network\cite{Bai2019} with residual connections\cite{he_deep_2016}.
+A model defined this way is effectively an infinite-depth network \cite{Bai2019} with residual connections \cite{he_deep_2016}.
 As to generate the output of an equilibrium model one has to solve an equilibrium equation, these models present an iterative behavior, hence similar to commonly used differential equation solvers such as the Runge-Kutta algorithm.
 
-Even though successful applications of \gls{DEQ}s have already been published\cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, whether \gls{DEQ}s can overcome traditional models. In this context, this thesis explores a novel application: \gls{DEQ}s as \gls{ODE} solvers.
+Even though successful applications of \gls{DEQ}s have already appeared in the literature \cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, whether \gls{DEQ}s can overcome traditional models. To this end, this thesis explores a novel application: \gls{DEQ}s as \gls{ODE} solvers.
 
 % \textbf{Instruções da Coordenação do PFC:}
 
@@ -59,15 +59,16 @@ Even though successful applications of \gls{DEQ}s have already been published\ci
 
 This work aims to study, implement and validate the use of Deep Equilibrium models as effective and efficient \gls{ODE} solvers.
 An efficient model is twofold: it does not require costly (many samples or hard-to-acquire samples) data for training, and it does not require expensive hardware to generate fast results.
-At the same time, and effective model is one that can provide accurate results on a large domain, i.e., it can solve a given \gls{ODE} for a long range of its independent variable.
+At the same time, an effective model is one that can provide accurate results on a large domain, i.e., it can solve a given \gls{ODE} for a long range of its independent variable.
 
 More specifically, the work described in here aims to:
 \begin{enumerate}
     \item Implement a Deep Equilibrium model following the design proposed by \textcite{Bai2019};
+    
     \item Design and implement a \gls{PINN} training algorithm suitable for \gls{DEQ}s, building on top of the work by \textcite{Raissi2019};
     \item Evaluate the physics-informed deep equilibrium model in comparison to traditional \gls{PINN}s in the task of solving an \gls{ODE}.
 \end{enumerate}
-With these steps, it is expected that a solid conclusion is achieved on the suitability of \gls{DEQ}s, a state-of-the-art deep learning architecture, on the task of solving \gls{ODE}s.
+With these steps, it is expected that a solid conclusion will be achieved on the suitability of \gls{DEQ}s, a state-of-the-art deep learning architecture, on the task of solving \gls{ODE}s.
 
 % Having these goals in mind, a model implementation following the approach proposed by \textcite{Bai2019} is desired, with the allied training algorithm proposed by \textcite{Raissi2019} so the dynamics of the model is optimized to match the dynamics of a target system.
 
@@ -78,4 +79,4 @@ With these steps, it is expected that a solid conclusion is achieved on the suit
 
 \section*{}
 
-- Estrutura do documento
+\textcolor{red}{- Estrutura do documento}
