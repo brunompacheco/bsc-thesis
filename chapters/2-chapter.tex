@@ -33,7 +33,7 @@ A differential equation that involves only \emph{ordinary} derivatives, that is,
 in which $\bm{x}:\R\to \R^{m'} $, $\mathcal{N}':\R\times \R^{nm'}\to \R^{m'}$ is a continuous function, $\frac{d^n \bm{x}(t)}{d t^{n}}$ is the vector containing the derivatives with respect to $t$ of all $\bm{x}\left( t \right) $ components\footnotetext{I.e., the first (and only) row-vector of the Jacobian of $\bm{x}\left( t \right) $.}, and $n$ is the order of the highest derivative in the equation and is commonly referred to as the \emph{order of the differential equation}.
 
 Any function $\bm{\phi}:I\subset\R\to \R^{m'}$, $I$ an interval, is said to be a \emph{solution} of an $n$-th order \gls{ODE} if it is $n$-times differentiable on $I$ and it satisfies \[
-    \frac{d^n \bm{\phi}(t)}{d t^{n}} = \mathcal{N}\left( t, \bm{\phi}\left( t \right) , \frac{d \bm{\phi}(t)}{d t}, \ldots,\frac{d^{n-1}\bm{\phi}(t)}{d t^{n-1}} \right),\,\forall t\in I
+    \frac{d^n \bm{\phi}(t)}{d t^{n}} = \mathcal{N}'\left( t, \bm{\phi}\left( t \right) , \frac{d \bm{\phi}(t)}{d t}, \ldots,\frac{d^{n-1}\bm{\phi}(t)}{d t^{n-1}} \right),\,\forall t\in I
 .\] Note, however, that the solutions are not necessarily unique.
 As an example, given Newton's second law of motion with constant force ($F(x)=C$), then it is easy to see that any second-order polynomial of the form: \[
     \phi\left( t \right) = \frac{C}{2M}t^2 + a_1t + a_0,\, a_0,a_1\in \R
