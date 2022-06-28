@@ -1,3 +1,65 @@
 % ----------------------------------------------------------
 \chapter{Physics-Informed Learning}\label{ch:pinn}
 % ----------------------------------------------------------
+
+Solving an \gls{IVP} for \gls{ODE}s using deep learning is not as straight-forward as it may seem.
+Indeed, it falls under the function approximation paradigm, in which we want to train a parametrized model to approximate a target function (which is the solution to the \gls{IVP}).
+In this scenario, it is usual that either the target function is unknown or it is too complex to be useful, and, thus, only input-output samples are available to train the deep learning model.
+This is the case for most of the well-known successful applications of deep learning, such as those involving computer vision and the classification of images. % TODO find sources
+
+However, that is not the case here.
+When a solution for an \gls{IVP} is desired, the target function is not known, but neither are the input-output pairs.
+Actually, generating the training data is essentially solving the \gls{IVP}.
+Yet, the \emph{dynamics} of the solution is known through the \gls{ODE}.
+This chapter focuses on an approach to harvest this knowledge efficiently and use it to train a deep feedforward network that approximates the solution of an \gls{IVP}.
+More specifically, the work of textcite[REFTO Raissi, 2019] is presented in a more limited formulation, targeting \gls{ODE}s\footnotemark.
+\footnotetext{As the original work is for partial differential equations, having \gls{ODE}s as a particular case.}
+
+\section{Problem Statement}
+
+Let us first recall the \gls{IVP}.
+Given an \gls{ODE} such as the one defined in \eqref{eq:ode} and boundary conditions, we want to find a solution satisfies both.
+More precisely, given $\mathcal{N}:\R\times \R^m\to \R^{m}$ and initial conditions $t_0\in I\subset \R,\,\bm{y}_0\subset \R^{m}$, we want to find $\bm{\phi}:I\to \R^{m}$ such that
+\begin{align*}
+    \frac{d \bm{\phi}(t)}{d t} &= \mathcal{N}\left( t, \bm{\phi}(t) \right),\,t\in I \\
+    \bm{\phi}(t_0) &= \bm{y}_0
+\end{align*}
+is true.
+
+Solving this using deep learning means to train a model $\bm{f}_{\theta}:I\to \R^{m}$, parametrized by $\theta\in \Omega$, that satisfies the same conditions, i.e.,
+\begin{align}
+    \frac{d \bm{f}_\theta(t)}{d t} &= \mathcal{N}\left( t, \bm{f}_\theta(t) \right),\,t\in I \label{eq:dl-ode} \\
+    \bm{f}_\theta(t_0) &= \bm{y}_0 \label{eq:dl-ivp}
+.\end{align}
+
+The naïve approach would be to construct a set $X=\left\{ (t,\bm{y})\in I\times \R^{m}: \bm{y}=\bm{\phi}(t) \right\} $ to be used as the experience for the learning algorithm.
+Then, with a properly constructed cost function and given that the model is complex enough, the model $\bm{f}_\theta$ would approximate the target $\bm{\phi}$ and, by consequence, satisfy equations \eqref{eq:dl-ode} and \eqref{eq:dl-ivp}.
+However, note how this approach assumes that $\bm{\phi}$ is known, as it is required to construct a set $X$ with more than just $\left( t_0,\bm{y}_0 \right) $.
+Therefore, in many \gls{IVP} setups, training a deep learning model this way would either be impossible or redundant.
+
+\section{Physics Regularization}
+
+The naïve approach described above is quite inefficient in that it does not use the information provided by the known $\mathcal{N}$ function.
+This is precisely the turning point for making deep learning a viable option in solving \gls{IVP}s.
+The approach of textcite[REFTO Raissi, 2019] proposes to train the model using a regularization based on $\mathcal{N}$.
+This means to train $\bm{f}_\theta$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying equation \eqref{eq:dl-ode}.
+
+For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}}=\left\{ t\in I \right\} $. Then, we can construct \[
+    J_b\left( \theta \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|\bm{f}_\theta(t) - \bm{y}\|_2 = \|\bm{f}_\theta\left( t_0 \right) -\bm{y}_0\|_2
+,\] which looks like a usual cost function, and \[
+J_{\mathcal{N}}\left( \theta \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d \bm{f}_\theta\left( t \right) }{dt} - \mathcal{N}\left( t,\bm{f}_\theta\left( t \right)  \right)  \right\|_2
+,\] which resembles a gradient regularization as discussed in sec. \ref{sec:regularization}, the difference here is that instead of penalizing high derivatives, we want them to approach a desired value.
+Then, the cost function used to train the model is defined as \[
+J\left( \theta \right) = J_b\left( \theta \right) + \lambda J_{\mathcal{N}}\left( \theta \right) 
+,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
+Originally, textcite[REFTO Raissi, 2019] defines it as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
+\footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
+
+The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
+Unfortunately, no theoretical guarantees have been published to prove this intuition.
+Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $\bm{f}_\theta$, a small error (e.g., $\|\bm{f}_\theta\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved [REFTO Raissi, 2019].
+
+Furthermore, this approach does not require that the target function is known.
+Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$.
+Therefore, making deep learning as an efficient approach to solving \gls{IVP}s.
+
