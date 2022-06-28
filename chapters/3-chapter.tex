@@ -42,7 +42,8 @@ Note how these functions are extracting simple information from the input, yet t
 
 \section{Deep Feedforward Networks}\label{sec:neural-nets}
 
-Deep Feedforward Networks are the most essential deep learning models.
+Deep Feedforward Networks, often times also called \emph{Neural Networks}\footnotemark, are the most essential deep learning models.
+\footnotetext{Neural Networks are usually regarded as a more broad set of models, that include the deep feedforward networks. However, for the sake of simplicity, both will be treated as synonyms in this work.}
 They were inspired by the works of \textcite{rosenblatt_perceptron_1957} and refined through the many decades since, culminating in one of the most important deep learning models for practitioners and the basis of the most prominent results seen in the recent years \cite{goodfellow_deep_2016}.
 
 In this model, each component is a simple affine operator followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network with $L$ layers as a \textit{parametrized} function $f_\theta$ such that, for a given input $\bm{x}$,
