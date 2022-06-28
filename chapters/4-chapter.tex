@@ -52,8 +52,9 @@ J_{\mathcal{N}}\left( \theta \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \fra
 Then, the cost function used to train the model is defined as \[
 J\left( \theta \right) = J_b\left( \theta \right) + \lambda J_{\mathcal{N}}\left( \theta \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
-Originally, \textcite{Raissi2019} defines it as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
+Originally, \textcite{Raissi2019} defines this value as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
 \footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
+A neural network trained to learn a differential equation following a cost function as the one defined above is called a \gls{PINN}.
 
 The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
 Unfortunately, no theoretical guarantees have been published to prove this intuition.
@@ -63,4 +64,13 @@ This result has also been achieved by others in different applications, validati
 Finally, note how this approach does not require that the target function is known.
 Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$,
 therefore, making deep learning an efficient approach to solving \gls{IVP}s.
+
+\section{Application to the Van der Pol Oscillator}
+
+Given the definitions above presente, solving an gls{IVP} on the Van der Pol oscillator using a \gls{PINN} is quite straightforward.
+For simplicity, let us use the first-order formulation of the Van der Pol oscillator as defined in equation \eqref{eq:vdp}.
+Therefore, the \gls{PINN} must be a model $\bm{f}_\theta:I\subset \R\to \R^2$, proper for the interval $I$ in which the solution is desired, and that (approximately) satisfies equation \eqref{eq:vdp} and the initial condition.
+
+For example, let us define an \gls{IVP} with initial conditions $t_0=0$ and $\bm{y}_0=\left( 0,0.1 \right) $, and that we desire a solution on the interval $I=\left[ 0,1 \right] $.
+In this scenario, our training sets can be $X_b=\left\{ \left( 0,\left( 0,0.1 \right)  \right)  \right\} $ and $X_{\mathcal{N}}\subset I$
 
