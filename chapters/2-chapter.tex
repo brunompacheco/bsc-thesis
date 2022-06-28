@@ -140,8 +140,8 @@ An example can be seen in Figure \ref{fig:ode_comparison}.
 
 \section{Van der Pol Oscillator}
 
-The Van der Pol oscillator was first described in textcite[REFTO Van der Pol, 1920] on the study of oscillatory behavior in electrical circuits with triodes.
-Since then, it has been used plenty to model natural phenomena [REFTO Lucero, 2013; FitzHugh, 1961; Nagumo, 1962; Piro, 1999].
+The Van der Pol oscillator was first described in \textcite{van_der_pol_theory_1920} on the study of oscillatory behavior in electrical circuits with triodes.
+Since then, it has been used plenty to model natural phenomena \cite{lucero_modeling_2013,fitzhugh_impulses_1961,nagumo_active_1962,cartwright_dynamics_1999}.
 A common representation is as a second-order differential equation \[
     \frac{d^2 y(t)}{dt^2} = \mu\left( 1-y(t)^2 \right) \frac{d y(t)}{dt} + y(t)
 ,\] 
@@ -155,9 +155,9 @@ y_2\left( t \right) \\
 .\end{equation}
 In the example shown in Figure \ref{fig:vdp_example}, the impact of $\mu$ in the non-linearity of the solution is shown.
 
-The Van der Pol oscillator has no analytic solution [REFTO Panayotounakos, 2003], so it requires an accompanying numerical solver to be studied.
-Nevertheless, it is well known that the oscillator has a unique and stable \emph{limit cycle}\footnotemark (REFTO Grimshaw, 1990). 
-\footnotetext{Loosely defined, a limit cycle can be seen as the image of the solution when it becomes periodic. Refer to textcite[REFTO Grimshaw, 1990] for a more precise definition.}
+The Van der Pol oscillator has no analytic solution \cite{panayotounakos_lack_2003}, so it requires an accompanying numerical solver to be studied.
+Nevertheless, it is well known that the oscillator has a unique and stable \emph{limit cycle}\footnotemark \cite{grimshaw_nonlinear_1993}. 
+\footnotetext{Loosely defined, a limit cycle can be seen as the image of the solution when it becomes periodic. Refer to \textcite{grimshaw_nonlinear_1993} for a more precise definition.}
 These limit cycles can be seen in the examples shown in Figure \ref{fig:vdp_statespace}.
 
 \begin{figure}[h]
