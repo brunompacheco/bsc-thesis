@@ -65,12 +65,21 @@ Finally, note how this approach does not require that the target function is kno
 Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$,
 therefore, making deep learning an efficient approach to solving \gls{IVP}s.
 
-\section{Application to the Van der Pol Oscillator}
+\subsection*{Toy Example}
 
-Given the definitions above presente, solving an gls{IVP} on the Van der Pol oscillator using a \gls{PINN} is quite straightforward.
-For simplicity, let us use the first-order formulation of the Van der Pol oscillator as defined in equation \eqref{eq:vdp}.
-Therefore, the \gls{PINN} must be a model $\bm{f}_\theta:I\subset \R\to \R^2$, proper for the interval $I$ in which the solution is desired, and that (approximately) satisfies equation \eqref{eq:vdp} and the initial condition.
+Let us apply the approach presented above and train a \gls{PINN} to solve an \gls{IVP} for Newton's second law of motion.
+Recall that it can be modeled as a first-order \gls{ODE} of the form
+\[
+    \frac{d \bm{y}(t)}{dt} = \begin{bmatrix} \frac{d y_1(t)}{dt} \\ \frac{y_2(t)}{dt} \end{bmatrix} = \begin{bmatrix} y_2(t) \\ \frac{C}{M} \end{bmatrix} 
+,\]
+assuming that the force applied to the object is a constant $C$.
+For simplicity, let us assume that $C=M=1$
+Finally, let us define the \gls{IVP} through $t_0=0$ and $\bm{y}_0=\left( 0,0 \right) $, that is, at the initial time, the object stands still at the reference position.
+Also, the interval in which we are interested is $I=\left[ 0,1 \right] $.
 
-For example, let us define an \gls{IVP} with initial conditions $t_0=0$ and $\bm{y}_0=\left( 0,0.1 \right) $, and that we desire a solution on the interval $I=\left[ 0,1 \right] $.
-In this scenario, our training sets can be $X_b=\left\{ \left( 0,\left( 0,0.1 \right)  \right)  \right\} $ and $X_{\mathcal{N}}\subset I$
+Now, for the deep learning model, let us use a deep feedforward network with 2 hidden layers of size 5, i.e., our model is a function $\bm{f}_\theta:\R\to \R^2$ such that
+\[
+    \bm{f}_\theta(t) = \left(  \bm{f}_\theta^{[3]} \circ \bm{f}_\theta^{[2]} \circ \bm{f}_\theta^{[1]} \right) \left( t \right) 
+,\] in which $\bm{f}_\theta^{[1]}:\R\to \R^{5}$, $\bm{f}_\theta^{[2]}:\R^5\to \R^5$, $\bm{f}_\theta^{[3]}:\R^5\to \R^2$, and $\bm{f}_\theta^{[i]}\left( \bm{z} \right) =\sigma\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $ where $\sigma(\cdot)$ is the sigmoid function.
+% TODO train nnet, get results, make figs
 
