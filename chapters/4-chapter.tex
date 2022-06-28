@@ -12,7 +12,7 @@ When a solution for an \gls{IVP} is desired, the target function is not known, b
 Actually, generating the training data is essentially solving the \gls{IVP}.
 Yet, the \emph{dynamics} of the solution is known through the \gls{ODE}.
 This chapter focuses on an approach to harvest this knowledge efficiently and use it to train a deep feedforward network that approximates the solution of an \gls{IVP}.
-More specifically, the work of textcite[REFTO Raissi, 2019] is presented in a more limited formulation, targeting \gls{ODE}s\footnotemark.
+More specifically, the work of \textcite{Raissi2019} is presented in a more limited formulation, targeting \gls{ODE}s\footnotemark.
 \footnotetext{As the original work is for partial differential equations, having \gls{ODE}s as a particular case.}
 
 \section{Problem Statement}
@@ -41,7 +41,7 @@ Therefore, in many \gls{IVP} setups, training a deep learning model this way wou
 
 The naïve approach described above is quite inefficient in that it does not use the information provided by the known $\mathcal{N}$ function.
 This is precisely the turning point for making deep learning a viable option in solving \gls{IVP}s.
-The approach of textcite[REFTO Raissi, 2019] proposes to train the model using a regularization based on $\mathcal{N}$.
+The approach of \textcite{Raissi2019} proposes to train the model using a regularization based on $\mathcal{N}$.
 This means to train $\bm{f}_\theta$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying equation \eqref{eq:dl-ode}.
 
 For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}}=\left\{ t\in I \right\} $. Then, we can construct \[
@@ -52,14 +52,15 @@ J_{\mathcal{N}}\left( \theta \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \fra
 Then, the cost function used to train the model is defined as \[
 J\left( \theta \right) = J_b\left( \theta \right) + \lambda J_{\mathcal{N}}\left( \theta \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
-Originally, textcite[REFTO Raissi, 2019] defines it as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
+Originally, \textcite{Raissi2019} defines it as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
 \footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
 
 The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
 Unfortunately, no theoretical guarantees have been published to prove this intuition.
-Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $\bm{f}_\theta$, a small error (e.g., $\|\bm{f}_\theta\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved [REFTO Raissi, 2019].
+Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $\bm{f}_\theta$, a small error (e.g., $\|\bm{f}_\theta\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved \cite{Raissi2019}.
+This result has also been achieved by others in different applications, validating the claims \cite{noakoasteen_physics-informed_2020,zhang_physics-informed_2020,Arnold2021,Yucesan2022}.
 
-Furthermore, this approach does not require that the target function is known.
-Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$.
-Therefore, making deep learning as an efficient approach to solving \gls{IVP}s.
+Finally, note how this approach does not require that the target function is known.
+Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$,
+therefore, making deep learning an efficient approach to solving \gls{IVP}s.
 
