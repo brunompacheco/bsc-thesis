@@ -17,9 +17,9 @@ Furthermore, the approach to numerically solve \gls{ODE}s and the Van der Pol os
 A differential equation can be seen as a description of the relationship between unknown quantities and their rates of changes.
 Because of this broader definition and direct relationship to applications, differential equations arise naturally in many fields of applied sciences \cite{hairer_solving_1993}, as it is often the case that the rate of change of a certain quantity of interest is related to the rate of change of other quantities.
 A classical example of a differential equation is Newton's second law of motion, 
-\[
-   F\left( x\left( t \right) \right) = M \frac{d^2}{d t^2} x(t)
-,\] 
+\begin{equation}
+   F\left( x\left( t \right) \right) = M \frac{d^2}{d t^2} x(t) \label{eq:newton}
+,\end{equation}
 in which $x\left( t \right) $ is the position of an object at time $t$, $M$ is its mass, and $F(x)$ is the force under which the object is at a given position.
 This example highlights one of the great powers of the differential equations, which is to describe the dynamics of a certain phenomenon without explicitly defining it.
 
@@ -32,12 +32,16 @@ A differential equation that involves only \emph{ordinary} derivatives, that is,
 .\] 
 in which $\bm{x}:\R\to \R^{m'} $, $\mathcal{N}':\R\times \R^{nm'}\to \R^{m'}$ is a continuous function, $\frac{d^n \bm{x}(t)}{d t^{n}}$ is the vector containing the derivatives with respect to $t$ of all $\bm{x}\left( t \right) $ components\footnotetext{I.e., the first (and only) row-vector of the Jacobian of $\bm{x}\left( t \right) $.}, and $n$ is the order of the highest derivative in the equation and is commonly referred to as the \emph{order of the differential equation}.
 
-Any function $\bm{\phi}:I\subset\R\to \R^{m'}$, $I$ an interval, is said to be a \emph{solution} of an $n$-th order \gls{ODE} if it is $n$-times differentiable on $I$ and it satisfies \[
+Any function $\bm{\phi}:I\subset\R\to \R^{m'}$, $I$ an interval, is said to be a \emph{solution} of an $n$-th order \gls{ODE} if it is $n$-times differentiable on $I$ and it satisfies
+\[
     \frac{d^n \bm{\phi}(t)}{d t^{n}} = \mathcal{N}'\left( t, \bm{\phi}\left( t \right) , \frac{d \bm{\phi}(t)}{d t}, \ldots,\frac{d^{n-1}\bm{\phi}(t)}{d t^{n-1}} \right),\,\forall t\in I
-.\] Note, however, that the solutions are not necessarily unique.
-As an example, given Newton's second law of motion with constant force ($F(x)=C$), then it is easy to see that any second-order polynomial of the form: \[
+.\]
+Note, however, that the solutions are not necessarily unique.
+As an example, given Newton's second law of motion, as shown in equation \eqref{eq:newton}, with constant force ($F(x)=C$), then it is easy to see that any second-order polynomial of the form:
+\[
     \phi\left( t \right) = \frac{C}{2M}t^2 + a_1t + a_0,\, a_0,a_1\in \R
-\] is a solution.
+\]
+is a solution.
 
 Now, given an $n$-th order \gls{ODE}, let $\bm{y}_1\left( t \right) =\bm{x}\left( t \right),\,\bm{y}_2\left( t \right) = \frac{d \bm{x}\left( t \right) }{d t} ,\ldots, \bm{y}_n\left( t \right) = \frac{d^{n-1} \bm{x}\left( t \right) }{d t^{n-1}}$.
 Note that we can now write the following \emph{system} of first-order differential equations:
@@ -61,6 +65,22 @@ Then, for $m=n m'$, define $\bm{y}:\R\to \R^{m}$ such that \[
 \end{equation}
 is equivalent to the original $n$-th order \gls{ODE}, that is, given a solution for one of the equations, one can trivially derive the solution for the other.
 This allows us to focus on first-order \gls{ODE}s for the remaining of the chapter.
+
+Let us take once again Newton's second law (eq. \eqref{eq:newton}) with constant force $F(x)=C$.
+This equation in the normal form can be written
+\[
+    \frac{d^2 x\left( t \right) }{dt^2} = \frac{C}{M}
+.\] 
+Now, define $\bm{y}:\R\to \R^2$, $\bm{y}(t) = \left( y_1\left( t \right) ,y_2\left( t \right)  \right) $ such that $y_1(t) = x(t)$ and $y_2(t)=\frac{d x(t)}{dt}$. 
+Thus, we can write the first order \gls{ODE}
+\[
+    \frac{d \bm{y}\left( t \right) }{dt} = \begin{bmatrix} \frac{d y_1\left( t \right) }{dt} \\ \frac{d y_2\left( t \right) }{dt} \end{bmatrix} = \begin{bmatrix} y_2(t) \\ \frac{C}{M} \end{bmatrix} 
+.\]
+The solution to this equation is of the form
+\[
+    \begin{bmatrix} \frac{C}{2M}t^2 +a_1t + a_0 \\ \frac{C}{M}t + a_1 \end{bmatrix},\, a_1,a_0 \in \R
+,\]
+which, from the definition of $\bm{y}(t)$, is in accord to the solution for the original ODE.
 
 \section{Initial Value Problems}
 
