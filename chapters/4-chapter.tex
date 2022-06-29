@@ -65,7 +65,7 @@ Finally, note how this approach does not require that the target function is kno
 Actually, $X_{\mathcal{N}}$ can be constructed randomly by extracting samples of $I$,
 therefore, making deep learning an efficient approach to solving \gls{IVP}s.
 
-\subsection*{Toy Example}
+\subsection*{Example}
 
 Let us apply the approach presented above and train a \gls{PINN} to solve an \gls{IVP} for Newton's second law of motion.
 Recall that it can be modeled as a first-order \gls{ODE} of the form
@@ -77,9 +77,18 @@ For simplicity, let us assume that $C=M=1$
 Finally, let us define the \gls{IVP} through $t_0=0$ and $\bm{y}_0=\left( 0,0 \right) $, that is, at the initial time, the object stands still at the reference position.
 Also, the interval in which we are interested is $I=\left[ 0,1 \right] $.
 
-Now, for the deep learning model, let us use a deep feedforward network with 2 hidden layers of size 5, i.e., our model is a function $\bm{f}_\theta:\R\to \R^2$ such that
+Now, for the deep learning model, let us use a deep feedforward network with 2 hidden layers of size 10, i.e., our model is a function $\bm{f}_\theta:\R\to \R^2$ such that
 \[
-    \bm{f}_\theta(t) = \left(  \bm{f}_\theta^{[3]} \circ \bm{f}_\theta^{[2]} \circ \bm{f}_\theta^{[1]} \right) \left( t \right) 
-,\] in which $\bm{f}_\theta^{[1]}:\R\to \R^{5}$, $\bm{f}_\theta^{[2]}:\R^5\to \R^5$, $\bm{f}_\theta^{[3]}:\R^5\to \R^2$, and $\bm{f}_\theta^{[i]}\left( \bm{z} \right) =\sigma\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $ where $\sigma(\cdot)$ is the sigmoid function.
-% TODO train nnet, get results, make figs
+    \bm{f}_\theta(t) = \bm{f}_\theta^{[3]} \circ \bm{f}_\theta^{[2]} \circ \bm{f}_\theta^{[1]} \left( t \right) 
+,\] in which $\bm{f}_\theta^{[1]}:\R\to \R^{10}$, $\bm{f}_\theta^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_\theta^{[3]}:\R^{10}\to \R^2$, and $\bm{f}_\theta^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $.
+In the results shown in figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch[REFTO Paszke, 2019] and trained using Adam with $\gamma = 0.1$ and $\lambda=0.1$.
+Running the algorithm for 1000 epochs took less than 2 seconds on a high-end, 16-core processor (no GPU was used).
+Notice how the \gls{PINN} evolves over the epochs, achieving the same results of the numerical solver even though only the dynamics and the initial condition were experienced during training.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/pinn_newton.pdf}
+    \caption{Performance of a PINN in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the PINN trained after different number of epochs.}
+    \label{fig:images-pinn_newton-pdf}
+\end{figure}
 
