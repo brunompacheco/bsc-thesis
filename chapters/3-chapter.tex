@@ -134,6 +134,7 @@ then, for a sufficiently small $\gamma$, we know that \[
 J\left( \theta_{k+1} \right) < J\left( \theta_k \right) 
 ,\] i.e., the cost will decrease.
 Notice how intuitively it seems that if one takes enough steps like \eqref{eq:gradient-descent-step} with small enough $\gamma$, the parameters will converge to a point that is a local minimum of the cost function.
+In the context of the learning algorithm, every iteration in which the cost is computed on the whole training data and the parameters are updated following equation \eqref{eq:gradient-descent-step} (or similar) is called an \emph{epoch}.
 
 % Maybe introduce the gradient step with regards to the cost function = sum of per-sample loss function?
 
