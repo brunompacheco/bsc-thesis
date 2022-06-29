@@ -26,14 +26,14 @@ More precisely, given $\mathcal{N}:\R\times \R^m\to \R^{m}$ and initial conditio
 \end{align*}
 is true.
 
-Solving this using deep learning means to train a model $\bm{f}_{\theta}:I\to \R^{m}$, parametrized by $\theta\in \Omega$, that satisfies the same conditions, i.e.,
+Solving this using deep learning means to train a model $\bm{f}_{\gls{param}}:I\to \R^{m}$, parametrized by $\gls{param}\in \Omega$, that satisfies the same conditions, i.e.,
 \begin{align}
-    \frac{d \bm{f}_\theta(t)}{d t} &= \mathcal{N}\left( t, \bm{f}_\theta(t) \right),\,t\in I \label{eq:dl-ode} \\
-    \bm{f}_\theta(t_0) &= \bm{y}_0 \label{eq:dl-ivp}
+    \frac{d \bm{f}_{\gls{param}}(t)}{d t} &= \mathcal{N}\left( t, \bm{f}_{\gls{param}}(t) \right),\,t\in I \label{eq:dl-ode} \\
+    \bm{f}_{\gls{param}}(t_0) &= \bm{y}_0 \label{eq:dl-ivp}
 .\end{align}
 
 The naïve approach would be to construct a set $X=\left\{ (t,\bm{y})\in I\times \R^{m}: \bm{y}=\bm{\phi}(t) \right\} $ to be used as the experience for the learning algorithm.
-Then, with a properly constructed cost function and given that the model is complex enough, the model $\bm{f}_\theta$ would approximate the target $\bm{\phi}$ and, by consequence, satisfy equations \eqref{eq:dl-ode} and \eqref{eq:dl-ivp}.
+Then, with a properly constructed cost function and given that the model is complex enough, the model $\bm{f}_{\gls{param}}$ would approximate the target $\bm{\phi}$ and, by consequence, satisfy equations \eqref{eq:dl-ode} and \eqref{eq:dl-ivp}.
 However, note how this approach assumes that $\bm{\phi}$ is known, as it is required to construct a set $X$ with more than just $\left( t_0,\bm{y}_0 \right) $.
 Therefore, in many \gls{IVP} setups, training a deep learning model this way would either be impossible or redundant.
 
@@ -42,15 +42,15 @@ Therefore, in many \gls{IVP} setups, training a deep learning model this way wou
 The naïve approach described above is quite inefficient in that it does not use the information provided by the known $\mathcal{N}$ function.
 This is precisely the turning point for making deep learning a viable option in solving \gls{IVP}s.
 The approach of \textcite{Raissi2019} proposes to train the model using a regularization based on $\mathcal{N}$.
-This means to train $\bm{f}_\theta$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying equation \eqref{eq:dl-ode}.
+This means to train $\bm{f}_{\gls{param}}$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying equation \eqref{eq:dl-ode}.
 
 For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}}=\left\{ t\in I \right\} $. Then, we can construct \[
-    J_b\left( \theta \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|\bm{f}_\theta(t) - \bm{y}\|_2 = \|\bm{f}_\theta\left( t_0 \right) -\bm{y}_0\|_2
+    J_b\left( \gls{param} \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|\bm{f}_{\gls{param}}(t) - \bm{y}\|_2 = \|\bm{f}_{\gls{param}}\left( t_0 \right) -\bm{y}_0\|_2
 ,\] which looks like a usual cost function, and \[
-J_{\mathcal{N}}\left( \theta \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d \bm{f}_\theta\left( t \right) }{dt} - \mathcal{N}\left( t,\bm{f}_\theta\left( t \right)  \right)  \right\|_2
+J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d \bm{f}_{\gls{param}}\left( t \right) }{dt} - \mathcal{N}\left( t,\bm{f}_{\gls{param}}\left( t \right)  \right)  \right\|_2
 ,\] which resembles a gradient regularization as discussed in sec. \ref{sec:regularization}, the difference here is that instead of penalizing high derivatives, we want them to approach a desired value.
 Then, the cost function used to train the model is defined as \[
-J\left( \theta \right) = J_b\left( \theta \right) + \lambda J_{\mathcal{N}}\left( \theta \right) 
+J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
 Originally, \textcite{Raissi2019} defines this value as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
 \footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
@@ -58,7 +58,7 @@ A neural network trained to learn a differential equation following a cost funct
 
 The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
 Unfortunately, no theoretical guarantees have been published to prove this intuition.
-Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $\bm{f}_\theta$, a small error (e.g., $\|\bm{f}_\theta\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved \cite{Raissi2019}.
+Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $\bm{f}_{\gls{param}}$, a small error (e.g., $\|\bm{f}_{\gls{param}}\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved \cite{Raissi2019}.
 This result has also been achieved by others in different applications, validating the claims \cite{noakoasteen_physics-informed_2020,zhang_physics-informed_2020,Arnold2021,Yucesan2022}.
 
 Finally, note how this approach does not require that the target function is known.
@@ -77,18 +77,18 @@ For simplicity, let us assume that $C=M=1$
 Finally, let us define the \gls{IVP} through $t_0=0$ and $\bm{y}_0=\left( 0,0 \right) $, that is, at the initial time, the object stands still at the reference position.
 Also, the interval in which we are interested is $I=\left[ 0,1 \right] $.
 
-Now, for the deep learning model, let us use a deep feedforward network with 2 hidden layers of size 10, i.e., our model is a function $\bm{f}_\theta:\R\to \R^2$ such that
+Now, for the deep learning model, let us use a deep feedforward network with 2 hidden layers of size 10, i.e., our model is a function $\bm{f}_{\gls{param}}:\R\to \R^2$ such that
 \[
-    \bm{f}_\theta(t) = \bm{f}_\theta^{[3]} \circ \bm{f}_\theta^{[2]} \circ \bm{f}_\theta^{[1]} \left( t \right) 
-,\] in which $\bm{f}_\theta^{[1]}:\R\to \R^{10}$, $\bm{f}_\theta^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_\theta^{[3]}:\R^{10}\to \R^2$, and $\bm{f}_\theta^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $.
-In the results shown in figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch[REFTO Paszke, 2019] and trained using Adam with $\gamma = 0.1$ and $\lambda=0.1$.
+    \bm{f}_{\gls{param}}(t) = \bm{f}_{\gls{param}}^{[3]} \circ \bm{f}_{\gls{param}}^{[2]} \circ \bm{f}_{\gls{param}}^{[1]} \left( t \right) 
+,\] in which $\bm{f}_{\gls{param}}^{[1]}:\R\to \R^{10}$, $\bm{f}_{\gls{param}}^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_{\gls{param}}^{[3]}:\R^{10}\to \R^2$, and $\bm{f}_{\gls{param}}^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $.
+In the results shown in figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch\cite{paszke_pytorch_2019} and trained using Adam with $\gls{lr} = 0.1$ and $\lambda=0.1$.
 Running the algorithm for 1000 epochs took less than 2 seconds on a high-end, 16-core processor (no GPU was used).
 Notice how the \gls{PINN} evolves over the epochs, achieving the same results of the numerical solver even though only the dynamics and the initial condition were experienced during training.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/pinn_newton.pdf}
-    \caption{Performance of a PINN in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the PINN trained after different number of epochs.}
+    \caption{Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the \gls{PINN} trained after different number of epochs. \gls{PINN} results for 1000 epochs overlap \gls{RK4} results.}
     \label{fig:images-pinn_newton-pdf}
 \end{figure}
 
