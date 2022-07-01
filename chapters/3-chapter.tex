@@ -167,7 +167,7 @@ After showing excellent empirical results over many application areas, Adam beca
 
 \section{Regularization}\label{sec:regularization}
 
-One of the biggest challenges in deep learning is to get models that perform well also on samples that are no in the data provided during training, i.e., models that \emph{generalize} well.
+One of the biggest challenges in deep learning is to get models that perform well also on samples that are not in the data provided during training, i.e., models that \emph{generalize} well.
 The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 
 One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(\bm{f}_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
