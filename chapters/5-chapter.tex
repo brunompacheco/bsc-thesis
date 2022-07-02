@@ -57,13 +57,13 @@ This limitation can be easily visualized by trying to use the simple iteration m
 The function clearly has an equilibrium at $z=1$.
 Yet, at any starting point \emph{except} the equilibrium, the simple iteration method will diverge.
 
-Luckily, we know from equation \eqref{eq:z-star} that the equilibrium point, for a given input, is also the root of a function $\bm{g}(\bm{z}) = \bm{f}_{\gls{param}}(\bm{x},\bm{z}) - \bm{z}$.
-This means that using any root-finding algorithm on $\bm{g}$ yields $\bm{z}^{\star}$, the desired output.
+Luckily, we know from equation \eqref{eq:z-star} that the equilibrium point, for a given input, is also the root of a function $\bm{g}_{\bm{x}}(\bm{z}) = \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}) - \bm{z}$.
+This means that using any root-finding algorithm on $\bm{g}_{\bm{x}}$ yields $\bm{z}^{\star}$, the desired output.
 Perhaps the most classical root-finding algorithm is \emph{Newton's method}, which proposes to iterate over the solution space given \[
-    \bm{z}^{[i+1]} = \bm{z}^{[i]} - \left( \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \right)^{-1} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})
+    \bm{z}^{[i+1]} = \bm{z}^{[i]} - \left( \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \right)^{-1} \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}^{[i]})
 ,\] 
-in which $\frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}$ represents the Jacobian of  $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$\footnotemark.
-\footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses instead in solving $ \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ instead.}
+in which $\frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}$ represents the Jacobian of  $\bm{f}_{\gls{param}}^{[EQ]}$ with respect to $\bm{z}$\footnotemark.
+\footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses instead in solving $ \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}^{[i]})$ instead.}
 Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster\cite{suli_introduction_2003}.
 
 \subsection{Practical Considerations}
@@ -87,5 +87,33 @@ More specifically, they propose to compute the Frobenius norm\footnotemark of th
 
 \section{Backward}
 
-\section{Implementation}
+It was shown in sec. \ref{sec:backprop} that, in order to use a gradient descent algorithm to train a deep learning model, one must compute the derivatives of the cost function with respect to the model's parameters.
+In the case of \gls{DEQ}s, this computation is not straight-forward.
+Given $\bm{f}_{\gls{param}}:\R^{n}\to \R^{m}$ a \gls{DEQ} as defined above, computing the derivative of a cost function $J:\Omega\to \R$ with respect to the parameters can be seen as \[
+    \nabla_{\gls{param}} J\left( \gls{param} \right) = \nabla_{\bm{f}_{\gls{param}}} J \frac{d \bm{f}_{\gls{param}}(\bm{x})}{d\gls{param}}
+.\] 
+At the same time, we know that the output of a model is given by an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$, which is computed using a root finding method, i.e., \[
+    \bm{f}_{\gls{param}}(\bm{x}) = RootFind(\bm{g}_{\bm{x}}, \bm{z}^{[0]})
+,\] where $\bm{g}_{\bm{x}}$ is a function so that $\bm{g}_{\bm{x}}(\bm{z}) = \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}) - \bm{z}$.
+Therefore, computing the derivatives of $\bm{f}_{\gls{param}}$ directly, requires the computation of the derivatives of the root-finding algorithm.
+Yet, not only root-finding algorithms need not be differentiable, but even those that are may impose an enormous computational burden to compute the actual derivatives.
+To illustrate the point, if we restrain ourselves to using the simple iteration method as the root-finding algorithm, we can apply the chain rule and decompose the derivative in computing the derivative of $\bm{f}_{\gls{param}}^{[EQ]}$ for as many times as there were iterations until convergence, which can make practical applications impossible.
+
+Luckily, we can exploit the fact that the output of the model ($\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$.
+This implies that, in a neighborhood of the input vector $\bm{x}$, $\bm{f}_{\gls{param}}$ is a \emph{parametrization} of \bm{z} with respect to $\bm{x}$, i.e., \[
+    \bm{f}_{\gls{param}}^{[EQ]}\left( \bm{x},\bm{f}_{\gls{param}}(\bm{x}) \right) -\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{0}
+\] is true.
+
+
+- recall backprop
+- show how it plays out for DEQs
+- root-finding need not be differentiable
+- model is a parametrization of fEQ
+- implicit function theorem
+
+\subsection{Implementation}
+
+- in practice, computing the inverse is expensive
+- luckily, we just need the vjp
+- turns vjp can be found through root finding!
 
