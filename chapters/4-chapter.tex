@@ -18,7 +18,7 @@ More specifically, the work of \textcite{Raissi2019} is presented in a more limi
 \section{Problem Statement}
 
 Let us first recall the \gls{IVP}.
-Given an \gls{ODE} such as the one defined in \eqref{eq:ode} and boundary conditions, we want to find a solution satisfies both.
+Given an \gls{ODE} such as the one defined in \eqref{eq:ode} and boundary conditions, we want to find a solution that satisfies both.
 More precisely, given $\mathcal{N}:\R\times \R^m\to \R^{m}$ and initial conditions $t_0\in I\subset \R,\,\bm{y}_0\subset \R^{m}$, we want to find $\bm{\phi}:I\to \R^{m}$ such that
 \begin{align*}
     \frac{d \bm{\phi}(t)}{d t} &= \mathcal{N}\left( t, \bm{\phi}(t) \right),\,t\in I \\
@@ -52,7 +52,7 @@ J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\|
 Then, the cost function used to train the model is defined as \[
 J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
-Originally, \textcite{Raissi2019} defines this value as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
+Originally, \textcite{Raissi2019} define this value as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
 \footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
 A neural network trained to learn a differential equation following a cost function as the one defined above is called a \gls{PINN}.
 
@@ -70,10 +70,10 @@ therefore, making deep learning an efficient approach to solving \gls{IVP}s.
 Let us apply the approach presented above and train a \gls{PINN} to solve an \gls{IVP} for Newton's second law of motion.
 Recall that it can be modeled as a first-order \gls{ODE} of the form
 \[
-    \frac{d \bm{y}(t)}{dt} = \begin{bmatrix} \frac{d y_1(t)}{dt} \\ \frac{y_2(t)}{dt} \end{bmatrix} = \begin{bmatrix} y_2(t) \\ \frac{C}{M} \end{bmatrix} 
+    \frac{d \bm{y}(t)}{dt} = \begin{bmatrix} \frac{d y_1(t)}{dt} \\ \frac{d y_2(t)}{dt} \end{bmatrix} = \begin{bmatrix} y_2(t) \\ \frac{C}{M} \end{bmatrix} 
 ,\]
 assuming that the force applied to the object is a constant $C$.
-For simplicity, let us assume that $C=M=1$
+For simplicity, let us assume that $C=M=1$.
 Finally, let us define the \gls{IVP} through $t_0=0$ and $\bm{y}_0=\left( 0,0 \right) $, that is, at the initial time, the object stands still at the reference position.
 Also, the interval in which we are interested is $I=\left[ 0,1 \right] $.
 
@@ -81,14 +81,14 @@ Now, for the deep learning model, let us use a deep feedforward network with 2 h
 \[
     \bm{f}_{\gls{param}}(t) = \bm{f}_{\gls{param}}^{[3]} \circ \bm{f}_{\gls{param}}^{[2]} \circ \bm{f}_{\gls{param}}^{[1]} \left( t \right) 
 ,\] in which $\bm{f}_{\gls{param}}^{[1]}:\R\to \R^{10}$, $\bm{f}_{\gls{param}}^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_{\gls{param}}^{[3]}:\R^{10}\to \R^2$, and $\bm{f}_{\gls{param}}^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $.
-In the results shown in figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch\cite{paszke_pytorch_2019} and trained using Adam with $\gls{lr} = 0.1$ and $\lambda=0.1$.
+In the results shown in Figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch \cite{paszke_pytorch_2019} and trained using Adam with $\gls{lr} = 0.1$ and $\lambda=0.1$.
 Running the algorithm for 1000 epochs took less than 2 seconds on a high-end, 16-core processor (no GPU was used).
 Notice how the \gls{PINN} evolves over the epochs, achieving the same results of the numerical solver even though only the dynamics and the initial condition were experienced during training.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/pinn_newton.pdf}
-    \caption{Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the \gls{PINN} trained after different number of epochs. \gls{PINN} results for 1000 epochs overlap \gls{RK4} results.}
+    \caption{Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the \gls{PINN} trained after a different number of epochs. \gls{PINN} results for 1000 epochs overlap \gls{RK4} results.}
     \label{fig:images-pinn_newton-pdf}
 \end{figure}
 
