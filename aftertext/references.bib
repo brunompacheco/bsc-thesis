@@ -1,4 +1,82 @@
 
+@inproceedings{winston_monotone_2020,
+	title = {Monotone operator equilibrium networks},
+	volume = {33},
+	url = {https://proceedings.neurips.cc/paper/2020/hash/798d1c2813cbdf8bcdb388db0e32d496-Abstract.html},
+	abstract = {Implicit-depth models such as Deep Equilibrium Networks have recently been shown to match or exceed the performance of traditional deep networks while being much more memory efficient. However, these models suffer from unstable convergence to a solution and lack guarantees that a solution exists. On the other hand, Neural ODEs, another class of implicit-depth models, do guarantee existence of a unique solution but perform poorly compared with traditional networks. In this paper, we develop a new class of implicit-depth model based on the theory of monotone operators, the Monotone Operator Equilibrium Network (monDEQ). We show the close connection between finding the equilibrium point of an implicit network and solving a form of monotone operator splitting problem, which admits efficient solvers with guaranteed, stable convergence. We then develop a parameterization of the network which ensures that all operators remain monotone, which guarantees the existence of a unique equilibrium point. Finally, we show how to instantiate several versions of these models, and implement the resulting iterative solvers, for structured linear operators such as multi-scale convolutions. The resulting models vastly outperform the Neural ODE-based models while also being more computationally efficient. Code is available at http://github.com/locuslab/monotoneopnet.},
+	urldate = {2022-07-02},
+	booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
+	publisher = {Curran Associates, Inc.},
+	author = {Winston, Ezra and Kolter, J. Zico},
+	year = {2020},
+	pages = {10718--10728},
+}
+
+@article{walker_anderson_2011,
+	title = {Anderson {Acceleration} for {Fixed}-{Point} {Iterations}},
+	volume = {49},
+	issn = {0036-1429, 1095-7170},
+	url = {http://epubs.siam.org/doi/10.1137/10078356X},
+	doi = {10.1137/10078356X},
+	language = {en},
+	number = {4},
+	urldate = {2022-07-02},
+	journal = {SIAM Journal on Numerical Analysis},
+	author = {Walker, Homer F. and Ni, Peng},
+	month = jan,
+	year = {2011},
+	pages = {1715--1735},
+}
+
+@article{anderson_iterative_1965,
+	title = {Iterative {Procedures} for {Nonlinear} {Integral} {Equations}},
+	volume = {12},
+	issn = {0004-5411, 1557-735X},
+	url = {https://dl.acm.org/doi/10.1145/321296.321305},
+	doi = {10.1145/321296.321305},
+	language = {en},
+	number = {4},
+	urldate = {2022-07-02},
+	journal = {Journal of the ACM},
+	author = {Anderson, Donald G.},
+	month = oct,
+	year = {1965},
+	pages = {547--560},
+}
+
+@article{broyden_class_1965,
+	title = {A {Class} of {Methods} for {Solving} {Nonlinear} {Simultaneous} {Equations}},
+	volume = {19},
+	journal = {Mathematics of Computation},
+	author = {Broyden, C. G.},
+	year = {1965},
+	pages = {577--593},
+}
+
+@book{suli_introduction_2003,
+	address = {Cambridge ; New York},
+	title = {An introduction to numerical analysis},
+	isbn = {978-0-521-81026-5 978-0-521-00794-8},
+	publisher = {Cambridge University Press},
+	author = {Süli, Endre and Mayers, D. F.},
+	year = {2003},
+	note = {OCLC: ocm50525488},
+	keywords = {Numerical analysis},
+}
+
+@book{gil_numerical_2007,
+	title = {Numerical {Methods} for {Special} {Functions}},
+	isbn = {978-0-89871-634-4 978-0-89871-782-2},
+	url = {http://epubs.siam.org/doi/book/10.1137/1.9780898717822},
+	language = {en},
+	urldate = {2022-07-02},
+	publisher = {Society for Industrial and Applied Mathematics},
+	author = {Gil, Amparo and Segura, Javier and Temme, Nico M.},
+	month = jan,
+	year = {2007},
+	doi = {10.1137/1.9780898717822},
+}
+
 @article{panayotounakos_lack_2003,
 	title = {On the lack of analytic solutions of the {Van} der {Pol} oscillator},
 	volume = {83},
@@ -552,6 +630,83 @@ construction in MSL.},
 	pages = {770--778},
 }
 
+@article{bai_stabilizing_2021,
+	title = {Stabilizing {Equilibrium} {Models} by {Jacobian} {Regularization}},
+	url = {https://arxiv.org/abs/2106.14342v1},
+	doi = {10.48550/arxiv.2106.14342},
+	abstract = {Deep equilibrium networks (DEQs) are a new class of models that eschews
+traditional depth in favor of finding the fixed point of a single nonlinear
+layer. These models have been shown to achieve performance competitive with the
+state-of-the-art deep networks while using significantly less memory. Yet they
+are also slower, brittle to architectural choices, and introduce potential
+instability to the model. In this paper, we propose a regularization scheme for
+DEQ models that explicitly regularizes the Jacobian of the fixed-point update
+equations to stabilize the learning of equilibrium models. We show that this
+regularization adds only minimal computational cost, significantly stabilizes
+the fixed-point convergence in both forward and backward passes, and scales
+well to high-dimensional, realistic domains (e.g., WikiText-103 language
+modeling and ImageNet classification). Using this method, we demonstrate, for
+the first time, an implicit-depth model that runs with approximately the same
+speed and level of performance as popular conventional deep networks such as
+ResNet-101, while still maintaining the constant memory footprint and
+architectural simplicity of DEQs. Code is available at
+https://github.com/locuslab/deq .},
+	urldate = {2022-05-16},
+	author = {Bai, Shaojie and Koltun, Vladlen and Kolter, J. Zico},
+	month = jun,
+	year = {2021},
+	note = {arXiv: 2106.14342},
+}
+
+@article{zhang_physics-informed_2020,
+	title = {Physics-informed multi-{LSTM} networks for metamodeling of nonlinear structures},
+	volume = {369},
+	issn = {0045-7825},
+	doi = {10.1016/J.CMA.2020.113226},
+	abstract = {This paper introduces an innovative physics-informed deep learning framework for metamodeling of nonlinear structural systems with scarce data. The basic concept is to incorporate available, yet incomplete, physics knowledge (e.g., laws of physics, scientific principles) into deep long short-term memory (LSTM) networks, which constrains and boosts the learning within a feasible solution space. The physics constraints are embedded in the loss function to enforce the model training which can accurately capture latent system nonlinearity even with very limited available training datasets. Specifically for dynamic structures, physical laws of equation of motion, state dependency and hysteretic constitutive relationship are considered to construct the physics loss. In particular, two physics-informed multi-LSTM network architectures are proposed for structural metamodeling. The satisfactory performance of the proposed framework is successfully demonstrated through two illustrative examples (e.g., nonlinear structures subjected to ground motion excitation). It turns out that the embedded physics can alleviate overfitting issues, reduce the need of big training datasets, and improve the robustness of the trained model for more reliable prediction with extrapolation ability. As a result, the physics-informed deep learning paradigm outperforms classical non-physics-guided data-driven neural networks.},
+	urldate = {2022-04-06},
+	journal = {Computer Methods in Applied Mechanics and Engineering},
+	author = {Zhang, Ruiyang and Liu, Yang and Sun, Hao},
+	month = sep,
+	year = {2020},
+	note = {arXiv: 2002.10253
+Publisher: North-Holland},
+	keywords = {Long short-term memory (LSTM), Metamodeling, Nonlinear structures, PhyLSTM2, PhyLSTM3, Physics-informed deep learning},
+	pages = {113226},
+}
+
+@article{noakoasteen_physics-informed_2020,
+	title = {Physics-{Informed} {Deep} {Neural} {Networks} for {Transient} {Electromagnetic} {Analysis}},
+	volume = {1},
+	issn = {26376431},
+	doi = {10.1109/OJAP.2020.3013830},
+	abstract = {In this paper, we propose a deep neural network based model to predict the time evolution of field values in transient electrodynamics. The key component of our model is a recurrent neural network, which learns representations of long-term spatial-temporal dependencies in the sequence of its input data. We develop an encoder-recurrent-decoder architecture, which is trained with finite difference time domain simulations of plane wave scattering from distributed, perfect electric conducting objects. We demonstrate that, the trained network can emulate a transient electrodynamics problem with more than 17 times speed-up in simulation time compared to traditional finite difference time domain solvers.},
+	number = {1},
+	urldate = {2022-04-06},
+	journal = {IEEE Open Journal of Antennas and Propagation},
+	author = {Noakoasteen, Oameed and Wang, Shu and Peng, Zhen and Christodoulou, Christos},
+	year = {2020},
+	note = {Publisher: Institute of Electrical and Electronics Engineers Inc.},
+	keywords = {Computer vision, Electromagnetics, Finite difference methods, Machine learning, Recurrent neural networks, Unsupervised learning},
+	pages = {404--412},
+}
+
+@article{Yucesan2022,
+	title = {A hybrid physics-informed neural network for main bearing fatigue prognosis under grease quality variation},
+	volume = {171},
+	issn = {0888-3270},
+	doi = {10.1016/J.YMSSP.2022.108875},
+	abstract = {Fatigue life of a wind turbine main bearing is drastically affected by the state of the grease used as lubricant. Unfortunately monitoring the grease condition through predictive models can be a daunting task due to uncertainties associated with degradation mechanism and variations in grease batch quality. Eventually, discrepancies in the grease life predictions caused by variable grease quality may lead up to inaccurate bearing fatigue life predictions. The convoluted nature of the problem requires a novel solution approach; and in this contribution, we propose a new hybrid physics-informed neural network model. We construct a hybrid model for bearing fatigue damage accumulation embedded as a recurrent neural network cell, where reduced-order physics models used for bearing fatigue damage accumulation, and neural networks represent grease degradation mechanism that quantifies grease damage that ultimately accelerates bearing fatigue. We outline a two-step probabilistic approach to quantify the grease quality variation. In the first step, we make use of the hybrid model to learn the grease degradation when the quality is the median of the distribution. In the second step, we take the median predictor from the first step and track the quantiles of the quality distribution by examining grease samples of each wind turbine. We finally showcase our approach with a numerical experiment, where we test the effect of the random realizations of quality variation and the number of sampled turbines on the performance of the model. Results of the numerical experiment indicate that given enough samples from different wind turbines, our method can successfully learn the median grease degradation and uncertainty about it. With this predictive model, we are able to optimize the regreasing intervals on a turbine-by-turbine basis. The source codes and links to the data can be found in the following GitHub repository https://github.com/PML-UCF/pinn\_wind\_bearing.},
+	urldate = {2022-03-20},
+	journal = {Mechanical Systems and Signal Processing},
+	author = {Yucesan, Yigit A. and Viana, Felipe A.C.},
+	month = may,
+	year = {2022},
+	note = {Publisher: Academic Press},
+	keywords = {Applied machine learning, Uncertainty quantification, Wind turbine bearing fatigue, hybrid physics-informed neural network},
+	pages = {108875},
+}
+
 @article{Arnold2021,
 	title = {State–space modeling for control based on physics-informed neural networks},
 	volume = {101},
@@ -793,55 +948,6 @@ generalization error and reduce the prediction uncertainty.},
 	note = {Publisher: Global Science Press},
 	keywords = {Domain decomposition, Irregular domains, Machine learning, PINN, Physics-informed learning, XPINN},
 	pages = {2002--2041},
-}
-
-@article{Yucesan2022,
-	title = {A hybrid physics-informed neural network for main bearing fatigue prognosis under grease quality variation},
-	volume = {171},
-	issn = {0888-3270},
-	doi = {10.1016/J.YMSSP.2022.108875},
-	abstract = {Fatigue life of a wind turbine main bearing is drastically affected by the state of the grease used as lubricant. Unfortunately monitoring the grease condition through predictive models can be a daunting task due to uncertainties associated with degradation mechanism and variations in grease batch quality. Eventually, discrepancies in the grease life predictions caused by variable grease quality may lead up to inaccurate bearing fatigue life predictions. The convoluted nature of the problem requires a novel solution approach; and in this contribution, we propose a new hybrid physics-informed neural network model. We construct a hybrid model for bearing fatigue damage accumulation embedded as a recurrent neural network cell, where reduced-order physics models used for bearing fatigue damage accumulation, and neural networks represent grease degradation mechanism that quantifies grease damage that ultimately accelerates bearing fatigue. We outline a two-step probabilistic approach to quantify the grease quality variation. In the first step, we make use of the hybrid model to learn the grease degradation when the quality is the median of the distribution. In the second step, we take the median predictor from the first step and track the quantiles of the quality distribution by examining grease samples of each wind turbine. We finally showcase our approach with a numerical experiment, where we test the effect of the random realizations of quality variation and the number of sampled turbines on the performance of the model. Results of the numerical experiment indicate that given enough samples from different wind turbines, our method can successfully learn the median grease degradation and uncertainty about it. With this predictive model, we are able to optimize the regreasing intervals on a turbine-by-turbine basis. The source codes and links to the data can be found in the following GitHub repository https://github.com/PML-UCF/pinn\_wind\_bearing.},
-	urldate = {2022-03-20},
-	journal = {Mechanical Systems and Signal Processing},
-	author = {Yucesan, Yigit A. and Viana, Felipe A.C.},
-	month = may,
-	year = {2022},
-	note = {Publisher: Academic Press},
-	keywords = {Applied machine learning, Uncertainty quantification, Wind turbine bearing fatigue, hybrid physics-informed neural network},
-	pages = {108875},
-}
-
-@article{zhang_physics-informed_2020,
-	title = {Physics-informed multi-{LSTM} networks for metamodeling of nonlinear structures},
-	volume = {369},
-	issn = {0045-7825},
-	doi = {10.1016/J.CMA.2020.113226},
-	abstract = {This paper introduces an innovative physics-informed deep learning framework for metamodeling of nonlinear structural systems with scarce data. The basic concept is to incorporate available, yet incomplete, physics knowledge (e.g., laws of physics, scientific principles) into deep long short-term memory (LSTM) networks, which constrains and boosts the learning within a feasible solution space. The physics constraints are embedded in the loss function to enforce the model training which can accurately capture latent system nonlinearity even with very limited available training datasets. Specifically for dynamic structures, physical laws of equation of motion, state dependency and hysteretic constitutive relationship are considered to construct the physics loss. In particular, two physics-informed multi-LSTM network architectures are proposed for structural metamodeling. The satisfactory performance of the proposed framework is successfully demonstrated through two illustrative examples (e.g., nonlinear structures subjected to ground motion excitation). It turns out that the embedded physics can alleviate overfitting issues, reduce the need of big training datasets, and improve the robustness of the trained model for more reliable prediction with extrapolation ability. As a result, the physics-informed deep learning paradigm outperforms classical non-physics-guided data-driven neural networks.},
-	urldate = {2022-04-06},
-	journal = {Computer Methods in Applied Mechanics and Engineering},
-	author = {Zhang, Ruiyang and Liu, Yang and Sun, Hao},
-	month = sep,
-	year = {2020},
-	note = {arXiv: 2002.10253
-Publisher: North-Holland},
-	keywords = {Long short-term memory (LSTM), Metamodeling, Nonlinear structures, PhyLSTM2, PhyLSTM3, Physics-informed deep learning},
-	pages = {113226},
-}
-
-@article{noakoasteen_physics-informed_2020,
-	title = {Physics-{Informed} {Deep} {Neural} {Networks} for {Transient} {Electromagnetic} {Analysis}},
-	volume = {1},
-	issn = {26376431},
-	doi = {10.1109/OJAP.2020.3013830},
-	abstract = {In this paper, we propose a deep neural network based model to predict the time evolution of field values in transient electrodynamics. The key component of our model is a recurrent neural network, which learns representations of long-term spatial-temporal dependencies in the sequence of its input data. We develop an encoder-recurrent-decoder architecture, which is trained with finite difference time domain simulations of plane wave scattering from distributed, perfect electric conducting objects. We demonstrate that, the trained network can emulate a transient electrodynamics problem with more than 17 times speed-up in simulation time compared to traditional finite difference time domain solvers.},
-	number = {1},
-	urldate = {2022-04-06},
-	journal = {IEEE Open Journal of Antennas and Propagation},
-	author = {Noakoasteen, Oameed and Wang, Shu and Peng, Zhen and Christodoulou, Christos},
-	year = {2020},
-	note = {Publisher: Institute of Electrical and Electronics Engineers Inc.},
-	keywords = {Computer vision, Electromagnetics, Finite difference methods, Machine learning, Recurrent neural networks, Unsupervised learning},
-	pages = {404--412},
 }
 
 @article{schnell_half-inverse_2022,
@@ -1112,34 +1218,6 @@ operations. This allows end-to-end training of ODEs within larger models.},
 	urldate = {2022-04-26},
 	author = {Bai, Shaojie and Koltun, Vladlen and Zico Kolter, Apple J},
 	year = {2022},
-}
-
-@article{bai_stabilizing_2021,
-	title = {Stabilizing {Equilibrium} {Models} by {Jacobian} {Regularization}},
-	url = {https://arxiv.org/abs/2106.14342v1},
-	doi = {10.48550/arxiv.2106.14342},
-	abstract = {Deep equilibrium networks (DEQs) are a new class of models that eschews
-traditional depth in favor of finding the fixed point of a single nonlinear
-layer. These models have been shown to achieve performance competitive with the
-state-of-the-art deep networks while using significantly less memory. Yet they
-are also slower, brittle to architectural choices, and introduce potential
-instability to the model. In this paper, we propose a regularization scheme for
-DEQ models that explicitly regularizes the Jacobian of the fixed-point update
-equations to stabilize the learning of equilibrium models. We show that this
-regularization adds only minimal computational cost, significantly stabilizes
-the fixed-point convergence in both forward and backward passes, and scales
-well to high-dimensional, realistic domains (e.g., WikiText-103 language
-modeling and ImageNet classification). Using this method, we demonstrate, for
-the first time, an implicit-depth model that runs with approximately the same
-speed and level of performance as popular conventional deep networks such as
-ResNet-101, while still maintaining the constant memory footprint and
-architectural simplicity of DEQs. Code is available at
-https://github.com/locuslab/deq .},
-	urldate = {2022-05-16},
-	author = {Bai, Shaojie and Koltun, Vladlen and Kolter, J. Zico},
-	month = jun,
-	year = {2021},
-	note = {arXiv: 2106.14342},
 }
 
 @article{gatzke_model_2000,

@@ -48,10 +48,10 @@ The most simple way to perform the forward pass of a \gls{DEQ}, i.e., to compute
 More specifically, given an input $\bm{x}$ and an initial guess $\bm{z}^{[0]}$, the procedure is to update the equilibrium guess $\bm{z}^{[i]}$ by \[
     \bm{z}^{[i]} = \bm{f}_{\gls{param}}^{[EQ]}(\bm{x}, \bm{z}^{[i-1]})
 \] until $\|\bm{z}^{[i]}-\bm{z}^{[i+1]}\|$ is small enough.
-This approach is the \emph{simple iteration} method[REFTO Süli, 2003].
+This approach is the \emph{simple iteration} method\cite{suli_introduction_2003}.
 Even though this approach is very intuitive given our derivation of a \gls{DEQ} from an infinite-depth model, it is quite limited.
 First because it can be quite slow, i.e., it can take many iterations until convergence is achieved, being very sensitive to the starting point.
-But mostly because this approach only finds equilibrium points if the function of interest is a contraction between the starting point and the equilibrium point[REFTO Süli, 2003].
+But mostly because this approach only finds equilibrium points if the function of interest is a contraction between the starting point and the equilibrium point\cite{suli_introduction_2003}.
 
 This limitation can be easily visualized by trying to use the simple iteration method to find the equilibrium of $f(z) = 2z-1$.
 The function clearly has an equilibrium at $z=1$.
@@ -64,11 +64,11 @@ Perhaps the most classical root-finding algorithm is \emph{Newton's method}, whi
 ,\] 
 in which $\frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}$ represents the Jacobian of  $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$\footnotemark.
 \footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses instead in solving $ \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ instead.}
-Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster [REFTO Süli, 2003].
+Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster\cite{suli_introduction_2003}.
 
 \subsection{Practical Considerations}
 
-Most modern algorithms that help us find the desired equilibrium point are either modifications of the simple iteration algorithm (e.g., Anderson Acceleration[REFTO Walker, 2011]) or modifications of Newton's method (e.g., Broyden's method[REFTO Broyden, 1965]).
+Most modern algorithms that help us find the desired equilibrium point are either modifications of the simple iteration algorithm (e.g., Anderson Acceleration\cite{walker_anderson_2011}) or modifications of Newton's method (e.g., Broyden's method\cite{broyden_class_1965}).
 Nevertheless, all these methods require an initial guess $\bm{z}^{[0]}$ and a tolerance $\epsilon>0$. 
 The initial guess, or starting point, is clearly necessary, as it is natural for iterative procedures, and is usual to find it as $\bm{z}^{[0]}\gets \bm{0}$ by default.
 The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is "good enough", i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i+1]}\|<\epsilon$ then it is considered that the equilibrium has been reached.
@@ -76,11 +76,11 @@ Furthermore, it is also usual to define a limit for the number of iterations, av
 
 \subsection{Jacobian Regularization}
 
-Two common empirical findings of \gls{DEQ} applications are that they are 1) unstable to architectural choices [REFTO Bai, 2021] and 2) increasingly slower over training iterations [REFTO Bai, 2019; Winston, 2020].
+Two common empirical findings of \gls{DEQ} applications are that they are 1) unstable to architectural choices \cite{bai_stabilizing_2021} and 2) increasingly slower over training iterations \cite{Bai2019,winston_monotone_2020}.
 This is a direct implication of the equilibrium-finding nature of the forward pass, which relies heavily on the behavior of $\bm{f}_{\gls{param}}^{[EQ]}$.
 Intuitively, the complexity of $\bm{f}_{\gls{param}}^{[EQ]}$, which depends heavily on the architecture and is expected to increase during training, makes it harder for the root-finding algorithm to converge.
 
-In a very recent work, textcite [REFTO Bai, 2021] discussed how the Jacobian of $\bm{f}_{\gls{param}}^{[EQ]}$ with respect to $\bm{z}$ is related to both problems.
+In a very recent work, \textcite{bai_stabilizing_2021} discussed how the Jacobian of $\bm{f}_{\gls{param}}^{[EQ]}$ with respect to $\bm{z}$ is related to both problems.
 The authors propose, then, to penalize large values in this Jacobian during training and show how this increases robustness and convergence speed of \gls{DEQ}s, reducing training and inference times.
 More specifically, they propose to compute the Frobenius norm\footnotemark of the Jacobian of $\bm{f}_{\gls{param}}^{[EQ]}$ and add it as a regularization term to the cost function (see sec. \ref{sec:regularization}).
 \footnotetext{The Frobenius norm of a matrix $A$ can be written $\|A\|_F=\sqrt{\sum_{i,j=1}^{n} |a_{i,j}|^2} $.}
