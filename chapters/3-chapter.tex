@@ -191,7 +191,7 @@ E.g., given a model $f_{\gls{param}}:\R^n\to\R$, one can use a regularization te
     \Omega\left( \gls{param} \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla f_{\gls{param}}\left( \bm{x} \right) \|
 .\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $f_{\gls{param}}$.
 
-\section{Back-Propagation}
+\section{Back-Propagation}\label{sec:backprop}
 
 Even from the most simplistic description of the gradient descent algorithm, as in equation \eqref{eq:gradient-descent-step}, it is clear that the challenge lies in computing the gradient of the cost function.
 Taking deep feedforward networks as an example, the analytical formula for this gradient can be derived without much effort.
