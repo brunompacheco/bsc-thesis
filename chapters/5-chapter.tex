@@ -94,26 +94,47 @@ Given $\bm{f}_{\gls{param}}:\R^{n}\to \R^{m}$ a \gls{DEQ} as defined above, comp
 .\] 
 At the same time, we know that the output of a model is given by an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$, which is computed using a root finding method, i.e., \[
     \bm{f}_{\gls{param}}(\bm{x}) = RootFind(\bm{g}_{\bm{x}}, \bm{z}^{[0]})
-,\] where $\bm{g}_{\bm{x}}$ is a function so that $\bm{g}_{\bm{x}}(\bm{z}) = \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}) - \bm{z}$.
+,\] where $\bm{g}_{\bm{x},\gls{param}}$ is a function so that $\bm{g}_{\bm{x},\gls{param}}(\bm{z}) = \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{z}) - \bm{z}$.
 Therefore, computing the derivatives of $\bm{f}_{\gls{param}}$ directly, requires the computation of the derivatives of the root-finding algorithm.
-Yet, not only root-finding algorithms need not be differentiable, but even those that are may impose an enormous computational burden to compute the actual derivatives.
+Yet, not only root-finding algorithms are not usually differentiable, but even those that are differentiable may have an enormous computational cost to compute the actual derivatives.
 To illustrate the point, if we restrain ourselves to using the simple iteration method as the root-finding algorithm, we can apply the chain rule and decompose the derivative in computing the derivative of $\bm{f}_{\gls{param}}^{[EQ]}$ for as many times as there were iterations until convergence, which can make practical applications impossible.
 
-Luckily, we can exploit the fact that the output of the model ($\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$.
-This implies that, in a neighborhood of the input vector $\bm{x}$, $\bm{f}_{\gls{param}}$ is a \emph{parametrization} of \bm{z} with respect to $\bm{x}$, i.e., \[
+Luckily, we can exploit the fact that the output of the model ($\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$, as proposed by textcite[REFTO Bai, 2019].
+This implies that, in a neighborhood of the input vector $\bm{x}$, $\bm{f}_{\gls{param}}$ is a \emph{parametrization} of $\bm{z}$ with respect to $\bm{x}$, i.e., \[
     \bm{f}_{\gls{param}}^{[EQ]}\left( \bm{x},\bm{f}_{\gls{param}}(\bm{x}) \right) -\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{0}
-\] is true.
-
-
-- recall backprop
-- show how it plays out for DEQs
-- root-finding need not be differentiable
-- model is a parametrization of fEQ
-- implicit function theorem
+\] is true. Then, by the definition of $\bm{g}_{\bm{x},\gls{param}}$, it is also true that \[
+\bm{g}_{\bm{x},\gls{param}}\left( \bm{f}_{\gls{param}}\left( \bm{x} \right) \right) = \bm{0}
+\] holds in a neighborhood of the input.
+Therefore, by \emph{implicit function theorem} (applied to $\bm{g}_{\bm{x},\gls{param}}$ with $\bm{f}_{\gls{param}}$ as the parametrization), we can write
+\begin{equation}\label{eq:ift-g}
+    \frac{d \bm{f}_{\gls{param}}(\bm{x})}{d \gls{param}} = - \left[ \frac{d \bm{g}_{\bm{x},\gls{param}}(\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} \right]^{-1} \frac{d \bm{g}_{\bm{x},\gls{param}}(\bm{f}_{\gls{param}}(\bm{x}))}{d \gls{param}}
+.\end{equation}
+Now, by the definition of $\bm{g}_{\bm{x},\gls{param}}$ we know that \[
+    \frac{d \bm{g}_{\bm{x},\gls{param}}(\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} = \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I 
+\] and \[
+\frac{d \bm{g}_{\bm{x},\gls{param}}(\bm{f}_{\gls{param}}(\bm{x}))}{d \gls{param}} = \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \gls{param}}
+.\] Therefore, we can rewrite \eqref{eq:ift-g} as
+\begin{equation}\label{eq:deq-jacobian}
+    \frac{d \bm{f}_{\gls{param}}(\bm{x})}{d \gls{param}} = - \left[ \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I \right]^{-1} \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \gls{param}}
+,\end{equation}
+which allows us to compute the derivative of the \gls{DEQ} model \emph{regardless of how the equilibrium was computed}.
+This makes it possible for us to use \emph{any} root-finding algorithm in the forward pass and still optimize the parameters of the model.
+Furthermore, the implicit function theorem can also be applied to find the derivatives of the DEQ model with respect to the input vector, enabling backpropagation even when the \gls{DEQ} model is a component of a larger deep learning model.
 
 \subsection{Implementation}
 
-- in practice, computing the inverse is expensive
-- luckily, we just need the vjp
-- turns vjp can be found through root finding!
+One may notice that trading the computation of the derivative of the root-finding algorithm for the computation of a matrix inverse (the Jacobian of $\bm{f}_{\gls{param}}^{[EQ]}$ with respect to $\bm{z}$) might not be a good idea.
+Luckily, we do not actually need to compute the Jacobian of $\bm{f}_{\gls{param}}$ to perform backpropagation.
+As discussed in section \ref{sec:backprop}, all we need is to compute a vector-Jacobian product of the form $\bm{u}^T\frac{d \bm{f}_{\gls{param}}(\bm{x})}{d \gls{param}}$, which, in turn, can also be reduced to computing two other vector-Jacobian products, following equation \eqref{eq:deq-jacobian}.
+
+It is clear that the challenge lies in computing the vector-Jacobian product $\bm{u}^T\left[ \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I \right]^{-1}$ efficiently, as a matrix inversion is oftentimes too costly.
+Yet, we can see that
+\begin{align*}
+    \bm{v}^T &= \bm{u}^T\left[ \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I \right]^{-1} \\
+    \implies \bm{u}^T &= \bm{v}^T\left[ \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I \right] \\
+		      &= \bm{v}^T \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - \bm{v}^T \\
+    \implies \bm{v}^T &= \bm{v}^T \frac{d \bm{f}_{\gls{param}}^{[EQ]}(\bm{x},\bm{f}_{\gls{param}}(\bm{x}))}{d \bm{z}} - \bm{u}^T \tag{$*$}\label{eq:deq-backprop-eq}
+.\end{align*}
+The above equation tells us that, given $\bm{u}$ the result of the previous step, the challenging vector-Jacobian product can be computed by finding the equilibrium point of equation \eqref{eq:deq-backprop-eq} on $\bm{v}$.
+Therefore, a root-finding algorithm can be used to compute the result of the challenging vector-Jacobian product, just like in the forward pass.
 
