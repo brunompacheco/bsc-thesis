@@ -214,8 +214,8 @@ where $\nabla_{f_{\gls{param}}} l$ is the gradient of the loss function with res
 it is easy to see repeating terms, that is, the result of $\nabla_{f_{\gls{param}}} l \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}}$, necessary to compute $\frac{\partial l}{\partial\gls{param}^{L-1}}$ can be reused to compute $\frac{\partial l}{\partial\gls{param}^{L-2}}$ and all of $\gls{param}^{L-3},\ldots,\gls{param}^1$.
 
 Back-propagation exploits this by computing the gradients with respect to each parameter "from left to right", that is, starting by computing the gradient of the outermost component of the composition and storing the intermediate result.
-Applied to the equations above, the first operation would be to compute $\bm{u}\gets\nabla_{f_{\gls{param}}} l$, which would be used in the vector-Jacobian product $\bm{u} \frac{d f_{\gls{param}}}{d \gls{param}^L}$ to compute the gradient with respect to $\gls{param}^{L}$.
-Then, the intermediate result can be updated through the vector-Jacobian product $\bm{u}\gets \bm{u} \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}}$, which is useful to compute the gradient with respect to $\gls{param}^{L-1}$.
+Applied to the equations above, the first operation would be to compute $\bm{u}^T\gets\nabla_{f_{\gls{param}}} l$, which would be used in the vector-Jacobian product $\bm{u}^T \frac{d f_{\gls{param}}}{d \gls{param}^L}$ to compute the gradient with respect to $\gls{param}^{L}$.
+Then, the intermediate result can be updated through the vector-Jacobian product $\bm{u}^T\gets \bm{u}^T \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}}$, which is useful to compute the gradient with respect to $\gls{param}^{L-1}$.
 
 It is easy to see that this procedure can be repeated, propagating the gradient through each layer of the network until every parameter is covered, effectively reducing the evaluation of the gradient to computing several vector-Jacobian products.
 Furthermore, back-propagation can be also very memory efficient, as the chain-rule can be applied to each $f^i_{\gls{param}^i}$ and, thus, the stored values are limited by the layer size\footnotemark.
