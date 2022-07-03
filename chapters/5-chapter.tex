@@ -99,7 +99,7 @@ Therefore, computing the derivatives of $\bm{f}_{\gls{param}}$ directly, require
 Yet, not only root-finding algorithms are not usually differentiable, but even those that are differentiable may have an enormous computational cost to compute the actual derivatives.
 To illustrate the point, if we restrain ourselves to using the simple iteration method as the root-finding algorithm, we can apply the chain rule and decompose the derivative in computing the derivative of $\bm{f}_{\gls{param}}^{[EQ]}$ for as many times as there were iterations until convergence, which can make practical applications impossible.
 
-Luckily, we can exploit the fact that the output of the model ($\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$, as proposed by textcite[REFTO Bai, 2019].
+Luckily, we can exploit the fact that the output of the model ($\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}^{[EQ]}$, as proposed by \textcite{Bai2019}.
 This implies that, in a neighborhood of the input vector $\bm{x}$, $\bm{f}_{\gls{param}}$ is a \emph{parametrization} of $\bm{z}$ with respect to $\bm{x}$, i.e., \[
     \bm{f}_{\gls{param}}^{[EQ]}\left( \bm{x},\bm{f}_{\gls{param}}(\bm{x}) \right) -\bm{f}_{\gls{param}}\left( \bm{x} \right) = \bm{0}
 \] is true. Then, by the definition of $\bm{g}_{\bm{x},\gls{param}}$, it is also true that \[
