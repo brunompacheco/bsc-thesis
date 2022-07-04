@@ -16,21 +16,21 @@ Deep learning involves composing multiple levels\footnote{The understanding of t
 Representation learning, in turn, is about automatically extracting higher level features from the input data \cite{lecun_deep_2015,bengio_representation_2013}, aiming to facilitate the extraction of useful information, for example, to classify the data into given categories.
 
 Following these definitions, we can see a deep learning \textit{model} as a function with multiple levels of representations.
-A simple way of putting this definition into terms would be to define a model with $L$ layers as a function $f$ such that, for a given input $x$,
+A simple way of putting this definition into terms would be to define a model with $L$ \emph{layers} of representations as a function $D$ such that, for a given input $x$,
 \begin{equation}\label{eq:dl-model}
 \begin{split}
     z^{[0]} &= x \\
     z^{[i]} &= f^{[i]}(z^{[i-1]}),\,i=1,\ldots,L \\
-    f(x) &= z^{[L]}.
+    D(x) &= z^{[L]}.
 \end{split}
 \end{equation}
 From this notation, it is easy to see that each function $f^{[i]}$ maps the outputs of the previous layer into the input of the next, ideally achieving a higher abstraction level.
 
 In this context, we can see the goal of \textit{learning} as finding parameters $\gls{param}$ such that the layers indeed extract the desired information, culminating in the model returning the desired output.
-A classic toy example in deep learning models is to approximate the Exclusive-OR function, that is, to find a model $f : \R^2 \to \R$ such that
+A classic toy example in deep learning models is to approximate the Exclusive-OR function, that is, to find a model $D : \R^2 \to \R$ such that
 \begin{align*}
-    f([0,0]^T) = f([1,1]^T) = 0 \\
-    f([1,0]^T) = f([0,1]^T) = 1 \\
+    D([0,0]^T) = D([1,1]^T) = 0 \\
+    D([1,0]^T) = D([0,1]^T) = 1 \\
 .\end{align*}
 We can construct this model's layers as functions $f^{[1]}:\R^2\to\R^2$ and $f^{[2]}:\R^2\to\R$ such that
 \begin{align*}
@@ -44,20 +44,20 @@ Note how these functions are extracting simple information from the input, yet t
 
 \section{Deep Feedforward Networks}\label{sec:neural-nets}
 
-Deep Feedforward Networks, often times also called \emph{Neural Networks}\footnotemark, are the most essential deep learning models.
+Deep feedforward networks, often times also called \emph{Neural Networks}\footnotemark, are the most essential deep learning models.
 \footnotetext{Neural Networks are usually regarded as a more broad set of models, that include the deep feedforward networks. However, for the sake of simplicity, both will be treated as synonyms in this work.}
 They were inspired by the works of \textcite{rosenblatt_perceptron_1957} and refined through the many decades since, culminating in one of the most important deep learning models for practitioners and the basis of the most prominent results seen in the recent years \cite{goodfellow_deep_2016}.
 
-In this model, each component is a simple affine operator followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network with $L$ layers as a \textit{parametrized} function $f_{\gls{param}}$ such that, for a given input $\bm{x}$,
+In this model, each component is a simple affine operator followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network $D_{\gls{param}}^{FN}$ with $L$ layers as a stacking of \textit{parametrized} functions, such that, for a given input $\bm{x}$,
 \begin{align*}
     \bm{z}^{[0]} &= \bm{x} \\
     \bm{z}^{[i]} &= f_{\gls{param}^i}^{[i]}(\bm{z}^{[i-1]}) = g^{[i]}\left(A^{[i]}\bm{z}^{[i-1]} + \bm{b}^{[i]}\right) ,\,i=1,\ldots,L \\
-    f_{\gls{param}}(\bm{x}) &= \bm{z}^{[L]}
+    D_{\gls{param}}^{FN}(\bm{x}) &= \bm{z}^{[L]}
 ,\end{align*}
 in which $\gls{param}=\left( \gls{param}^1,\ldots,\gls{param}^L \right) $ are the vectors of parameters and $g^{[i]}$ are the activation functions.
 It is common to see each of the $\gls{param}^i$ as a vector composed of the individual elements of the respective $A^{[i]}$ and $\bm{b}^{[i]}$.
 Usually, one denotes a single parameter vector $\gls{param}$ shared by all functions, assuming that each function "selects" only its own parameters, therefore, writing $f_{\gls{param}}^{[i]} = f_{\gls{param}^i}^{[i]}$.
-Using this notation, we can say that, given a \textit{target} function $f^*$ and input data $X$, a deep feedforward network $f_{\gls{param}}$ must learn a set of parameters $\gls{param}$ such that $f_{\gls{param}}(x) \approx f^*(x),\,\forall x \in X$.
+Using this notation, we can say that, given a \textit{target} function $f^*$ and input data $X$, a deep feedforward network $D_{\gls{param}}^{FN}$ must learn a set of parameters $\gls{param}$ such that $D^{FN}_{\gls{param}}(x) \approx f^*(x),\,\forall x \in X$.
 
 Let us recall the Exclusive-OR example from the previous section. One can construct a two-layer deep feedforward network such that the functions $f_{\gls{param}}^{[1]}:\R^2\to\R^2$ and $f_{\gls{param}}^{[2]}:\R^2\to\R$ are
 \begin{align*}
@@ -113,12 +113,12 @@ It would be natural to frame the definition of a learning algorithm as an optimi
 Yet, not always the performance measure of interest is easy to compute or provides useful features for the optimization (e.g, differentiability).
 Therefore, it is usual to optimize indirectly, minimizing a \textit{loss function} while aiming to improve the performance measure.
 
-Given a model $\bm{f}_{\gls{param}}:\R^n\to\R^m$ and a target function $\bm{f}^*:U\subset\R^n\to\R^m$, an ideal performance measure could be $\int_U \|\bm{f}_{\gls{param}}(\bm{x}) - \bm{f}^*(\bm{x})\|d\bm{x}$.
+Given a model $D_{\gls{param}}:\R^n\to\R^m$ and a target function $\bm{f}^*:U\subset\R^n\to\R^m$, an ideal performance measure could be $\int_U \|D_{\gls{param}}(\bm{x}) - \bm{f}^*(\bm{x})\|d\bm{x}$.
 Yet, this integral could be costly to compute and might not even be easily defined.
 Instead, one could evaluate the model on a finite set of points from the domain $X=\{(\bm{x},\bm{y})\in U\times\R^m : \bm{y}=\bm{f}^*(\bm{x})\}$ (the data that forms the experience $E$), defining a loss function $l:\R^m\times\R^m\to\R$ (over the model's output and the target) that can be evaluated for each sample, e.g., the $\ell^2$-norm.
-This way, the outcome of a deep learning algorithm would be a model $\bm{f}_{\gls{param}^*}$, such that \[
-\gls{param}^* = \arg\min_{\gls{param}} \sum_{(\bm{x},\bm{y})\in X} l(\bm{f}_{\gls{param}}(\bm{x}), \bm{y})
-.\] Usually, though, given the data $X$ and the model $\bm{f}_{\gls{param}}$, one defines a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(\bm{f}_{\gls{param}}(\bm{x}), \bm{y})$.
+This way, the outcome of a deep learning algorithm would be a model $D_{\gls{param}^*}$, such that \[
+\gls{param}^* = \arg\min_{\gls{param}} \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y})
+.\] Usually, though, given the data $X$ and the model $D_{\gls{param}}$, one defines a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y})$.
 Therefore, to train a model one can solve the optimization problem
 \begin{align*}
     \min_{\gls{param}} \quad & J\left( \gls{param} \right)  \\
@@ -143,7 +143,7 @@ In the context of the learning algorithm, every iteration in which the cost is c
 
 % Maybe introduce the gradient step with regards to the cost function = sum of per-sample loss function?
 
-Yet, gradient descent provides poor convergence conditions \cite{wolfe_convergence_1969}, being considered unreliable and slow for many practical problems.
+Yet, gradient descent provides poor convergence conditions \cite{wolfe_convergence_1969}, being considered unreliable and slow for many practical optimization problems.
 Still, gradient descent is known to work very well for deep learning.
 In this area, it has shown to achieve low values of the cost function fast enough to be useful, even if it does not find a local minimum \cite{goodfellow_deep_2016}
 
@@ -175,7 +175,7 @@ After showing excellent empirical results over many application areas, Adam beca
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are not in the data provided during training, i.e., models that \emph{generalize} well.
 The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 
-One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(\bm{f}_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
+One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
 It can be seen as an incentive for the model to be built on simple features, in an effort to approximate the training data with the simplest model possible \cite{goodfellow_deep_2016}.
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful, when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
@@ -187,9 +187,9 @@ One of the most common of such characteristics is noise robustness.
 If one wants to train a model that is robust to noise in its input, one way to achieve this is to reduce the output's sensitivity.
 The output can be said less sensitive to variations of an input dimension if its derivative with respect to this input dimension has a small magnitude.
 This can be enforced through a regularization term on the gradients of the model's outputs \cite{drucker_improving_1992}.
-E.g., given a model $f_{\gls{param}}:\R^n\to\R$, one can use a regularization term of the form \[
-    \Omega\left( \gls{param} \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla f_{\gls{param}}\left( \bm{x} \right) \|
-.\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $f_{\gls{param}}$.
+E.g., given a model $D_{\gls{param}}:\R^n\to\R$, one can use a regularization term of the form \[
+    \Omega\left( \gls{param} \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla D_{\gls{param}}\left( \bm{x} \right) \|
+.\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $D_{\gls{param}}$.
 
 \section{Back-Propagation}\label{sec:backprop}
 
@@ -203,22 +203,24 @@ We first note that, from \eqref{eq:gradient-descent-step} and the definition of 
 Therefore, if we want to compute the derivative of the cost function with respect to each of the parameters $\gls{param}^i,\,i=1,\ldots,L$, we need to look at the derivative of the loss function with respect to these parameters.
 Now, by the chain-rule, let us take the case for $\gls{param}^L$ and see that
  \begin{align*}
-     \frac{\partial l}{\partial\gls{param}^L} &= \nabla_{f_{\gls{param}}} l \frac{d f_{\gls{param}}}{d \gls{param}^L} \\
-     &= \nabla_{f_{\gls{param}}} l \frac{d f^L_{\gls{param}^L}}{d \gls{param}^L}
+     \frac{\partial l}{\partial\gls{param}^L} &= \nabla_{D_{\gls{param}}} l \frac{d D_{\gls{param}}}{d \gls{param}^L} \\
+     &= \nabla_{z^{[L]}} l \frac{d f^{[L]}_{\gls{param}^L}}{d \gls{param}^L}
 ,\end{align*}
-where $\nabla_{f_{\gls{param}}} l$ is the gradient of the loss function with respect to the model's output and $\frac{d f^L_{\gls{param}^L}}{d \gls{param}^L}$ is the Jacobian of the last layer of the model. Now, if we consider the case for $\gls{param}^{L-1}$ and $\gls{param}^{L-2}$
+where $\nabla_{z^{[L]}} l$ is the gradient of the loss function with respect to the model's output ($D_{\gls{param}}(x)=z^{[L]}$) and $\frac{d f^{[L]}_{\gls{param}^L}}{d \gls{param}^L}$ is the Jacobian of the last layer of the model. Now, if we consider the case for $\gls{param}^{L-1}$ and $\gls{param}^{L-2}$
  \begin{align*}
-     \frac{\partial l}{\partial\gls{param}^{L-1}} &= \nabla_{f_{\gls{param}}} l \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}} \frac{d f^{L-1}_{\gls{param}^{L-1}}}{d \gls{param}^{L-1}} \\
-     \frac{\partial l}{\partial\gls{param}^{L-2}} &= \nabla_{f_{\gls{param}}} l \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}} \frac{d f^{L-1}_{\gls{param}^{L-1}}}{d f^{L-2}_{\gls{param}^{L-2}}} \frac{d f^{L-2}_{\gls{param}^{L-2}}}{d \gls{param}^{L-2}}
+     \frac{\partial l}{\partial\gls{param}^{L-1}} &= \nabla_{z^{[L]}} l \frac{d f^{[L]}_{\gls{param}^L}}{d z^{[L-1]}} \frac{d f^{[L-1]}_{\gls{param}^{L-1}}}{d \gls{param}^{L-1}} \\
+     \frac{\partial l}{\partial\gls{param}^{L-2}} &= \nabla_{z^{[L]}} l \frac{d f^{[L]}_{\gls{param}^L}}{d z^{[L-1]}} \frac{d f^{[L-1]}_{\gls{param}^{L-1}}}{d z^{[L-2]}} \frac{d f^{[L-2]}_{\gls{param}^{L-2}}}{d \gls{param}^{L-2}}
 ,\end{align*}
-it is easy to see repeating terms, that is, the result of $\nabla_{f_{\gls{param}}} l \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}}$, necessary to compute $\frac{\partial l}{\partial\gls{param}^{L-1}}$ can be reused to compute $\frac{\partial l}{\partial\gls{param}^{L-2}}$ and all of $\gls{param}^{L-3},\ldots,\gls{param}^1$.
+it is easy to see repeating terms: the result of $\nabla_{z^{[L]}} l \frac{d f^{[L]}_{\gls{param}^L}}{d z^{[L-1]}}$, necessary to compute $\frac{\partial l}{\partial\gls{param}^{L-1}}$, can be reused to compute $\frac{\partial l}{\partial\gls{param}^{L-2}}$ as well as the gradients of $\gls{param}^{L-3},\ldots,\gls{param}^1$.
 
 Back-propagation exploits this by computing the gradients with respect to each parameter "from left to right", that is, starting by computing the gradient of the outermost component of the composition and storing the intermediate result.
-Applied to the equations above, the first operation would be to compute $\bm{u}^T\gets\nabla_{f_{\gls{param}}} l$, which would be used in the vector-Jacobian product $\bm{u}^T \frac{d f_{\gls{param}}}{d \gls{param}^L}$ to compute the gradient with respect to $\gls{param}^{L}$.
-Then, the intermediate result can be updated through the vector-Jacobian product $\bm{u}^T\gets \bm{u}^T \frac{d f^L_{\gls{param}^L}}{d f^{L-1}_{\gls{param}^{L-1}}}$, which is useful to compute the gradient with respect to $\gls{param}^{L-1}$.
+Applied to the equations above, the first operation would be to compute $\bm{u}^T\gets\nabla_{z^{[L]}} l$, which would be used in the vector-Jacobian product \[
+    \bm{u}^T \frac{d f^{[L]}_{\gls{param}^L}}{d \gls{param}^L}
+\] to compute the gradient with respect to $\gls{param}^{L}$.
+Then, the intermediate result can be updated through the vector-Jacobian product $\bm{u}^T\gets \bm{u}^T \frac{d f^{[L]}_{\gls{param}^L}}{d z^{[L-1]}}$, which is useful to compute the gradient with respect to $\gls{param}^{L-1}$.
 
 It is easy to see that this procedure can be repeated, propagating the gradient through each layer of the network until every parameter is covered, effectively reducing the evaluation of the gradient to computing several vector-Jacobian products.
-Furthermore, back-propagation can be also very memory efficient, as the chain-rule can be applied to each $f^i_{\gls{param}^i}$ and, thus, the stored values are limited by the layer size\footnotemark.
+Furthermore, back-propagation can be also very memory efficient, as the chain-rule can be applied to each $f^{[i]}_{\gls{param}^i}$ and, thus, the stored values are limited by the layer size\footnotemark.
 \footnotetext{The presented approach considers the $\gls{param}^i$ vectors as the parameters of interest, when in a practical application the gradients would be computed with respect to each of the $A^{[i]}$ and $\bm{b}^{[i]}$ parameters. Therefore, the Jacobian matrices computed would be limited by the sizes of each of these parameters. Finally, it is easy to see that the intermediate value stored $\bm{u}$ will have the same dimension as the next layer used in the vector-Jacobian product to update it.}
 
 % % The great results that deep learning techniques have achieved come not only from the great theoretical guarantees, but also from the practical considerations that make these models an efficient alternative.
