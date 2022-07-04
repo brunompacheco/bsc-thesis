@@ -52,8 +52,7 @@ J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\|
 Then, the cost function used to train the model is defined as \[
 J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
-Originally, \textcite{Raissi2019} define this value as $\lambda = |X_{\mathcal{N}}|^{-1}$, that is, the inverse of the number of elements in the $X_{\mathcal{N}}$ set\footnotemark.
-\footnotetext{This is for the particular case of $|X_b|=1$, which makes the "contribution" of the components proportional to the respective set size.}
+Originally, \textcite{Raissi2019} define this value as $\lambda = \frac{|X_{b}|}{|X_{\mathcal{N}}|}$, that is, proportional to the contribution of both sets in the training of the network.
 A neural network trained to learn a differential equation following a cost function as the one defined above is called a \gls{PINN}.
 
 The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
