@@ -18,31 +18,26 @@
 % \nocite{NBR10520:2002}
 
 The numerous successful applications of deep learning in the most varied industries \cite{ciregan_multi-column_2012,krizhevsky_imagenet_2012,silver_mastering_2016} have established it as a cornerstone of artificial intelligence.
-With such a fame, one could easily suppose that it can be a powerful tool to solve a very common problem in the study of dynamical systems: to solve differential equations.
+With such a fame, one could easily suppose that it can be a powerful tool to solve a very common problem in the study of dynamical systems: the \gls{IVP} of differential equations.
 % The ability to learn from experience and to interpret the world through stacks of concepts on top of simpler concepts \cite{goodfellow_deep_2016} is what makes 
 
-Yet, deep learning models gather knowledge by learning from experience, which gives it a data-driven nature.
+Yet, deep learning models gather knowledge by learning from experience, which gives them a data-driven nature.
 Unfortunately, gathering enough data (samples, records, experiment history) from physical phenomena of dynamical systems can be expensive, as it may require an assortment of measurement devices and expensive material to stimulate and observe the phenomena of interest.
-This makes training deep learning models in such context challenging.
+This makes training deep learning models, in such context, quite challenging.
 
 \textcite{Raissi2019} proposed to optimize the dynamics of the model instead of its outputs.
 This way, one can train a deep learning model to approximate the dynamics of a system, given that an accurate description of these dynamics is known (e.g., in the form of differential equations).
-Therefore, only minimal data is necessary, covering the initial and boundary conditions which are usually known beforehand.
+Therefore, only minimal data is necessary to cover the initial and boundary conditions.
 
-At the same time, \textcite{Bai2019} and \textcite{Ghaoui2019} proposed a novel approach that is to define the output of a model implicitly, in the form of a solution to an equilibrium equation.
-Given a function $f:\R^{n+m}\to\R^m$, the output $z = F(x)$ of a so-called \gls{DEQ} $N:\R^n\to \R^m$, given an input $x\in\R^n$, is defined implicitly as the solution of $z = f(x,z)$.
-A model defined this way is effectively an infinite-depth network \cite{Bai2019} with residual connections \cite{he_deep_2016}.
+At the same time, \textcite{Bai2019} and \textcite{Ghaoui2019} proposed a novel approach to deep learning: to define the output of a model implicitly, in the form of a solution to an equilibrium equation.
+% Given a function $f:\R^{n+m}\to\R^m$, the output $z = F(x)$ of a so-called \gls{DEQ} $N:\R^n\to \R^m$, given an input $x\in\R^n$, is defined implicitly as the solution of $z = f(x,z)$.
+A model defined this way is effectively an infinite-depth network \cite{Bai2019} with residual connections\cite{he_deep_2016}, which results in a great representational power with a small amount of parameters.
+This reduced set of parameters improves the model's explainability, which in turn helps with deriving causality and robustness, all of which are desirable features in safety-critical applications (e.g., in the automation industry).
+
+Even though successful applications of \gls{DEQ}s have already appeared in the literature \cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, in which problems \gls{DEQ}s can succeed over traditional models.
 As to generate the output of an equilibrium model one has to solve an equilibrium equation, these models present an iterative behavior, hence similar to commonly used differential equation solvers such as the Runge-Kutta algorithm.
+Therefore, given the novelty of the model and its iterative behavior, the question this work aims to answer is: can a \gls{DEQ} learn to solve an \gls{IVP} of an \gls{ODE} in a physics-informed approach?
 
-Even though successful applications of \gls{DEQ}s have already appeared in the literature \cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, whether \gls{DEQ}s can overcome traditional models. To this end, this thesis explores a novel application: \gls{DEQ}s as \gls{ODE} solvers.
-
-- DEQs are interesting because having less parameters => easier causality analysis, more explainability, more generalization => more robustness
-    - themes that are of extremely important for practical applications in the automation industry
-    - grab some references from Daniela Rus' keynote?
-
-- Practical applications in control and automation => expensive to acquire data => need to be more data efficient
-
-- The question this work aims to answer is: can we train DEQs in a Physiscs-Informed approach?
 
 % \textbf{Instruções da Coordenação do PFC:}
 
@@ -65,7 +60,7 @@ Even though successful applications of \gls{DEQ}s have already appeared in the l
 \section{Objectives}
 % ----------------------------------------------------------
 
-This work aims to study, implement and validate the use of Deep Equilibrium models as effective and efficient \gls{ODE} solvers.
+This work aims to study, implement and validate the use of Deep Equilibrium models as effective and efficient solvers for \gls{IVP}s, making use of physics-informed training.
 An efficient model is twofold: it does not require costly (many samples or hard-to-acquire samples) data for training, and it does not require expensive hardware to generate fast results.
 At the same time, an effective model is one that can provide accurate results on a large domain, i.e., it can solve a given \gls{ODE} for a long range of its independent variable.
 
@@ -74,9 +69,9 @@ More specifically, the work described in here aims to:
     \item Implement a Deep Equilibrium model following the design proposed by \textcite{Bai2019};
     
     \item Design and implement a \gls{PINN} training algorithm suitable for \gls{DEQ}s, building on top of the work by \textcite{Raissi2019};
-    \item Evaluate the physics-informed deep equilibrium model in comparison to traditional \gls{PINN}s in the task of solving an \gls{ODE}.
+    \item Evaluate the physics-informed deep equilibrium model in the task of solving an \gls{IVP}.
 \end{enumerate}
-With these steps, it is expected that a solid conclusion will be achieved on the suitability of \gls{DEQ}s, a state-of-the-art deep learning architecture, on the task of solving \gls{ODE}s.
+With these steps, it is expected that a solid conclusion will be achieved on the suitability of \gls{DEQ}s, a state-of-the-art deep learning architecture, on this novel application.
 
 % Having these goals in mind, a model implementation following the approach proposed by \textcite{Bai2019} is desired, with the allied training algorithm proposed by \textcite{Raissi2019} so the dynamics of the model is optimized to match the dynamics of a target system.
 
@@ -87,4 +82,6 @@ With these steps, it is expected that a solid conclusion will be achieved on the
 
 \section*{}
 
-\textcolor{red}{- Estrutura do documento}
+In the first two chapters below, a brief introduction to \gls{ODE}s (ch. \ref{ch:ode}) and deep learning (ch. \ref{ch:deep-learning}) is presented, aiming to lay a foundation and establish a reference for the following chapters.
+The following chapters are dedicated to the novel contributions of \gls{PINN}s (ch. \ref{ch:pinn}) and \gls{DEQ}s (ch. \ref{ch:deq}), which are central for the aim of this work.
+Finally, chapter \ref{ch:experiments} presents the experimental results of a physics-informed \gls{DEQ} trained to solve an \gls{IVP}, the results of which are discussed in chapter \ref{ch:conclusion} together with an outlook of future work.
