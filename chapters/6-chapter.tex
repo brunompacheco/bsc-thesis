@@ -2,16 +2,87 @@
 \chapter{Experiments and Results}\label{ch:experiments}
 % ----------------------------------------------------------
 
-\section{PIDEQ?}
+Given the theoretical foundations exposed above, in this chapter, the proposed approach to achieve this thesis' goal is presented.
+Furthermore, this approach named \gls{PIDEQ} is validated through a set of experiments, aiming to explore its performance and the impact of the many different features of the model.
 
-- definition of PIDEQ
+\section{Problem Definition}
 
-\section{Methodology}
+The Van der Pol oscillator (sec. \ref{sec:vdp}) was chosen as the \gls{ODE} system for which an \gls{IVP} will be solved.
+This system is known for having no analytical solution, thus becoming a benchmark for solvers.
+As well, textcite[REFTO Antonello, 2021] have already studied a solution using \gls{PINN}s, which is used as a starting point and a reference in performance for the experiments.
 
-\subsection{Data}
-
-\subsection{Training}
+More specifically, we define the first-order formulation of the Van der Pol oscillator (as presented in equation \eqref{eq:vdp}) as the \gls{ODE} system, with $\mu=1$.
+Then, the \gls{IVP} is defined with initial condition $\bm{y}(0) = \bm{y}_0 = \left( 0, 0.1 \right) $, simulating a small perturbation of the system at the unstable equilibrium at the origin, and the solution is desired for a horizon of 2 seconds. 
+This way, the expected solution is expected to gravitate to a limit cycle, but not within the solution interval, as illustrated in figure \ref{fig:vdp_example}.
 
 \subsection{Evaluation Metrics}
 
-\section{Results}
+As there is no analytical solution to the \gls{IVP} at hand, the solutions will be evaluated in comparison to the approximation found using \gls{RK4}.
+This reference was generated from 1000 points equally spaced in the solution interval $I=[0,2]$, with a time step of 2\,ms\footnotemark.
+\footnotetext{Of course, this set does not include the initial condition, which is already given, which means that the first point of evaluation is at $t=0.002$.}
+Then, a solution's approximation to the reference is measured through the \gls{IAE}, which can be defined here as \[
+    IAE = \frac{1}{h}\sum_{i=1}^{1000} \|\bm{y}_i - \hat{\bm{y}}_i\|
+,\] where $\bm{y}_i$ are the points in the \gls{RK4} solution,  $\hat{\bm{y}}_i$ are the points in the solution being evaluated, and $h=0.002$ is the time step.
+Therefore, a solution is said proper to the problem if it achieves a low \gls{IAE}.
+
+Besides the quality of the approximation, the time required to achieve such approximation is also of interest, as many applications (e.g., model predictive control) are highly time-dependent.
+As well, the hardware resources used are valuable metrics, as the computing power necessary limits the range of equipment that can support a given solution.
+These will be auxiliary to the \gls{IAE} in the analysis of the approximations.
+
+\section{PIDEQ}
+
+As already discussed in section \ref{sec:pinn-problem}, solving \gls{IVP}s is (mostly) only reasonable if using a physics-informed approach, that is, if "teaching" the model through the known dynamics instead of through actual samples of the target function.
+Therefore, a reasonable solution using \gls{DEQ}s must follow the same principle, which implies in a physics-informed training of \gls{DEQ}s (thus, \gls{PIDEQ}).
+
+For the \gls{IVP} defined above, we recall the definition of section \ref{sec:deq-definition} and propose a \gls{DEQ} similar to textcite[REFTO Ghaoui, 2019], that is, a model
+\begin{align*}
+    D_{\gls{param}}^{EQ}: \R &\longrightarrow \R^2 \\
+    t &\longmapsto D_{\gls{param}}(t) = \hat{\bm{y}}
+\end{align*}
+such that
+\begin{equation}
+\begin{split}
+    D^{EQ}_{\gls{param}}(t) &= C\bm{z}^{\star} \\
+    \bm{z}^{\star} &= \bm{f}_{\gls{param}}\left( t,\bm{z}^{\star} \right) \\
+    \bm{f}_{\gls{param}}\left( t,\bm{z} \right) &= \tanh \left( A\bm{z} + t\bm{a} + \bm{b} \right)
+\end{split}
+,\end{equation}
+in which the parameters \gls{param} are a vectorization of the matrices and vectors, i.e., $\gls{param} = \left( A,C,\bm{a},\bm{b} \right)$, and the hyperbolic tangent function is applied to each element of the resulting vector.
+
+Notice that this formulation is very close to the one used in chapter \ref{ch:deq}, except for the linear transformation of the equilibrium point at the model's output.
+This implies that both forward and backward operations can occur in the same way, except that the term  \[
+    \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C^T
+\] must be multiplied in the computation of the gradients.
+The advantage of this modification is that we can $\bm{z}$ with an arbitrary dimension, which results in arbitrary representational power [REFTO Ghaoui, 2019].
+
+- cost function definition
+
+
+\section{Experiments}
+
+\subsection{Data}
+
+- Following the setup of [REFTO Antonelo] 
+- description of collocation points
+- data points are just the initial condition
+
+\subsection{Training Setup}
+
+- the experiments reported below have a set of hyperparameters that were defined from early experimental results
+- report hyperparameters
+- all results were generated in a (INSERT HARDWARE)
+
+\subsection{Baseline Results}
+
+- Antonelo trained a PINN to solve this exact same problem with 4x20
+- we replicate this results
+- theoretical baseline is that a DEQ has at least as much representational power as a net with the same amount of nodes in total, so a DEQ with 80 states should be able to learn the task
+- show results
+
+\subsection{Number of States}
+
+- show sparse matrix and how it points out to a smaller model
+- process repeated
+- while a 5 states DEQ can learn the task, it takes longer to converge
+
+
