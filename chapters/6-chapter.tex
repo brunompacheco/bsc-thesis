@@ -86,6 +86,8 @@ The regularization term $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\rig
 The experiments reported below concern the training of the deep learning model proposed above to solve the \gls{IVP} described in the first section of this chapter.
 The implementation was done using PyTorch [REFTO Paszke, 2019] and is available at \url{https://github.com/brunompacheco/pideq}.
 All experiments were performed on a high-end computer, using an RTX 3060 GPU.
+A budget of 50000 epochs was chosen.
+% TODO add number of runs
 
 \subsection{Baseline Results}
 
@@ -96,6 +98,13 @@ Then, our starting \gls{DEQ} is a model with  $\bm{z}\in \R^{80}$.
 
 The results for both models can be seen in figure XXX.
 Given that the \gls{PINN} used was able to "learn" (i.e., to achieve a low IAE on) the task, we expect that the large \gls{DEQ} model also is capable of learning.
+
+\begin{figure}[h]
+    \centering
+	\includegraphics{images/exp_1_iae.pdf}
+    \caption{Learning curve for the baseline models trained on the \gls{IVP} for the Van der Pol oscillator.}
+    \label{fig:images-exp_1_iae-pdf}
+\end{figure}
 
 - Antonelo trained a PINN to solve this exact same problem with 4x20
 - we replicate this results
