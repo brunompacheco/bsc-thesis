@@ -76,7 +76,7 @@ The initial guess, or starting point, is clearly necessary, as it is natural for
 The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is "good enough", i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i+1]}\|<\epsilon$ then it is considered that the equilibrium has been reached.
 Furthermore, it is also usual to define a limit for the number of iterations, avoiding that the algorithms run for an indefinite amount of time.
 
-\subsection{Jacobian Regularization}
+\subsection{Jacobian Regularization}\label{sec:deq-jac-reg}
 
 Two common empirical findings of \gls{DEQ} applications are that they are 1) unstable to architectural choices \cite{bai_stabilizing_2021} and 2) increasingly slower over training iterations \cite{Bai2019,winston_monotone_2020}.
 This is a direct implication of the equilibrium-finding nature of the forward pass, which relies heavily on the behavior of $\bm{f}_{\gls{param}}$.
@@ -87,7 +87,7 @@ The authors propose, then, to penalize large values in this Jacobian during trai
 More specifically, they propose to compute the Frobenius norm\footnotemark of the Jacobian of $\bm{f}_{\gls{param}}$ and add it as a regularization term to the cost function (see sec. \ref{sec:regularization}).
 \footnotetext{The Frobenius norm of a matrix $A$ can be written $\|A\|_F=\sqrt{\sum_{i,j=1}^{n} |a_{i,j}|^2} $.}
 
-\section{Backward}
+\section{Backward}\label{sec:deq-backward}
 
 It was shown in sec. \ref{sec:backprop} that, in order to use a gradient descent algorithm to train a deep learning model, one must compute the derivatives of the cost function with respect to the model's parameters.
 In the case of \gls{DEQ}s, this computation is not straight-forward.
@@ -123,7 +123,7 @@ which allows us to compute the derivative of the \gls{DEQ} model \emph{regardles
 This makes it possible for us to use \emph{any} root-finding algorithm in the forward pass and still optimize the parameters of the model.
 Furthermore, the implicit function theorem can also be applied to find the derivatives of the DEQ model with respect to the input vector, enabling back-propagation even when the \gls{DEQ} model is a component of a larger deep learning model.
 
-\subsection{Implementation}
+\subsection{Implementation}\label{sec:deq-backward-implementation}
 
 One may notice that trading the computation of the derivative of the root-finding algorithm for the computation of a matrix inverse (the Jacobian of $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$) might not be a good idea.
 Luckily, we do not actually need to compute the Jacobian of $D^{EQ}_{\gls{param}}$ to perform back-propagation.

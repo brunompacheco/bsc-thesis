@@ -37,7 +37,7 @@ Then, with a properly constructed cost function and given that the model is comp
 However, note how this approach assumes that $\bm{\phi}$ is known, as it is required to construct a set $X$ with more than just $\left( t_0,\bm{y}_0 \right) $.
 Therefore, in many \gls{IVP} setups, training a deep learning model this way would either be impossible or redundant.
 
-\section{Physics Regularization}
+\section{Physics Regularization}\label{sec:PI}
 
 The naïve approach described above is quite inefficient in that it does not use the information provided by the known $\mathcal{N}$ function.
 This is precisely the turning point for making deep learning a viable option in solving \gls{IVP}s.
