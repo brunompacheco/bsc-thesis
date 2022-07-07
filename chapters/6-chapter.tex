@@ -55,24 +55,47 @@ This implies that both forward and backward operations can occur in the same way
 \] must be multiplied in the computation of the gradients.
 The advantage of this modification is that we can $\bm{z}$ with an arbitrary dimension, which results in arbitrary representational power [REFTO Ghaoui, 2019].
 
-- cost function definition
+The challenge in physics-informing a \gls{DEQ} is to optimize a cost function on its derivatives.
+As it was shown in section \ref{sec:deq-backward}, textcite[REFTO Bai, 2019] have proposed an efficient way to compute the first derivative of a \gls{DEQ} with regards to either its parameters or the input, which allows us to compute the cost function value.
+Yet, an application of gradient descent with such cost function, it is required that the second derivatives of the model (with respect to the input and the parameters) are computable a training time.
+In practice, this implies in the computation of the derivative of the root-finding algorithm used to compute the first derivative, as seen in section \ref{sec:deq-backward-implementation}.\footnotemark
+\footnotetext{In theory, it could be possible to use the implicit function theorem once again to achieve an analytical formula for the second derivative, but this is left for future work.}
+This restricts us to using differentiable root-finding algorithms to compute the first derivative, relying on automatic differentiation tools to compute the second derivative.
 
+Finally, we propose to use a cost function for training a \gls{PIDEQ} model of the form \[
+    J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) + \kappa \left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F
+,\] 
+in which $J_b$, $J_{\mathcal{N}}$ and $\lambda$ are as defined in section \ref{sec:PI}, while $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F$ is the Frobenius norm of the Jacobian of the equilibrium function, as exposed in sec. \ref{sec:deq-jac-reg}, a regularization term weighted by $\kappa \in \R^+$.
+This cost function ensures the physics-informed training from \gls{PINN}s with the regularization term which was shown essential to \gls{DEQ}s.
+
+\section{Training}
+
+Early experiments helped to define the design choices for the training algorithm and the hyperparameters.
+Adam[REFTO Adam paper] was the optimizer of choice, with $\gls{lr}=0.001$ and default configuration.
+The loss weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
+The solver used for the forward pass of the model was the Anderson Acceleration[REFTO Walker, 2011], while best results were found using simple iteration to compute the backward pass.
+% \footnotetext{More complex solvers, even if made differentiable for the automatic differentiability package, had such an increased cost for computing the second derivative that the simple iteration became a much better choice.}
+For both algorithms, the tolerance was set as $\epsilon=10^{-4}$ and they were limited to 200 iterations.
+The initial guess was always $\bm{z}_0=\bm{0}$.
+
+In regard to the data, $X_b$, of course, contained only the initial condition, while $X_{\mathcal{N}}$ contained $10^5$ random samples within $I$.
+The regularization term $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F$ was computed on the input values of both data sets.
 
 \section{Experiments}
 
-\subsection{Data}
-
-- Following the setup of [REFTO Antonelo] 
-- description of collocation points
-- data points are just the initial condition
-
-\subsection{Training Setup}
-
-- the experiments reported below have a set of hyperparameters that were defined from early experimental results
-- report hyperparameters
-- all results were generated in a (INSERT HARDWARE)
+The experiments reported below concern the training of the deep learning model proposed above to solve the \gls{IVP} described in the first section of this chapter.
+The implementation was done using PyTorch [REFTO Paszke, 2019] and is available at \url{https://github.com/brunompacheco/pideq}.
+All experiments were performed on a high-end computer, using an RTX 3060 GPU.
 
 \subsection{Baseline Results}
+
+The baseline result for a \gls{PINN} trained to solve an \gls{IVP} of the Van der Pol oscillator comes from textcite[REFTO Antonello, 2021].
+We replicate these results, that is, a traditional \gls{PINN} with 4 hidden layers with 20 nodes each, following the same setup proposed above (except for the regularization term of the cost function).
+At the same time, textcite[REFTO Ghaoui, 2019] showed that a \gls{DEQ} with $\bm{z}$ containing as many dimensions as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
+Then, our starting \gls{DEQ} is a model with  $\bm{z}\in \R^{80}$.
+
+The results for both models can be seen in figure XXX.
+Given that the \gls{PINN} used was able to "learn" (i.e., to achieve a low IAE on) the task, we expect that the large \gls{DEQ} model also is capable of learning.
 
 - Antonelo trained a PINN to solve this exact same problem with 4x20
 - we replicate this results
