@@ -12,11 +12,11 @@ Therefore, to better understand the nuances and challenges that this family of m
 \section{Introduction and Definition}\label{sec:deq-definition}
 
 In Chapter \ref{ch:deep-learning}, the intuition behind a deep learning model was introduced, that is, to model complex features through the composition of simple-yet-non-linear parametrized functions.
-Besides the network defined in \ref{sec:neural-nets} (which is the base for \gls{PINN}s, as shown in chapter \ref{ch:pinn}), many other deep learning model architectures have been proposed over the years.
-    Some of the architectures with the most surprising results involve composing the models with the same function applied multiple times, i.e., following the notation of chapter \ref{ch:deep-learning}, instead of defining the model as a composition similar to $D_{\gls{param}}=f_{\gls{param}}^{[L]}\circ \cdots \circ f_{\gls{param}}^{[1]}$, these architectures suggest a model similar to $D_{\gls{param}}=f_{\gls{param}}^{[1]}\circ \cdots \circ f_{\gls{param}}^{[1]}$.
-Inspired by this, \textcite{Bai2019} takes a step further, defining the model with a (possibly) infinite stack of the same function, which was named \gls{DEQ}.
+Besides the network defined in Section \ref{sec:neural-nets} (which is the base for \gls{PINN}s, as shown in Chapter \ref{ch:pinn}), many other deep learning model architectures have been proposed over the years.
+    Some of the architectures with the most surprising results involve composing the models with the same function applied multiple times, i.e., following the notation of Chapter \ref{ch:deep-learning}, instead of defining the model as a composition similar to $D_{\gls{param}}=f_{\gls{param}}^{[L]}\circ \cdots \circ f_{\gls{param}}^{[1]}$, these architectures suggest a model similar to $D_{\gls{param}}=f_{\gls{param}}^{[1]}\circ \cdots \circ f_{\gls{param}}^{[1]}$.
+Inspired by this, \textcite{Bai2019} take a step further, defining the model with a (possibly) infinite stack of the same function, which was named \gls{DEQ}.
 
-For the definition of a \gls{DEQ} $D^{EQ}_{\gls{param}}$, let us start with the definition of a deep learning model as proposed in equation \eqref{eq:dl-model}, but imagine it has an infinite number of layers (infinite depth).
+For the definition of a \gls{DEQ} $D^{EQ}_{\gls{param}}$, let us start with the definition of a deep learning model as proposed in Equation \eqref{eq:dl-model}, but imagine it has an infinite number of layers (infinite depth).
 Of course, if each $f^{[i]}_{\gls{param}}$ is a different function (with different parameters), then this would be impossible to fit in memory.
 Therefore, let us assume that $f_{\gls{param}}^{[i]}=f_{\gls{param}},\forall i$, i.e.,
 \begin{equation*}
@@ -34,7 +34,9 @@ If this iterative process converges, that is, if there is a number $N$ such that
 One can say that $z^{\star}$ is an \emph{equilibrium point} of $f_{\gls{param}}$.
 Therefore, the output of a well-behaved (i.e., one that respects the restrictions above presented) infinite-depth deep learning model can be computed by finding its equilibrium point.
 
-The model proposed by \textcite{Bai2019} has a slight change in how it handles the input, feeding the input vector at each layer of the model. More precisely, we can say that a \gls{DEQ} of the form
+The model proposed by \textcite{Bai2019} has a slight change in how it handles the input, feeding the input vector at each layer of the model.
+This means that the equilibrium function $\bm{f}_{\gls{param}}$ has as arguments both an input vector $\bm{x}$ and a state vector $\bm{z}$.
+More precisely, we can say that a \gls{DEQ} of the form
 \begin{align*}
     D^{EQ}_{\gls{param}}: \R^{n} &\longrightarrow \R^{m} \\
     \bm{x} &\longmapsto D^{EQ}_{\gls{param}}(\bm{x}) = \bm{z}^{\star}
@@ -49,31 +51,31 @@ defines its output as the equilibrium point of a function $\bm{f}_{\gls{param}}:
 The most simple way to perform the forward pass of a \gls{DEQ}, i.e., to compute the output of the model given an input, is to iterate the application of the equilibrium function $\bm{f}_{\gls{param}}$ until the current value is close enough to the previous.
 More specifically, given an input $\bm{x}$ and an initial guess $\bm{z}^{[0]}$, the procedure is to update the equilibrium guess $\bm{z}^{[i]}$ by \[
     \bm{z}^{[i]} = \bm{f}_{\gls{param}}(\bm{x}, \bm{z}^{[i-1]})
-\] until $\|\bm{z}^{[i]}-\bm{z}^{[i+1]}\|$ is small enough.
-This approach is the \emph{simple iteration} method\cite{suli_introduction_2003}.
+\] until $\|\bm{z}^{[i]}-\bm{z}^{[i-1]}\|$ is small enough.
+This approach is the \emph{simple iteration} method~\cite{suli_introduction_2003}.
 Even though this approach is very intuitive given our derivation of a \gls{DEQ} from an infinite-depth model, it is quite limited.
 First because it can be quite slow, i.e., it can take many iterations until convergence is achieved, being very sensitive to the starting point.
-But mostly because this approach only finds equilibrium points if the function of interest is a contraction between the starting point and the equilibrium point\cite{suli_introduction_2003}.
+But mostly because this approach only finds equilibrium points if the function of interest is a contraction between the starting point and the equilibrium point~\cite{suli_introduction_2003}.
 
 This limitation can be easily visualized by trying to use the simple iteration method to find the equilibrium of $f(z) = 2z-1$.
 The function clearly has an equilibrium at $z=1$.
 Yet, at any starting point \emph{except} the equilibrium, the simple iteration method will diverge.
 
-Luckily, we know from equation \eqref{eq:z-star} that the equilibrium point, for a given input, is also the root of a function $\bm{g}_{\bm{x}}(\bm{z}) = \bm{f}_{\gls{param}}(\bm{x},\bm{z}) - \bm{z}$.
+Luckily, we know from Equation \eqref{eq:z-star} that the equilibrium point, for a given input, is also the root of a function $\bm{g}_{\bm{x}}(\bm{z}) = \bm{f}_{\gls{param}}(\bm{x},\bm{z}) - \bm{z}$.
 This means that using any root-finding algorithm on $\bm{g}_{\bm{x}}$ yields $\bm{z}^{\star}$, the desired output.
 Perhaps the most classical root-finding algorithm is \emph{Newton's method}, which proposes to iterate over the solution space given \[
-    \bm{z}^{[i+1]} = \bm{z}^{[i]} - \left( \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \right)^{-1} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})
+    \bm{z}^{[i+1]} = \bm{z}^{[i]} - \left( \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}  \right)^{-1} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})
 ,\] 
-in which $\frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}$ represents the Jacobian of  $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$\footnotemark.
+in which $\frac{d} {d\bm{z}} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ represents the Jacobian of  $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$\footnotemark.
 \footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses instead in solving $ \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ instead.}
-Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster\cite{suli_introduction_2003}.
+Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster~\cite{suli_introduction_2003}.
 
 \subsection{Practical Considerations}
 
-Most modern algorithms that help us find the desired equilibrium point are either modifications of the simple iteration algorithm (e.g., Anderson Acceleration\cite{walker_anderson_2011}) or modifications of Newton's method (e.g., Broyden's method\cite{broyden_class_1965}).
+Most modern algorithms that help us find the desired equilibrium point are either modifications of the simple iteration algorithm (e.g., Anderson Acceleration~\cite{walker_anderson_2011}) or modifications of Newton's method (e.g., Broyden's method~\cite{broyden_class_1965}).
 Nevertheless, all these methods require an initial guess $\bm{z}^{[0]}$ and a tolerance $\epsilon>0$. 
 The initial guess, or starting point, is clearly necessary, as it is natural for iterative procedures, and is usual to find it as $\bm{z}^{[0]}\gets \bm{0}$ by default.
-The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is "good enough", i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i+1]}\|<\epsilon$ then it is considered that the equilibrium has been reached.
+The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is ``good enough,'' i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i-1]}\|<\epsilon$ then it is considered that the equilibrium has been reached.
 Furthermore, it is also usual to define a limit for the number of iterations, avoiding that the algorithms run for an indefinite amount of time.
 
 \subsection{Jacobian Regularization}\label{sec:deq-jac-reg}
@@ -84,12 +86,12 @@ Intuitively, the complexity of $\bm{f}_{\gls{param}}$, which depends heavily on 
 
 In a very recent work, \textcite{bai_stabilizing_2021} discussed how the Jacobian of $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$ is related to both problems.
 The authors propose, then, to penalize large values in this Jacobian during training and show how this increases robustness and convergence speed of \gls{DEQ}s, reducing training and inference times.
-More specifically, they propose to compute the Frobenius norm\footnotemark of the Jacobian of $\bm{f}_{\gls{param}}$ and add it as a regularization term to the cost function (see sec. \ref{sec:regularization}).
+More specifically, they propose to compute the Frobenius norm\footnotemark of the Jacobian of $\bm{f}_{\gls{param}}$ and add it as a regularization term to the cost function (see Sec. \ref{sec:regularization}).
 \footnotetext{The Frobenius norm of a matrix $A$ can be written $\|A\|_F=\sqrt{\sum_{i,j=1}^{n} |a_{i,j}|^2} $.}
 
 \section{Backward}\label{sec:deq-backward}
 
-It was shown in sec. \ref{sec:backprop} that, in order to use a gradient descent algorithm to train a deep learning model, one must compute the derivatives of the cost function with respect to the model's parameters.
+It was shown in Sec. \ref{sec:backprop} that, in order to use a gradient descent algorithm to train a deep learning model, one must compute the derivatives of the cost function with respect to the model's parameters.
 In the case of \gls{DEQ}s, this computation is not straight-forward.
 Given $D^{EQ}_{\gls{param}}:\R^{n}\to \R^{m}$ a \gls{DEQ} as defined above, computing the derivative of a cost function $J:\Omega\to \R$ with respect to the parameters can be seen as \[
     \nabla_{\gls{param}} J\left( \gls{param} \right) = \nabla_{\bm{z}^{\star}} J(D^{EQ}_{\gls{param}}(\bm{x})) \frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d\gls{param}}
@@ -127,7 +129,7 @@ Furthermore, the implicit function theorem can also be applied to find the deriv
 
 One may notice that trading the computation of the derivative of the root-finding algorithm for the computation of a matrix inverse (the Jacobian of $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$) might not be a good idea.
 Luckily, we do not actually need to compute the Jacobian of $D^{EQ}_{\gls{param}}$ to perform back-propagation.
-As discussed in section \ref{sec:backprop}, all we need is to compute a vector-Jacobian product of the form $\bm{u}^T\frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d \gls{param}}$, which, in turn, can also be reduced to computing other vector-Jacobian products, following equation \eqref{eq:deq-jacobian}.
+As discussed in Section \ref{sec:backprop}, all we need is to compute a vector-Jacobian product of the form $\bm{u}^T\frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d \gls{param}}$, which, in turn, can also be reduced to computing other vector-Jacobian products, following Equation \eqref{eq:deq-jacobian}.
 
 It is clear that the challenge lies in computing the vector-Jacobian product $\bm{u}^T\left[ \frac{d \bm{f}_{\gls{param}}}{d \bm{z}} - I \right]^{-1}$ efficiently, as a matrix inversion is oftentimes too costly.
 Yet, we can see that
