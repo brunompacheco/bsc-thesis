@@ -75,7 +75,7 @@ Adam[REFTO Adam paper] was the optimizer of choice, with $\gls{lr}=0.001$ and de
 The loss weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
 The solver used for the forward pass of the model was the Anderson Acceleration[REFTO Walker, 2011], while best results were found using simple iteration to compute the backward pass.
 % \footnotetext{More complex solvers, even if made differentiable for the automatic differentiability package, had such an increased cost for computing the second derivative that the simple iteration became a much better choice.}
-For both algorithms, the tolerance was set as $\epsilon=10^{-4}$ and they were limited to 200 iterations.
+For both algorithms, the tolerance was set as $\varepsilon=10^{-4}$ and they were limited to 200 iterations.
 The initial guess was always $\bm{z}_0=\bm{0}$.
 
 In regard to the data, $X_b$, of course, contained only the initial condition, while $X_{\mathcal{N}}$ contained $10^5$ random samples within $I$.
@@ -151,13 +151,54 @@ The model with 5 states takes more epochs to converge, intuitively this can be a
 Following the previous results, the impact of the Jacobian regularization term in the cost function is explored for the model with 5 states.
 From the work of textcite[REFTO Bai, 2021], it is expected that this regularization term is impactful in the results.
 We verify this by training \gls{PIDEQ} models without such term ($\kappa=0$) and with a reduced importance ($\kappa=0.1$).
-The results are shown in figure XXX.  % TODO make jac regularization figure
-The experiments showed that training without the regularization is ineffective, not achieving a satisfactory result within the training budget and taking much longer to train (XXX ms per epoch).  % TODO get training time for each epoch
+The results are shown in figure XXX.
+The experiments confirm the theory, in which training without the regularization is ineffective, not achieving a satisfactory result within the training budget and taking much longer to train (XXX ms per epoch).  % TODO get training time for each epoch
 
-\begin{figure}[h]
+\begin{figure}[h] % TODO
     \centering
     \includegraphics[width=0.8\textwidth]{images/exp_4_iae.png}
     \caption{Impact of different $\kappa$ values.}
     \label{fig:images-exp_4_iae-png}
 \end{figure}
+
+\subsection{Solver}
+
+The solver used to compute the first derivative of the model was fixed as the simple iteration method.
+Nevertheless, the impact of the solver used for the forward pass can be explored.
+Since the derivative is computed implicitly, solver's impact in the inference and training speed is more clear.
+Yet, as the algorithm of different solvers define different paths through the domain to find an equilibrium point, different equilibria can be found given distinct solvers, which can change the performance of the model with respect to error levels. 
+
+In fact, this is observed in the results of the experiments comparing Anderson's Acceleration with simple iteration and Broyden's method[REFTO Broyden] for the forward pass, as seen in figure XXX.
+Models using Broyden's method achieve a smaller error, but the iterations took much longer, with an average value of XXX ms in comparison to YYY ms using Anderson Acceleration.  % TODO compute times
+At the same time, using simple iteration resulted in a performance as good as using Anderson Acceleration, but with an average epoch time of ZZZ ms.
+Of course, as was discussed in section \ref{sec:deq-forward}, simple iteration is less reliable than the other two methods, yet, seems to work well for the problem at hand.
+
+\begin{figure}[h] % TODO
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/exp_5_iae.png}
+    \caption{Performance of \gls{PIDEQ} models with 5 states using different solvers in the forward pass.}
+    \label{fig:images-exp_5_iae-png}
+\end{figure}
+
+\subsection{Solver Tolerance}
+
+As the previous experiment showed, the simple iteration was the best approach, given the trade-off between prediction quality and training speed.
+Then, the $\varepsilon$ parameter is explored next.
+Intuitively, it is expected that a smaller tolerance imply in a slower training but a smaller error.
+The results with models trained using the simple iteration algorithm with $\varepsilon \in \left[ 10^{-2}, 10^{-4},10^{-6} \right] $, as exposed in figure XXX, confirm that the tolerance is indeed impactful, as increasing the "default" tolerance (of $10^{-4}$) tends to increase the error of the trained models.
+At the same time, a decreased tolerance did not provide improve the performance, possibly pointing that the default value is already sufficient for the problem.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/exp_6_iae.png}
+    \caption{Performance of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver.}
+    \label{fig:images-exp_6_iae-png}
+\end{figure}
+
+\section{Final Model}
+
+- "best" selection of hyperparameters
+- resume of performance (time and error)
+- compare to PINN
+- show prediction against RK4
 
