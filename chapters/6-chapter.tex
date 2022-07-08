@@ -53,7 +53,7 @@ Notice that this formulation is very close to the one used in chapter \ref{ch:de
 This implies that both forward and backward operations can occur in the same way, except that the term  \[
     \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C^T
 \] must be multiplied in the computation of the gradients.
-The advantage of this modification is that we can $\bm{z}$ with an arbitrary dimension, which results in arbitrary representational power [REFTO Ghaoui, 2019].
+The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power [REFTO Ghaoui, 2019].
 
 The challenge in physics-informing a \gls{DEQ} is to optimize a cost function on its derivatives.
 As it was shown in section \ref{sec:deq-backward}, textcite[REFTO Bai, 2019] have proposed an efficient way to compute the first derivative of a \gls{DEQ} with regards to either its parameters or the input, which allows us to compute the cost function value.
@@ -93,11 +93,9 @@ A budget of 50000 epochs was chosen.
 
 The baseline result for a \gls{PINN} trained to solve an \gls{IVP} of the Van der Pol oscillator comes from textcite[REFTO Antonello, 2021].
 We replicate these results, that is, a traditional \gls{PINN} with 4 hidden layers with 20 nodes each, following the same setup proposed above (except for the regularization term of the cost function).
-At the same time, textcite[REFTO Ghaoui, 2019] showed that a \gls{DEQ} with $\bm{z}$ containing as many dimensions as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
-Then, our starting \gls{DEQ} is a model with  $\bm{z}\in \R^{80}$.
-
+At the same time, textcite[REFTO Ghaoui, 2019] showed that a \gls{DEQ} with as many states as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
+Then, our starting \gls{DEQ} is a model with 80 states.
 The results for both models can be seen in figure XXX.
-Given that the \gls{PINN} used was able to "learn" (i.e., to achieve a low IAE on) the task, we expect that the large \gls{DEQ} model also is capable of learning.
 
 \begin{figure}[h]
     \centering
@@ -106,15 +104,60 @@ Given that the \gls{PINN} used was able to "learn" (i.e., to achieve a low IAE o
     \label{fig:images-exp_1_iae-pdf}
 \end{figure}
 
-- Antonelo trained a PINN to solve this exact same problem with 4x20
-- we replicate this results
-- theoretical baseline is that a DEQ has at least as much representational power as a net with the same amount of nodes in total, so a DEQ with 80 states should be able to learn the task
-- show results
+Given that the \gls{PINN} was able to "learn" (i.e., to achieve a low IAE on) the task, we expect that the large \gls{PIDEQ} model also is capable of learning.
+Even though the latter achieves a low IAE as well, it is much slower, remaining, by the end of the training, a significant performance gap.
+Besides being much more complex (in its structure) than the feedforward network, the \gls{PIDEQ} also has many more parameters, in a total of 6802 against 1342.
+This results in a big difference in the effective training time: the \gls{PINN}s took, on average, 11\,ms for each epoch, while the \gls{PIDEQ}s took 209\,ms.
 
 \subsection{Number of States}
 
-- show sparse matrix and how it points out to a smaller model
-- process repeated
-- while a 5 states DEQ can learn the task, it takes longer to converge
+A deeper look at the $A$ matrix of the baseline \gls{PIDEQ}s after training, as illustrated in figure \ref{fig:baseline-pideq-A}, shows that many of the rows are practically zero vectors, in comparison to the remaining.
+Having "empty" rows implies that the states associated with these rows are not effectively contributing to the results, that is, given the parameters of this model, a smaller model could be constructed with the same result.  
 
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+	\vspace{0pt}\includegraphics{images/exp_1_matplot.pdf}
+	\caption{Magnitude of the elements of $A$. White is 0.}
+    \end{subfigure}
+    \begin{subfigure}[t]{.45\textwidth}
+	\vspace{0pt}\includegraphics{images/exp_1_hist.pdf}
+	\caption{Histogram of row's $\ell_1$ norm.}
+    \end{subfigure}
+    \caption{$A$ matrix of the baseline \gls{PIDEQ} after training. From all models trained, the one with median final performance was used to generate the graphics.}
+    \label{fig:baseline-pideq-A}
+\end{figure}
+
+
+This analysis motivates the training of models with less dimensions.
+The experiment was defined as an iterative procedure based on the intuition above.
+A new model was trained with fewer states, its $A$ matrix was analysed, and a new model was proposed with even fewer states if there were still empty rows in the $A$ matrix.
+This procedure was repeated for models with 40, 20, 10 and 5 states.
+The models with 5 states showed no "empty rows" in the $A$ matrix, as shown in figure XXX, but still a model with only two states was trained.  % TODO make A matrix figure for #z=5
+The results can be seen in figure \ref{fig:images-exp_2_iae-png}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/exp_2_iae.png}
+    \caption{IAE of the models trained with fewer states.}
+    \label{fig:images-exp_2_iae-png}
+\end{figure}
+
+The smaller models achieve even better results than the baseline and converge much faster, except for the smallest one, which was not able to learn within the training budget, reinforcing the intuition above exposed.
+The model with 5 states takes more epochs to converge, intuitively this can be attributed to it being close to its representational limit, but as it is much smaller (only XXX parameters), it trains faster than the larger ones.  % TODO get number of parameters for #z=5 model
+
+\subsection{Jacobian Regularization}
+
+Following the previous results, the impact of the Jacobian regularization term in the cost function is explored for the model with 5 states.
+From the work of textcite[REFTO Bai, 2021], it is expected that this regularization term is impactful in the results.
+We verify this by training \gls{PIDEQ} models without such term ($\kappa=0$) and with a reduced importance ($\kappa=0.1$).
+The results are shown in figure XXX.  % TODO make jac regularization figure
+The experiments showed that training without the regularization is ineffective, not achieving a satisfactory result within the training budget and taking much longer to train (XXX ms per epoch).  % TODO get training time for each epoch
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/exp_4_iae.png}
+    \caption{Impact of different $\kappa$ values.}
+    \label{fig:images-exp_4_iae-png}
+\end{figure}
 
