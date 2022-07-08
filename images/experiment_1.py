@@ -1,5 +1,6 @@
 import wandb
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd 
 import torch
 
@@ -45,59 +46,59 @@ def get_runs_data(runs, keys=None):
     return all_df, histories
 
 if __name__ == '__main__':
-    ### IAE PLOT ###
-    api = wandb.Api()
+    # ### IAE PLOT ###
+    # api = wandb.Api()
 
-    keys = ['val_loss_iae', 'train_time', 'val_time']
+    # keys = ['val_loss_iae', 'train_time', 'val_time']
 
-    df_pinn, pinn_histories = get_runs_data(
-        api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
-        keys=keys
-    )
-    df_pideq, pideq_histories = get_runs_data(
-        api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
-        keys=keys
-    )
+    # df_pinn, pinn_histories = get_runs_data(
+    #     api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
+    #     keys=keys
+    # )
+    # df_pideq, pideq_histories = get_runs_data(
+    #     api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
+    #     keys=keys
+    # )
 
-    fig, ax = plt.subplots(1,1)
-    fig.set_size_inches(3,3)
+    # fig, ax = plt.subplots(1,1)
+    # fig.set_size_inches(3,3)
 
-    pinn_iae_low = pinn_histories.groupby('epoch')['val_loss_iae'].min()
-    pinn_iae_high = pinn_histories.groupby('epoch')['val_loss_iae'].max()
-    pinn_iae = pinn_histories.groupby('epoch')['val_loss_iae'].mean()
+    # pinn_iae_low = pinn_histories.groupby('epoch')['val_loss_iae'].min()
+    # pinn_iae_high = pinn_histories.groupby('epoch')['val_loss_iae'].max()
+    # pinn_iae = pinn_histories.groupby('epoch')['val_loss_iae'].mean()
 
-    pideq_iae_low = pideq_histories.groupby('epoch')['val_loss_iae'].min()
-    pideq_iae_high = pideq_histories.groupby('epoch')['val_loss_iae'].max()
-    pideq_iae = pideq_histories.groupby('epoch')['val_loss_iae'].mean()
+    # pideq_iae_low = pideq_histories.groupby('epoch')['val_loss_iae'].min()
+    # pideq_iae_high = pideq_histories.groupby('epoch')['val_loss_iae'].max()
+    # pideq_iae = pideq_histories.groupby('epoch')['val_loss_iae'].mean()
 
-    ax.fill_between(pinn_iae_low.index, pinn_iae_low, pinn_iae_high, alpha=.5, linewidth=0)
-    ax.plot(pinn_iae, label='PINN')
+    # ax.fill_between(pinn_iae_low.index, pinn_iae_low, pinn_iae_high, alpha=.5, linewidth=0)
+    # ax.plot(pinn_iae, label='PINN')
 
-    ax.fill_between(pideq_iae_low.index, pideq_iae_low, pideq_iae_high, alpha=.5, linewidth=0)
-    ax.plot(pideq_iae, label='PIDEQ')
+    # ax.fill_between(pideq_iae_low.index, pideq_iae_low, pideq_iae_high, alpha=.5, linewidth=0)
+    # ax.plot(pideq_iae, label='PIDEQ')
 
-    # ax.set_title('Performance of baseline models')
-    ax.set_ylabel('IAE')
-    ax.set_xlabel('Epoch')
-    ax.set_xlim([0,5e4])
-    # ax.set_ylim([0,0.5])
-    # ax.set_ylim([1e-4,1e-1])
-    ax.set_yscale('log')
+    # # ax.set_title('Performance of baseline models')
+    # ax.set_ylabel('IAE')
+    # ax.set_xlabel('Epoch')
+    # ax.set_xlim([0,5e4])
+    # # ax.set_ylim([0,0.5])
+    # # ax.set_ylim([1e-4,1e-1])
+    # ax.set_yscale('log')
 
-    ax.legend()
-    ax.grid()
+    # ax.legend()
+    # ax.grid()
 
-    plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
+    # # plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
     # plt.show()
 
-    print("Average training pass time (per epoch):")
-    print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
-    print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
-    print("Average validation pass time (per epoch):")
-    print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
-    print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
+    # print("Average training pass time (per epoch):")
+    # print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
+    # print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
+    # print("Average validation pass time (per epoch):")
+    # print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
+    # print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
 
-    # ### VdP PLOT ###
+    ### VdP PLOT ###
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # T = 2
@@ -118,12 +119,36 @@ if __name__ == '__main__':
 
     # net = load_from_wandb(PIDEQ(T, n_out=2, n_states=80), 'zj7r8add', model_fname='model_last').to(device)
     # net.eval()
+    # pideq_B = net.B.weight.cpu().detach().numpy()
+    # pideq_n_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
     # y_pred_pideq = net(t).cpu().detach().numpy()
+
+    # fig, ax = plt.subplots(1,1)
+    # fig.set_size_inches(3,3)
+
+    # ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
+    # ax.set_xticks([])
+    # ax.set_yticks([])
+
+    # plt.savefig('exp_1_matplot.pdf', bbox_inches='tight')
+    # # plt.show()
+
+    # fig, ax = plt.subplots(1,1)
+    # fig.set_size_inches(3,3)
+
+    # ax.hist(np.abs(pideq_B).sum(axis=1), bins=20)
+
+    # plt.savefig('exp_1_hist.pdf', bbox_inches='tight')
+    # # plt.show()
 
     # net = load_from_wandb(PINN(T, n_out=2, n_hidden=4, n_nodes=20), 'm5fa0h4m', model_fname='model_last').to(device)
     # net.eval()
-
+    # pinn_n_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
     # y_pred_pinn = net(t).cpu().detach().numpy()
+
+    # print("Number of parameters:")
+    # print(f"\tPINN = {pinn_n_params}")
+    # print(f"\tPIDEQ = {pideq_n_params}")
 
     # fig, ax = plt.subplots(1,1)
     # fig.set_size_inches(3,3)
