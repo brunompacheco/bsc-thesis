@@ -46,7 +46,7 @@ defines its output as the equilibrium point of a function $\bm{f}_{\gls{param}}:
     \bm{z}^{\star} = \bm{f}_{\gls{param}}\left( \bm{x},\bm{z}^{\star} \right) 
 .\end{equation}
 
-\section{Forward}
+\section{Forward}\label{sec:deq-forward}
 
 The most simple way to perform the forward pass of a \gls{DEQ}, i.e., to compute the output of the model given an input, is to iterate the application of the equilibrium function $\bm{f}_{\gls{param}}$ until the current value is close enough to the previous.
 More specifically, given an input $\bm{x}$ and an initial guess $\bm{z}^{[0]}$, the procedure is to update the equilibrium guess $\bm{z}^{[i]}$ by \[
@@ -73,9 +73,9 @@ Newton's method not only has guaranteed convergence for a broader class of funct
 \subsection{Practical Considerations}
 
 Most modern algorithms that help us find the desired equilibrium point are either modifications of the simple iteration algorithm (e.g., Anderson Acceleration~\cite{walker_anderson_2011}) or modifications of Newton's method (e.g., Broyden's method~\cite{broyden_class_1965}).
-Nevertheless, all these methods require an initial guess $\bm{z}^{[0]}$ and a tolerance $\epsilon>0$. 
+Nevertheless, all these methods require an initial guess $\bm{z}^{[0]}$ and a tolerance $\varepsilon>0$. 
 The initial guess, or starting point, is clearly necessary, as it is natural for iterative procedures, and is usual to find it as $\bm{z}^{[0]}\gets \bm{0}$ by default.
-The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is ``good enough,'' i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i-1]}\|<\epsilon$ then it is considered that the equilibrium has been reached.
+The tolerance is necessary to define a stopping condition for the algorithm, when the approximation for the equilibrium point is ``good enough,'' i.e., if $\|\bm{z}^{[i]}-\bm{z}^{[i-1]}\|<\varepsilon$ then it is considered that the equilibrium has been reached.
 Furthermore, it is also usual to define a limit for the number of iterations, avoiding that the algorithms run for an indefinite amount of time.
 
 \subsection{Jacobian Regularization}\label{sec:deq-jac-reg}
