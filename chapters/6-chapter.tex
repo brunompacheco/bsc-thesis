@@ -195,10 +195,31 @@ At the same time, a decreased tolerance did not provide improve the performance,
     \label{fig:images-exp_6_iae-png}
 \end{figure}
 
-\section{Final Model}
+\subsection{Final Model}
 
-- "best" selection of hyperparameters
-- resume of performance (time and error)
-- compare to PINN
-- show prediction against RK4
+In comparison to the baseline, the previous experiments showed how a much smaller model can be used and using the simple iteration method, which provides a faster training.
+Figure XXX shows the performance of this final model in comparison to the baselines.
+In comparison to the baseline, there was a significant decrease in the error but the biggest impact was in training time, which decreased from XXX ms to YYY ms for epoch on average. 
+The performance of the final models can be assessed visually, in comparison to \gls{RK4}, through the graphics in figure YYY.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/final_iae.png}
+    \caption{...}  % TODO
+    \label{fig:final-iae}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+	\includegraphics{images/final_vdp_y1.pdf}
+	\caption{}
+    \end{subfigure}
+    \begin{subfigure}[t]{.45\textwidth}
+	\includegraphics{images/final_vdp_y2.pdf}
+	\caption{}
+    \end{subfigure}
+    \caption{Prediction of \gls{PINN} and \gls{PIDEQ} in comparison to the reference approximation resulting from \gls{RK4}. Both models presented the median performance in the respective experiments.}
+    \label{fig:final-vdp}
+\end{figure}
 
