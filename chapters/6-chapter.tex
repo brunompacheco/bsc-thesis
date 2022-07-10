@@ -72,7 +72,7 @@ This cost function ensures the physics-informed training from \gls{PINN}s with t
 
 Early experiments helped to define the design choices for the training algorithm and the hyperparameters.
 Adam[REFTO Adam paper] was the optimizer of choice, with $\gls{lr}=0.001$ and default configuration.
-The loss weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
+The cost weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
 The solver used for the forward pass of the model was the Anderson Acceleration[REFTO Walker, 2011], while best results were found using simple iteration to compute the backward pass.
 % \footnotetext{More complex solvers, even if made differentiable for the automatic differentiability package, had such an increased cost for computing the second derivative that the simple iteration became a much better choice.}
 For both algorithms, the tolerance was set as $\varepsilon=10^{-4}$ and they were limited to 200 iterations.
@@ -95,13 +95,13 @@ The baseline result for a \gls{PINN} trained to solve an \gls{IVP} of the Van de
 We replicate these results, that is, a traditional \gls{PINN} with 4 hidden layers with 20 nodes each, following the same setup proposed above (except for the regularization term of the cost function).
 At the same time, textcite[REFTO Ghaoui, 2019] showed that a \gls{DEQ} with as many states as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
 Then, our starting \gls{DEQ} is a model with 80 states.
-The results for both models can be seen in figure XXX.
+The results for both models can be seen in figure \ref{fig:baseline-iae}.
 
 \begin{figure}[h]
     \centering
 	\includegraphics{images/exp_1_iae.pdf}
     \caption{Learning curve for the baseline models trained on the \gls{IVP} for the Van der Pol oscillator.}
-    \label{fig:images-exp_1_iae-pdf}
+    \label{fig:baseline-iae}
 \end{figure}
 
 Given that the \gls{PINN} was able to "learn" (i.e., to achieve a low IAE on) the task, we expect that the large \gls{PIDEQ} model also is capable of learning.
@@ -122,44 +122,63 @@ Having "empty" rows implies that the states associated with these rows are not e
     \end{subfigure}
     \begin{subfigure}[t]{.45\textwidth}
 	\vspace{0pt}\includegraphics{images/exp_1_hist.pdf}
-	\caption{Histogram of row's $\ell_1$ norm.}
+	\caption{Histogram of $\ell_1$ norm of the rows of $A$.}
     \end{subfigure}
     \caption{$A$ matrix of the baseline \gls{PIDEQ} after training. From all models trained, the one with median final performance was used to generate the graphics.}
     \label{fig:baseline-pideq-A}
 \end{figure}
 
-
-This analysis motivates the training of models with less dimensions.
+This analysis motivates the training of models with fewer states.
 The experiment was defined as an iterative procedure based on the intuition above.
 A new model was trained with fewer states, its $A$ matrix was analysed, and a new model was proposed with even fewer states if there were still empty rows in the $A$ matrix.
 This procedure was repeated for models with 40, 20, 10 and 5 states.
 The models with 5 states showed no "empty rows" in the $A$ matrix, as shown in figure XXX, but still a model with only two states was trained.  % TODO make A matrix figure for #z=5
-The results can be seen in figure \ref{fig:images-exp_2_iae-png}.
+The results can be seen in figure \ref{fig:states-iae}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/exp_2_iae.png}
-    \caption{IAE of the models trained with fewer states.}
-    \label{fig:images-exp_2_iae-png}
+    \includegraphics{images/exp_2_iae.pdf}
+    \caption{Learning curve of the models trained with fewer states.}
+    \label{fig:states-iae}
 \end{figure}
 
 The smaller models achieve even better results than the baseline and converge much faster, except for the smallest one, which was not able to learn within the training budget, reinforcing the intuition above exposed.
-The model with 5 states takes more epochs to converge, intuitively this can be attributed to it being close to its representational limit, but as it is much smaller (only XXX parameters), it trains faster than the larger ones.  % TODO get number of parameters for #z=5 model
+The model with 5 states takes more epochs to converge, intuitively this can be attributed to it being close to its representational limit, but as it is much smaller (with only 52 parameters), it trains faster than the larger ones.
+Table \ref{tab:n-states-times} exposes the times for each model.
+
+\begin{table}[h]
+    \centering
+    \caption{Median training and validation times per epoch for \gls{PIDEQ} models with different number of states.}
+    \label{tab:n-states-times}
+    \begin{tabular}{ccc}
+	\toprule
+	\textbf{Number of States} & \textbf{Train} [ms] & \textbf{Validation} [ms] \\ \midrule
+	80       & 99.1       & 2.1             \\
+	40       & 51.2       & 1.7             \\
+	20       & 37.1       & 1.2             \\
+	10       & 29.7       & 1.1             \\
+	5        & 26.0       & 1.2             \\
+	2        & 24.8       & 1.2             \\ \bottomrule
+    \end{tabular}
+\end{table}
 
 \subsection{Jacobian Regularization}
 
 Following the previous results, the impact of the Jacobian regularization term in the cost function is explored for the model with 5 states.
 From the work of textcite[REFTO Bai, 2021], it is expected that this regularization term is impactful in the results.
 We verify this by training \gls{PIDEQ} models without such term ($\kappa=0$) and with a reduced importance ($\kappa=0.1$).
-The results are shown in figure XXX.
-The experiments confirm the theory, in which training without the regularization is ineffective, not achieving a satisfactory result within the training budget and taking much longer to train (XXX ms per epoch).  % TODO get training time for each epoch
+The results are shown in figure \ref{fig:jac-lamb-iae}.
 
 \begin{figure}[h] % TODO
     \centering
-    \includegraphics[width=0.8\textwidth]{images/exp_4_iae.png}
-    \caption{Impact of different $\kappa$ values.}
-    \label{fig:images-exp_4_iae-png}
+    \includegraphics[width=0.8\textwidth]{images/exp_4_iae.pdf}
+    \caption{Learning curve for \gls{PIDEQ}s with different $\kappa$ values. Only one model was trained with $\kappa=0$ because the training took over 30 times longer.}
+    \label{fig:jac-lamb-iae}
 \end{figure}
+
+The experiments confirm the theory in what training without the regularization is ineffective.
+Not using the regularization term resulted in models not learning the task and taking over 30 times longer to train.
+At the same time, increasing or decreasing the impact of the regularization term in the cost function resulted in worse models overall.
 
 \subsection{Solver}
 
@@ -197,15 +216,18 @@ At the same time, a decreased tolerance did not provide improve the performance,
 
 \subsection{Final Model}
 
-In comparison to the baseline, the previous experiments showed how a much smaller model can be used and using the simple iteration method, which provides a faster training.
+In comparison to the baseline, the previous experiments showed how a much smaller model can be used and with the simple iteration method, which provides a faster training.
 Figure XXX shows the performance of this final model in comparison to the baselines.
-In comparison to the baseline, there was a significant decrease in the error but the biggest impact was in training time, which decreased from XXX ms to YYY ms for epoch on average. 
-The performance of the final models can be assessed visually, in comparison to \gls{RK4}, through the graphics in figure YYY.
+In comparison to the initial \gls{PIDEQ}, there was a significant decrease in the error but the biggest impact was in training time, which decreased from XXX ms to YYY ms for epoch on average. 
+The \gls{PIDEQ} with only 5 states also has significantly fewer parameters (52), once the number of parameters grows quadratically with the number of states.
+
+For a fair comparison, \gls{PINN} models were trained with only 52 parameters, i.e., with only two hidden layers, each with dimension 5.
+The performance of the final model and the small \gls{PINN} model can be assessed in figure \ref{fig:final-iae}, in comparison to the baseline models. The final models can be assessed visually, in comparison to \gls{RK4}, through the graphics in figure \ref{fig:final-vdp}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/final_iae.png}
-    \caption{...}  % TODO
+    \includegraphics[width=0.8\textwidth]{images/final_iae.pdf}
+    \caption{Learning curve of the final models in comparison to the baselines. "Final PINN" are the small \gls{PINN} models, with only 52 parameters. "Final PIDEQ" are the \gls{PIDEQ} models with 5 states and using the simple iteration method as solver for the forward pass.}
     \label{fig:final-iae}
 \end{figure}
 
@@ -221,5 +243,18 @@ The performance of the final models can be assessed visually, in comparison to \
     \end{subfigure}
     \caption{Prediction of \gls{PINN} and \gls{PIDEQ} in comparison to the reference approximation resulting from \gls{RK4}. Both models presented the median performance in the respective experiments.}
     \label{fig:final-vdp}
+\end{figure}
+
+Both final models take around the same number of epochs to converge, but the \gls{PINN} model is able to achieve much smaller error, almost as low as the baseline model.
+The \gls{PINN} models, though, have a smaller training time.
+A breakdown of the time per epoch spent by each approach can be seen in figure \ref{fig:final-times}.
+It is surprising how the \gls{PIDEQ} models did not take longer than \gls{PINN} models to compute the gradients.
+In fact, the biggest impact was on the forward pass, which contributes almost alone to the time difference, overcoming the unexpected efficiency of the cost function computation. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{images/final_times.pdf}
+    \caption{Breakdown of median time per epoch for the final \gls{PIDEQ} and the small \gls{PINN}. "forward" represents the time necessary to compute the output given the input during the training time (with gradients computation enable). "cost" indicates the time necessary to compute the cost function, given the predictions. "backwards" is the time necessary to back-propagate the cost to the parameters.}
+    \label{fig:final-times}
 \end{figure}
 
