@@ -1,3 +1,18 @@
 % ----------------------------------------------------------
-\chapter{Conclusion}\label{ch:conclusion}
+\chapter{Discussion}\label{ch:conclusion}
 % ----------------------------------------------------------
+
+- the task is about extracting complex functions out of low-dimensional data, not usual, given the current trends of extracting simpler functions out of high-dimensional data
+
+- We have successfully implemented and trained a physics-informed DEQ model which was able to learn to solve IVPs for the VdP oscillator
+- Physics regularization, or any gradient regularization, has never been studied for DEQs
+    - they only have first order derivatives well-defined
+- the experimental results showed that differentiating through the solver used for computing the first derivative did not have a big impact in the speed of training, computing the equilibrium is still the most costly operation and the biggest difference in comparison to PINN
+    - this can be different for larger models, with more complex equilibrium functions, as this would change not only the forward pass but also the Jacobian used by the backward pass
+
+- experimental results with DEQ showed a much slower training and a larger error in comparison to the PINN model, even though both presented very small errors in the proposed problems, to the point of being almost undistinguishable visually
+- this points out that the inner structure of DEQ models is not very useful for learning to approximate this type of functions
+- we hypothesize that, given DEQ being an approximation to infinite-depth models, it is more suitable to problems that benefit from deeper models
+    - however, even a shallow deep feedforward network was able to properly approximate the function
+
+
