@@ -11,12 +11,14 @@ from pideq.net import PINN, PIDEQ
 from pideq.utils import load_from_wandb
 
 plt.rcParams.update({'font.size': 10})
+plt.style.use('tableau-colorblind10')
 
 
 def get_runs_data(runs, keys=None):
     summary_list = [] 
     config_list = [] 
     name_list = [] 
+    id_list = [] 
     histories = []
     for run in runs: 
         # run.summary are the output key/values like accuracy.
@@ -30,6 +32,7 @@ def get_runs_data(runs, keys=None):
 
         # run.name is the name of the run.
         name_list.append(run.name)       
+        id_list.append(run.id)       
 
         h = run.history(int(1e5), keys=keys)
         h['name'] = run.name
@@ -38,7 +41,8 @@ def get_runs_data(runs, keys=None):
     summary_df = pd.DataFrame.from_records(summary_list) 
     config_df = pd.DataFrame.from_records(config_list) 
     name_df = pd.DataFrame({'name': name_list}) 
-    all_df = pd.concat([name_df, config_df,summary_df], axis=1)
+    id_df = pd.DataFrame({'id': id_list}) 
+    all_df = pd.concat([name_df, id_df, config_df,summary_df], axis=1)
 
     histories = pd.concat(histories).reset_index(drop=True)
     histories['epoch'] = histories['_step'] + 1
@@ -46,57 +50,57 @@ def get_runs_data(runs, keys=None):
     return all_df, histories
 
 if __name__ == '__main__':
-    # ### IAE PLOT ###
-    # api = wandb.Api()
+    ### IAE PLOT ###
+    api = wandb.Api()
 
-    # keys = ['val_loss_iae', 'train_time', 'val_time']
+    keys = ['val_loss_iae', 'train_time', 'val_time']
 
-    # df_pinn, pinn_histories = get_runs_data(
-    #     api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
-    #     keys=keys
-    # )
-    # df_pideq, pideq_histories = get_runs_data(
-    #     api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
-    #     keys=keys
-    # )
+    df_pinn, pinn_histories = get_runs_data(
+        api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
+        keys=keys
+    )
+    df_pideq, pideq_histories = get_runs_data(
+        api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
+        keys=keys
+    )
 
-    # fig, ax = plt.subplots(1,1)
-    # fig.set_size_inches(3,3)
+    fig, ax = plt.subplots(1,1)
+    fig.set_size_inches(6,4)
 
-    # pinn_iae_low = pinn_histories.groupby('epoch')['val_loss_iae'].min()
-    # pinn_iae_high = pinn_histories.groupby('epoch')['val_loss_iae'].max()
-    # pinn_iae = pinn_histories.groupby('epoch')['val_loss_iae'].mean()
+    pinn_iae_low = pinn_histories.groupby('epoch')['val_loss_iae'].min()
+    pinn_iae_high = pinn_histories.groupby('epoch')['val_loss_iae'].max()
+    pinn_iae = pinn_histories.groupby('epoch')['val_loss_iae'].mean()
 
-    # pideq_iae_low = pideq_histories.groupby('epoch')['val_loss_iae'].min()
-    # pideq_iae_high = pideq_histories.groupby('epoch')['val_loss_iae'].max()
-    # pideq_iae = pideq_histories.groupby('epoch')['val_loss_iae'].mean()
+    pideq_iae_low = pideq_histories.groupby('epoch')['val_loss_iae'].min()
+    pideq_iae_high = pideq_histories.groupby('epoch')['val_loss_iae'].max()
+    pideq_iae = pideq_histories.groupby('epoch')['val_loss_iae'].mean()
 
-    # ax.fill_between(pinn_iae_low.index, pinn_iae_low, pinn_iae_high, alpha=.5, linewidth=0)
-    # ax.plot(pinn_iae, label='PINN')
+    ax.fill_between(pinn_iae_low.index, pinn_iae_low, pinn_iae_high, alpha=.5, linewidth=0)
+    ax.plot(pinn_iae, label='PINN')
 
-    # ax.fill_between(pideq_iae_low.index, pideq_iae_low, pideq_iae_high, alpha=.5, linewidth=0)
-    # ax.plot(pideq_iae, label='PIDEQ')
+    ax.fill_between(pideq_iae_low.index, pideq_iae_low, pideq_iae_high, alpha=.5, linewidth=0)
+    ax.plot(pideq_iae, label='PIDEQ')
 
-    # # ax.set_title('Performance of baseline models')
-    # ax.set_ylabel('IAE')
-    # ax.set_xlabel('Epoch')
-    # ax.set_xlim([0,5e4])
-    # # ax.set_ylim([0,0.5])
-    # # ax.set_ylim([1e-4,1e-1])
-    # ax.set_yscale('log')
+    # ax.set_title('Performance of baseline models')
+    ax.set_ylabel('IAE')
+    ax.set_xlabel('Epoch')
+    ax.set_xlim([0,5e4])
+    # ax.set_ylim([0,0.5])
+    # ax.set_ylim([1e-4,1e-1])
+    ax.set_yscale('log')
 
-    # ax.legend()
-    # ax.grid()
+    ax.legend()
+    ax.grid()
 
-    # # plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
+    plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
     # plt.show()
 
-    # print("Average training pass time (per epoch):")
-    # print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
-    # print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
-    # print("Average validation pass time (per epoch):")
-    # print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
-    # print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
+    print("Average training pass time (per epoch):")
+    print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
+    print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
+    print("Average validation pass time (per epoch):")
+    print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
+    print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
 
     ### VdP PLOT ###
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -177,3 +181,4 @@ if __name__ == '__main__':
     # ax.grid()
 
     # plt.show()
+    pass
