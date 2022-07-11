@@ -1,18 +1,36 @@
 % ----------------------------------------------------------
-\chapter{Discussion}\label{ch:conclusion}
+\chapter{Conclusion}\label{ch:conclusion}
 % ----------------------------------------------------------
 
-- the task is about extracting complex functions out of low-dimensional data, not usual, given the current trends of extracting simpler functions out of high-dimensional data
+An in-depth study was carried on two novel approaches in the big area of deep learning: \gls{PINN} and {DEQ}.
+Both provide a deeper connection between deep learning and other areas of knowledge, such as differential equations, optimization, and numerical analysis.
+\gls{PINN}s provide an efficient approach to train deep learning models on problems involving physical phenomena.
+\gls{DEQ}s are a promising new architecture that can provide a larger representational power with a small amount of parameters.
+This work proposed an application that combines both: using \gls{PIDEQ}s to solve \gls{IVP}s of \gls{ODE}s.
+For this, we successfully studied, implemented and tested several \gls{PIDEQ} models.
 
-- We have successfully implemented and trained a physics-informed DEQ model which was able to learn to solve IVPs for the VdP oscillator
-- Physics regularization, or any gradient regularization, has never been studied for DEQs
-    - they only have first order derivatives well-defined
-- the experimental results showed that differentiating through the solver used for computing the first derivative did not have a big impact in the speed of training, computing the equilibrium is still the most costly operation and the biggest difference in comparison to PINN
-    - this can be different for larger models, with more complex equilibrium functions, as this would change not only the forward pass but also the Jacobian used by the backward pass
+To the best of our knowledge, this is the first study on physics regularization (or any gradient regularization) for \gls{DEQ}s.
+In fact, we have not found any published result reporting higher-order derivatives of these models, as the authors only proposed an analytical solution for the first derivative.
+The requirement for higher-order derivatives imposes limitations to the model, namely the use of a differentiable solver to compute the first derivative.
 
-- experimental results with DEQ showed a much slower training and a larger error in comparison to the PINN model, even though both presented very small errors in the proposed problems, to the point of being almost undistinguishable visually
-- this points out that the inner structure of DEQ models is not very useful for learning to approximate this type of functions
-- we hypothesize that, given DEQ being an approximation to infinite-depth models, it is more suitable to problems that benefit from deeper models
-    - however, even a shallow deep feedforward network was able to properly approximate the function
+To validate the implementation of the model, we trained \gls{PIDEQ}s to solve \gls{IVP}s of the Van der Pol oscillator, a well-known, \gls{ODE}-governed system.
+The experimental results showed that differentiating through the solver used for computing the first derivative did not have a big impact in the speed of training.
+Computing the equilibrium (forward pass) is still the most costly operation and the biggest difference in comparison to \gls{PINN}s.
+We hypothesize that larger models and more complex problems may result in harder-to-compute derivatives, as it may be harder to find equilibriums efficiently.
+This would change not only the forward pass but also the Jacobian used by the backward pass, therefore, requiring more iterations of the differentiable solver (simple iteration method) or even a more robust solver.
 
+Comparing \gls{PIDEQ} results with \gls{PINN} models showed that the former has a larger approximation error and slower training.
+Still, both presented very small errors in the proposed problems, to the point of being almost undistinguishable visually.
+These results indicate that the inner structure of \gls{DEQ} models is not very useful for learning to approximate the target solution.
+Given that \gls{DEQ}s approximate infinite-depth models, it is reasonable to imagine that they are more effective in problems that benefit from deeper models.
+Whereas in our problem, even a shallow deep feedforward network was able to properly approximate the target function.
+
+% the task is about extracting complex functions out of low-dimensional data, not usual, given the current trends of extracting simpler functions out of high-dimensional data
+
+\section{Outlook?}
+
+- apply to more complex problems
+    - PINCs
+    - PDEs
+- analytical second derivative of DEQs to support physics-regularization
 
