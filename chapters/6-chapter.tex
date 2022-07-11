@@ -9,7 +9,7 @@ Furthermore, this approach named \gls{PIDEQ} is validated through a set of exper
 
 The Van der Pol oscillator (sec. \ref{sec:vdp}) was chosen as the \gls{ODE} system for which an \gls{IVP} will be solved.
 This system is known for having no analytical solution, thus becoming a benchmark for solvers.
-As well, textcite[REFTO Antonello, 2021] have already studied a solution using \gls{PINN}s, which is used as a starting point and a reference in performance for the experiments.
+As well, \textcite{Antonelo2021} have already studied a solution using \gls{PINN}s, which is used as a starting point and a reference in performance for the experiments.
 
 More specifically, we define the first-order formulation of the Van der Pol oscillator (as presented in equation \eqref{eq:vdp}) as the \gls{ODE} system, with $\mu=1$.
 Then, the \gls{IVP} is defined with initial condition $\bm{y}(0) = \bm{y}_0 = \left( 0, 0.1 \right) $, simulating a small perturbation of the system at the unstable equilibrium at the origin, and the solution is desired for a horizon of 2 seconds. 
@@ -34,7 +34,7 @@ These will be auxiliary to the \gls{IAE} in the analysis of the approximations.
 As already discussed in section \ref{sec:pinn-problem}, solving \gls{IVP}s is (mostly) only reasonable if using a physics-informed approach, that is, if "teaching" the model through the known dynamics instead of through actual samples of the target function.
 Therefore, a reasonable solution using \gls{DEQ}s must follow the same principle, which implies in a physics-informed training of \gls{DEQ}s (thus, \gls{PIDEQ}).
 
-For the \gls{IVP} defined above, we recall the definition of section \ref{sec:deq-definition} and propose a \gls{DEQ} similar to textcite[REFTO Ghaoui, 2019], that is, a model
+For the \gls{IVP} defined above, we recall the definition of section \ref{sec:deq-definition} and propose a \gls{DEQ} similar to \textcite{Ghaoui2019}, that is, a model
 \begin{align*}
     D_{\gls{param}}^{EQ}: \R &\longrightarrow \R^2 \\
     t &\longmapsto D_{\gls{param}}(t) = \hat{\bm{y}}
@@ -53,10 +53,10 @@ Notice that this formulation is very close to the one used in chapter \ref{ch:de
 This implies that both forward and backward operations can occur in the same way, except that the term  \[
     \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C^T
 \] must be multiplied in the computation of the gradients.
-The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power [REFTO Ghaoui, 2019].
+The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power \cite{Ghaoui2019}.
 
 The challenge in physics-informing a \gls{DEQ} is to optimize a cost function on its derivatives.
-As it was shown in section \ref{sec:deq-backward}, textcite[REFTO Bai, 2019] have proposed an efficient way to compute the first derivative of a \gls{DEQ} with regards to either its parameters or the input, which allows us to compute the cost function value.
+As it was shown in section \ref{sec:deq-backward}, \textcite{Bai2019} have proposed an efficient way to compute the first derivative of a \gls{DEQ} with regards to either its parameters or the input, which allows us to compute the cost function value.
 Yet, an application of gradient descent with such cost function, it is required that the second derivatives of the model (with respect to the input and the parameters) are computable a training time.
 In practice, this implies in the computation of the derivative of the root-finding algorithm used to compute the first derivative, as seen in section \ref{sec:deq-backward-implementation}.\footnotemark
 \footnotetext{In theory, it could be possible to use the implicit function theorem once again to achieve an analytical formula for the second derivative, but this is left for future work.}
@@ -71,9 +71,9 @@ This cost function ensures the physics-informed training from \gls{PINN}s with t
 \section{Training}
 
 Early experiments helped to define the design choices for the training algorithm and the hyperparameters.
-Adam[REFTO Adam paper] was the optimizer of choice, with $\gls{lr}=0.001$ and default configuration.
+Adam\cite{kingma_adam_2015} was the optimizer of choice, with $\gls{lr}=0.001$ and default configuration.
 The cost weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
-The solver used for the forward pass of the model was the Anderson Acceleration[REFTO Walker, 2011], while best results were found using simple iteration to compute the backward pass.
+The solver used for the forward pass of the model was the Anderson Acceleration\cite{walker_anderson_2011}, while best results were found using simple iteration to compute the backward pass.
 % \footnotetext{More complex solvers, even if made differentiable for the automatic differentiability package, had such an increased cost for computing the second derivative that the simple iteration became a much better choice.}
 For both algorithms, the tolerance was set as $\varepsilon=10^{-4}$ and they were limited to 200 iterations.
 The initial guess was always $\bm{z}_0=\bm{0}$.
@@ -84,16 +84,16 @@ The regularization term $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\rig
 \section{Experiments}
 
 The experiments reported below concern the training of the deep learning model proposed above to solve the \gls{IVP} described in the first section of this chapter.
-The implementation was done using PyTorch [REFTO Paszke, 2019] and is available at \url{https://github.com/brunompacheco/pideq}.
+The implementation was done using PyTorch \cite{paszke_pytorch_2019} and is available at \url{https://github.com/brunompacheco/pideq}.
 All experiments were performed on a high-end computer, using an RTX 3060 GPU.
 A budget of 50000 epochs was chosen.
 % TODO add number of runs
 
 \subsection{Baseline Results}
 
-The baseline result for a \gls{PINN} trained to solve an \gls{IVP} of the Van der Pol oscillator comes from textcite[REFTO Antonello, 2021].
+The baseline result for a \gls{PINN} trained to solve an \gls{IVP} of the Van der Pol oscillator comes from \textcite{Antonelo2021}.
 We replicate these results, that is, a traditional \gls{PINN} with 4 hidden layers with 20 nodes each, following the same setup proposed above (except for the regularization term of the cost function).
-At the same time, textcite[REFTO Ghaoui, 2019] showed that a \gls{DEQ} with as many states as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
+At the same time, \textcite{Ghaoui2019} showed that a \gls{DEQ} with as many states as there are hidden nodes in a given deep feedforward network, has \emph{at least} as much representational power as that network.
 Then, our starting \gls{DEQ} is a model with 80 states.
 The results for both models can be seen in figure \ref{fig:baseline-iae}.
 
@@ -165,7 +165,7 @@ Table \ref{tab:n-states-times} exposes the times for each model.
 \subsection{Jacobian Regularization}
 
 Following the previous results, the impact of the Jacobian regularization term in the cost function is explored for the model with 5 states.
-From the work of textcite[REFTO Bai, 2021], it is expected that this regularization term is impactful in the results.
+From the work of \textcite{bai_stabilizing_2021}, it is expected that this regularization term is impactful in the results.
 We verify this by training \gls{PIDEQ} models without such term ($\kappa=0$) and with a reduced importance ($\kappa=0.1$).
 The results are shown in figure \ref{fig:jac-lamb-iae}.
 
@@ -187,7 +187,7 @@ Nevertheless, the impact of the solver used for the forward pass can be explored
 Since the derivative is computed implicitly, solver's impact in the inference and training speed is more clear.
 Yet, as the algorithm of different solvers define different paths through the domain to find an equilibrium point, different equilibria can be found given distinct solvers, which can change the performance of the model with respect to error levels. 
 
-In fact, this is observed in the results of the experiments comparing Anderson's Acceleration with simple iteration and Broyden's method[REFTO Broyden] for the forward pass, as seen in figure \ref{fig:solver-iae}.
+In fact, this is observed in the results of the experiments comparing Anderson's Acceleration with simple iteration and Broyden's method\cite{broyden_class_1965} for the forward pass, as seen in figure \ref{fig:solver-iae}.
 Models using Broyden's method achieve a smaller error, but the iterations took much longer, with a median value of 212 ms in comparison to 27 ms using Anderson Acceleration.
 At the same time, using simple iteration resulted in a performance as good as using Anderson Acceleration, but with a median epoch time of 9 ms.
 Of course, as was discussed in section \ref{sec:deq-forward}, simple iteration is less reliable than the other two methods, yet, it seems to work well for the problem at hand.
