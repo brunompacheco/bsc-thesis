@@ -11,7 +11,7 @@ from pideq.trainer import f
 from pideq.net import PINN, PIDEQ
 from pideq.utils import load_from_wandb
 
-from experiment_1 import get_runs_data
+from experiments import get_runs_data, plot_learning_curve
 
 plt.rcParams.update({'font.size': 10})
 plt.style.use('tableau-colorblind10')
@@ -41,12 +41,7 @@ if __name__ == '__main__':
     fig.set_size_inches(6,4)
 
     for n_z, hs in histories.items():
-        iae_low = hs.groupby('epoch')['val_loss_iae'].min()
-        iae_high = hs.groupby('epoch')['val_loss_iae'].max()
-        iae = hs.groupby('epoch')['val_loss_iae'].mean()
-
-        ax.fill_between(iae_low.index, iae_low, iae_high, alpha=.5, linewidth=0)
-        ax.plot(iae, label=n_z)
+        plot_learning_curve(ax, hs, n_z)
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')

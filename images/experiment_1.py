@@ -10,44 +10,11 @@ from pideq.trainer import f
 from pideq.net import PINN, PIDEQ
 from pideq.utils import load_from_wandb
 
+from experiments import get_runs_data, plot_learning_curve
+
 plt.rcParams.update({'font.size': 10})
 plt.style.use('tableau-colorblind10')
 
-
-def get_runs_data(runs, keys=None):
-    summary_list = [] 
-    config_list = [] 
-    name_list = [] 
-    id_list = [] 
-    histories = []
-    for run in runs: 
-        # run.summary are the output key/values like accuracy.
-        # We call ._json_dict to omit large files 
-        summary_list.append(run.summary._json_dict) 
-
-        # run.config is the input metrics.
-        # We remove special values that start with _.
-        config = {k:v for k,v in run.config.items() if not k.startswith('_')}
-        config_list.append(config) 
-
-        # run.name is the name of the run.
-        name_list.append(run.name)       
-        id_list.append(run.id)       
-
-        h = run.history(int(1e5), keys=keys)
-        h['name'] = run.name
-        histories.append(h)
-
-    summary_df = pd.DataFrame.from_records(summary_list) 
-    config_df = pd.DataFrame.from_records(config_list) 
-    name_df = pd.DataFrame({'name': name_list}) 
-    id_df = pd.DataFrame({'id': id_list}) 
-    all_df = pd.concat([name_df, id_df, config_df,summary_df], axis=1)
-
-    histories = pd.concat(histories).reset_index(drop=True)
-    histories['epoch'] = histories['_step'] + 1
-
-    return all_df, histories
 
 if __name__ == '__main__':
     ### IAE PLOT ###
@@ -67,19 +34,8 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
 
-    pinn_iae_low = pinn_histories.groupby('epoch')['val_loss_iae'].min()
-    pinn_iae_high = pinn_histories.groupby('epoch')['val_loss_iae'].max()
-    pinn_iae = pinn_histories.groupby('epoch')['val_loss_iae'].mean()
-
-    pideq_iae_low = pideq_histories.groupby('epoch')['val_loss_iae'].min()
-    pideq_iae_high = pideq_histories.groupby('epoch')['val_loss_iae'].max()
-    pideq_iae = pideq_histories.groupby('epoch')['val_loss_iae'].mean()
-
-    ax.fill_between(pinn_iae_low.index, pinn_iae_low, pinn_iae_high, alpha=.5, linewidth=0)
-    ax.plot(pinn_iae, label='PINN')
-
-    ax.fill_between(pideq_iae_low.index, pideq_iae_low, pideq_iae_high, alpha=.5, linewidth=0)
-    ax.plot(pideq_iae, label='PIDEQ')
+    plot_learning_curve(ax, pinn_histories, 'PINN')
+    plot_learning_curve(ax, pideq_histories, 'PIDEQ')
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')

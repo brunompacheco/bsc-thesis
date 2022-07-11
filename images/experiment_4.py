@@ -11,7 +11,7 @@ from pideq.trainer import f
 from pideq.net import PINN, PIDEQ
 from pideq.utils import load_from_wandb
 
-from experiment_1 import get_runs_data
+from experiments import get_runs_data, plot_learning_curve
 
 plt.rcParams.update({'font.size': 10})
 plt.style.use('tableau-colorblind10')
@@ -25,30 +25,27 @@ if __name__ == '__main__':
 
     histories = dict()
 
-    runs = api.runs("brunompac/pideq-vdp", {'$and': [{'group': f'PIDEQ-#z=5'}, {'config.T': 2}, {'config.n_states': 5}]})
-    _, hs = get_runs_data(
-        runs,
-        keys=keys
-    )
-    histories[1.0] = hs
-    for j_l in [0, 2, 0.1]:
-        runs = api.runs("brunompac/pideq-vdp", {'$and': [{'group': f'PIDEQ-#jac_lamb={j_l}'}, {'config.T': 2}, {'config.n_states': 5}]})
-        _, hs = get_runs_data(
-            runs,
-            keys=keys
-        )
+    for j_l in [0, 0.1, 1, 2]:
+        if j_l == 1:
+            runs = api.runs("brunompac/pideq-vdp", {'$and': [{'group': f'PIDEQ-#z=5'}, {'config.T': 2}, {'config.n_states': 5}]})
+            _, hs = get_runs_data(
+                runs,
+                keys=keys
+            )
+        else:
+            runs = api.runs("brunompac/pideq-vdp", {'$and': [{'group': f'PIDEQ-#jac_lamb={j_l}'}, {'config.T': 2}, {'config.n_states': 5}]})
+            _, hs = get_runs_data(
+                runs,
+                keys=keys
+            )
+
         histories[j_l] = hs
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
 
     for j_l, hs in histories.items():
-        iae_low = hs.groupby('epoch')['val_loss_iae'].min()
-        iae_high = hs.groupby('epoch')['val_loss_iae'].max()
-        iae = hs.groupby('epoch')['val_loss_iae'].mean()
-
-        ax.fill_between(iae_low.index, iae_low, iae_high, alpha=.5, linewidth=0)
-        ax.plot(iae, label=f"$\kappa={j_l:1.1f}$")
+        plot_learning_curve(ax, hs, f"$\kappa={j_l:1.1f}$")
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')
