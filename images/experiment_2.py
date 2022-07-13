@@ -41,7 +41,7 @@ if __name__ == '__main__':
     fig.set_size_inches(6,4)
 
     for n_z, hs in histories.items():
-        plot_learning_curve(ax, hs, n_z)
+        plot_learning_curve(ax, hs, n_z, shadow=False)
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')

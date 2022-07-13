@@ -42,9 +42,9 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
 
-    plot_learning_curve(ax, histories['anderson'], 'Anderson Acceleration')
-    plot_learning_curve(ax, histories['broyden'], "Broyden's Method")
-    plot_learning_curve(ax, histories['forward_iteration'], 'Simple Iteration')
+    plot_learning_curve(ax, histories['anderson'], 'Anderson Acceleration', shadow=False)
+    plot_learning_curve(ax, histories['broyden'], "Broyden's Method", shadow=False)
+    plot_learning_curve(ax, histories['forward_iteration'], 'Simple Iteration', shadow=False)
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')

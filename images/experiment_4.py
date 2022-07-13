@@ -45,7 +45,7 @@ if __name__ == '__main__':
     fig.set_size_inches(6,4)
 
     for j_l, hs in histories.items():
-        plot_learning_curve(ax, hs, f"$\kappa={j_l:1.1f}$")
+        plot_learning_curve(ax, hs, f"$\kappa={j_l:1.1f}$", shadow=False)
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')

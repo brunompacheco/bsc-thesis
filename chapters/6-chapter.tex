@@ -51,7 +51,7 @@ in which the parameters \gls{param} are a vectorization of the matrices and vect
 
 Notice that this formulation is very close to the one used in chapter \ref{ch:deq}, except for the linear transformation of the equilibrium point at the model's output.
 This implies that both forward and backward operations can occur in the same way, except that the term  \[
-    \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C^T
+    \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C
 \] must be multiplied in the computation of the gradients.
 The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power \cite{Ghaoui2019}.
 
@@ -138,7 +138,7 @@ The results can be seen in figure \ref{fig:states-iae}.
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_2_iae.pdf}
-    \caption{Learning curve of the models trained with fewer states. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \caption{Learning curve of the models trained with fewer states. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:states-iae}
 \end{figure}
 
@@ -172,7 +172,7 @@ The results are shown in figure \ref{fig:jac-lamb-iae}.
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_4_iae.pdf}
-    \caption{Learning curve for \gls{PIDEQ}s with different $\kappa$ values. Only one model was trained with $\kappa=0$ because the training took over 30 times longer. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \caption{Learning curve for \gls{PIDEQ}s with different $\kappa$ values. Only one model was trained with $\kappa=0$ because the training took over 30 times longer. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:jac-lamb-iae}
 \end{figure}
 
@@ -195,7 +195,7 @@ Of course, as was discussed in section \ref{sec:deq-forward}, simple iteration i
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_5_iae.pdf}
-    \caption{Learning curve of \gls{PIDEQ} models with 5 states using different solvers for the forward pass. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \caption{Learning curve of \gls{PIDEQ} models with 5 states using different solvers for the forward pass. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:solver-iae}
 \end{figure}
 
@@ -210,7 +210,7 @@ At the same time, a decreased tolerance did not provide improve the performance,
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_6_iae.pdf}
-    \caption{Learning curve of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \caption{Learning curve of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:epsilon-iae}
 \end{figure}
 

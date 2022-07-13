@@ -36,7 +36,7 @@ def get_runs_data(runs, keys=None):
 
     return all_df, histories
 
-def plot_learning_curve(ax, histories, label, window=100):
+def plot_learning_curve(ax, histories, label, window=100, shadow=True):
     iae_low = histories.groupby('epoch')['val_loss_iae'].min()
     iae_high = histories.groupby('epoch')['val_loss_iae'].max()
     # iae_low = histories.groupby('epoch')['val_loss_iae'].quantile(.25)
@@ -49,6 +49,7 @@ def plot_learning_curve(ax, histories, label, window=100):
     # iae_std = iae_std.rolling(window, min_periods=1).mean()
     iae = iae.rolling(window, min_periods=1).mean()
 
-    ax.fill_between(iae_low.index, iae_low, iae_high, alpha=.5, linewidth=0)
-    # ax.fill_between(iae.index, iae-iae_std, iae+iae_std, alpha=.5, linewidth=0)
+    if shadow:
+        ax.fill_between(iae_low.index, iae_low, iae_high, alpha=.5, linewidth=0)
+        # ax.fill_between(iae.index, iae-iae_std, iae+iae_std, alpha=.5, linewidth=0)
     ax.plot(iae, label=label, linewidth=1)

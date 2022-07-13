@@ -42,9 +42,9 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
 
-    plot_learning_curve(ax, histories['1e-02'], '$\\varepsilon=10^{-2}$')
-    plot_learning_curve(ax, histories['1e-04'], '$\\varepsilon=10^{-4}$')
-    plot_learning_curve(ax, histories['1e-06'], '$\\varepsilon=10^{-6}$')
+    plot_learning_curve(ax, histories['1e-02'], '$\\varepsilon=10^{-2}$', shadow=False)
+    plot_learning_curve(ax, histories['1e-04'], '$\\varepsilon=10^{-4}$', shadow=False)
+    plot_learning_curve(ax, histories['1e-06'], '$\\varepsilon=10^{-6}$', shadow=False)
 
     # ax.set_title('Performance of baseline models')
     ax.set_ylabel('IAE')
