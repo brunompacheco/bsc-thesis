@@ -20,7 +20,7 @@ We hypothesize that larger models and more complex problems may result in harder
 This would change not only the forward pass but also the Jacobian used by the backward pass, therefore, requiring more iterations of the differentiable solver (simple iteration method) or even a more robust solver.
 
 Comparing \gls{PIDEQ} results with \gls{PINN} models showed that the former has a larger approximation error and slower training.
-Still, both presented very small errors in the proposed problems, to the point of being almost undistinguishable visually.
+Still, both presented very small errors in the proposed problems, to the point of being almost indistinguishable visually.
 These results indicate that the inner structure of \gls{DEQ} models is not very useful for learning to approximate the target solution.
 
 % the task is about extracting complex functions out of low-dimensional data, not usual, given the current trends of extracting simpler functions out of high-dimensional data
@@ -29,12 +29,12 @@ These results indicate that the inner structure of \gls{DEQ} models is not very 
 
 Given that \gls{DEQ}s approximate infinite-depth models, it is reasonable to imagine that they are more effective in problems that benefit from deeper models, whereas in our problem, even a shallow deep feedforward network was able to properly approximate the target function.
 Therefore, it is natural that a next step is to apply the proposed model to more complex problems.
-The four-tanks system [REFTO Johansson, 2000; Gatzke, 2000], which was better solved with deeper networks in the approach of textcite[REFTO Antonello, 2021], could benefit from \glspl{PIDEQ}.
-Also, the proposed model could easily be generalized to partial differential equations, and then compared to the original \gls{PINN} of textcite[REFTO Raissi, 2019].
+The four-tanks system \cite{johansson_quadruple-tank_2000,gatzke_model_2000}, which was better solved with deeper networks in the approach of \textcite{Antonelo2021}, could benefit from \glspl{PIDEQ}.
+Also, the proposed model could easily be generalized to partial differential equations, and then compared to the original \gls{PINN} of \textcite{Raissi2019}.
 
-A variation of the \gls{IVP} as discussed here is to train a model that can provide approximate solutions for a set of initial conditions, as discussed in textcite[REFTO Antonelo, 2021; Arnold, 2021].
+A variation of the \gls{IVP} as discussed here is to train a model that can provide approximate solutions for a set of initial conditions, as discussed in \textcite{Antonelo2021,Arnold2021}.
 This enables the efficient use of \glspl{PINN} for control problems.
-Being able to train models for this problem with less parameters can be very useful in the sense that it increases explainability and, thus, robustness of the controller.
+Being able to train models for this problem with fewer parameters can be very useful in the sense that it increases explainability and, thus, robustness of the controller.
 
 Lastly, another way to make \glspl{PIDEQ} models more competitive is to improve their efficiency.
 In theory, the second (and any higher-order) derivative of \glspl{DEQ} can be implicitly computed, without the necessity of differentiating the solver.
