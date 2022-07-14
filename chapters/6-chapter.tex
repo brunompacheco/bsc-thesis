@@ -92,7 +92,7 @@ The experiments reported below concern the training of the deep learning model p
 The implementation was done using PyTorch \cite{paszke_pytorch_2019} and is available at \url{https://github.com/brunompacheco/pideq}.
 All experiments were performed on a high-end computer, using an RTX 3060 GPU.
 A budget of 50000 epochs was chosen.
-% TODO add number of runs
+5 models with each configuration were trained, with different initial (random) weights.
 
 \subsection{Baseline Results}
 
@@ -138,7 +138,7 @@ This analysis motivates the training of models with fewer states.
 The experiment was defined as an iterative procedure based on the intuition above.
 A new model was trained with fewer states, its $A$ matrix was analyzed, and a new model was proposed with even fewer states if there were still empty rows in the $A$ matrix.
 This procedure was repeated for models with 40, 20, 10 and 5 states.
-The models with 5 states showed no ``empty rows'' in the $A$ matrix, as shown in figure XXX, but still a model with only two states was trained.  % TODO make A matrix figure for #z=5
+The models with 5 states showed no ``empty rows'' in the $A$ matrix, as shown in figure \ref{fig:mat-pideq-5}, but still a model with only two states was trained.
 The results can be seen in Figure \ref{fig:states-iae}.
 
 \begin{figure}[h]
@@ -146,6 +146,13 @@ The results can be seen in Figure \ref{fig:states-iae}.
     \includegraphics{images/exp_2_iae.pdf}
     \caption{Learning curve of the models trained with fewer states. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:states-iae}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{images/exp_2_matplot.pdf}
+    \caption{$A$ matrix of the \gls{PIDEQ} with 5 states. From the 5 models trained, the one with median final performance was selected to generate the graphic.}
+    \label{fig:mat-pideq-5}
 \end{figure}
 
 The smaller models achieve even better results than the baseline and converge much faster, except for the smallest one, which was not able to learn within the training budget, reinforcing the intuition exposed above.

@@ -31,11 +31,13 @@ if __name__ == '__main__':
     )
     histories[80] = hs
     for n_z in [40, 20, 10, 5, 2]:
-        _, hs = get_runs_data(
+        _df, hs = get_runs_data(
             api.runs("brunompac/pideq-vdp", {'$and': [{'group': f'PIDEQ-#z={n_z}'}, {'config.T': 2}]}),
             keys=keys
         )
         histories[n_z] = hs
+        if n_z == 5:
+            df = _df
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
@@ -54,8 +56,8 @@ if __name__ == '__main__':
     ax.legend()
     ax.grid()
 
-    plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
-    # plt.show()
+    # plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
+    plt.show()
 
     print("Median training pass time (per epoch):")
     for n_z, hs in histories.items():
@@ -63,3 +65,22 @@ if __name__ == '__main__':
     print("Median validation pass time (per epoch):")
     for n_z, hs in histories.items():
         print(f"\t{n_z} = {hs['val_time'].median()*1e3:.3f} ms")
+
+    T = 2
+
+    median_pideq = df.sort_values(by='val_loss_iae', ascending=True).iloc[df.shape[0] // 2]['id']
+
+    net = load_from_wandb(PIDEQ(T, n_out=2, n_states=5), median_pideq, model_fname='model_last')
+    net.eval()
+    pideq_B = net.B.weight.cpu().detach().numpy()
+    pideq_n_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
+
+    fig, ax = plt.subplots(1,1)
+    fig.set_size_inches(3,3)
+
+    ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    plt.savefig('exp_2_matplot.pdf', bbox_inches='tight')
+    # plt.show()
