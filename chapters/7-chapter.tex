@@ -2,21 +2,21 @@
 \chapter{Conclusion}\label{ch:conclusion}
 % ----------------------------------------------------------
 
-An in-depth study was carried on two novel approaches in the big area of deep learning: \gls{PINN} and {DEQ}.
+An in-depth study was carried out with two novel approaches in the big area of deep learning: \gls{PINN} and {DEQ}.
 Both provide a deeper connection between deep learning and other areas of knowledge, such as differential equations, optimization, and numerical analysis.
 \gls{PINN}s provide an efficient approach to train deep learning models on problems involving physical phenomena.
-\gls{DEQ}s are a promising new architecture that can provide a larger representational power with a small amount of parameters.
+\gls{DEQ}s are a promising new architecture that can provide a larger representational power with a small number of parameters.
 This work proposed an application that combines both: using \gls{PIDEQ}s to solve \gls{IVP}s of \gls{ODE}s.
 For this, we successfully studied, implemented and tested several \gls{PIDEQ} models.
 
 To the best of our knowledge, this is the first study on physics regularization (or any gradient regularization) for \gls{DEQ}s.
-In fact, we have not found any published result reporting higher-order derivatives of these models, as the authors only proposed an analytical solution for the first derivative.
+In fact, we have not found any published result reporting higher-order derivatives of these models, as \textcite{Bai2019} only proposed an analytical solution for the first derivative.
 The requirement for higher-order derivatives imposes limitations to the model, namely the use of a differentiable solver to compute the first derivative.
 
 To validate the implementation of the model, we trained \gls{PIDEQ}s to solve \gls{IVP}s of the Van der Pol oscillator, a well-known, \gls{ODE}-governed system.
 The experimental results showed that differentiating through the solver used for computing the first derivative did not have a big impact in the speed of training.
 Computing the equilibrium (forward pass) is still the most costly operation and the biggest difference in comparison to \gls{PINN}s.
-We hypothesize that larger models and more complex problems may result in harder-to-compute derivatives, as it may be harder to find equilibriums efficiently.
+We hypothesize that larger models and more complex problems may result in harder-to-compute derivatives, as it may be harder to find equilibria efficiently.
 This would change not only the forward pass but also the Jacobian used by the backward pass, therefore, requiring more iterations of the differentiable solver (simple iteration method) or even a more robust solver.
 
 Comparing \gls{PIDEQ} results with \gls{PINN} models showed that the former has a larger approximation error and slower training.
