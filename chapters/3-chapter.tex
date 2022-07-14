@@ -139,7 +139,7 @@ then, for a sufficiently small $\gls{lr}$, we know that \[
 J\left( \gls{param}_{k+1} \right) < J\left( \gls{param}_k \right) 
 ,\] i.e., the cost will decrease.
 Notice how intuitively it seems that if one takes enough steps like \eqref{eq:gradient-descent-step} with small enough $\gls{lr}$, the parameters will converge to a point that is a local minimum of the cost function.
-In the context of the learning algorithm, every iteration in which the cost is computed on the whole training data and the parameters are updated following equation \eqref{eq:gradient-descent-step} (or similar) is called an \emph{epoch}.
+In the context of the learning algorithm, every iteration in which the cost is computed on the whole training data and the parameters are updated following Equation \eqref{eq:gradient-descent-step} (or similar) is called an \emph{epoch}.
 
 % Maybe introduce the gradient step with regards to the cost function = sum of per-sample loss function?
 
@@ -193,7 +193,7 @@ E.g., given a model $D_{\gls{param}}:\R^n\to\R$, one can use a regularization te
 
 \section{Back-Propagation}\label{sec:backprop}
 
-Even from the most simplistic description of the gradient descent algorithm, as in equation \eqref{eq:gradient-descent-step}, it is clear that the challenge lies in computing the gradient of the cost function.
+Even from the most simplistic description of the gradient descent algorithm, as in Equation \eqref{eq:gradient-descent-step}, it is clear that the challenge lies in computing the gradient of the cost function.
 Taking deep feedforward networks as an example, the analytical formula for this gradient can be derived without much effort.
 Yet, evaluating this formula can be quite expensive, given that, as already seen, deep learning models can have millions of parameters, thus making even the computation of a linear application non-trivial.
 The \emph{back-propagation} algorithm \cite{rumelhart_learning_1986} provides a clever way of computing the gradient with respect to each parameter without great computational costs.

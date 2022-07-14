@@ -139,6 +139,6 @@ Yet, we can see that
 		      &= \bm{v}^T \frac{d \bm{f}_{\gls{param}}}{d \bm{z}} - \bm{v}^T \\
     \implies \bm{v}^T &= \bm{v}^T \frac{d \bm{f}_{\gls{param}}}{d \bm{z}} - \bm{u}^T \tag{$*$}\label{eq:deq-backprop-eq}
 .\end{align*}
-The above equation tells us that, given $\bm{u}$ the result of the previous step, the challenging vector-Jacobian product can be computed by finding the equilibrium point of equation \eqref{eq:deq-backprop-eq} on $\bm{v}$.
+The above equation tells us that, given $\bm{u}$ the result of the previous step, the challenging vector-Jacobian product can be computed by finding the equilibrium point of Equation \eqref{eq:deq-backprop-eq} on $\bm{v}$.
 Therefore, a root-finding algorithm can be used to compute the result of the challenging vector-Jacobian product, just like in the forward pass.
 

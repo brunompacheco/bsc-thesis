@@ -33,7 +33,7 @@ Solving this using deep learning means to train a model $D_{\gls{param}}:I\to \R
 .\end{align}
 
 The naïve approach would be to construct a set $X=\left\{ (t,\bm{y})\in I\times \R^{m}: \bm{y}=\bm{\phi}(t) \right\} $ to be used as the experience for the learning algorithm.
-Then, with a properly constructed cost function and given that the model is complex enough, the model $D_{\gls{param}}$ would approximate the target $\bm{\phi}$ and, by consequence, satisfy equations \eqref{eq:dl-ode} and \eqref{eq:dl-ivp}.
+Then, with a properly constructed cost function and given that the model is complex enough, the model $D_{\gls{param}}$ would approximate the target $\bm{\phi}$ and, by consequence, satisfy Equation \eqref{eq:dl-ode} and Equation \eqref{eq:dl-ivp}.
 However, note how this approach assumes that $\bm{\phi}$ is known, as it is required to construct a set $X$ with more than just $\left( t_0,\bm{y}_0 \right) $.
 Therefore, in many \gls{IVP} setups, training a deep learning model this way would either be impossible or redundant.
 
@@ -42,20 +42,20 @@ Therefore, in many \gls{IVP} setups, training a deep learning model this way wou
 The naïve approach described above is quite inefficient in that it does not use the information provided by the known $\mathcal{N}$ function.
 This is precisely the turning point for making deep learning a viable option in solving \gls{IVP}s.
 The approach of \textcite{Raissi2019} proposes to train the model using a regularization based on $\mathcal{N}$.
-This means to train $D_{\gls{param}}$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying equation \eqref{eq:dl-ode}.
+This means to train $D_{\gls{param}}$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying Equation \eqref{eq:dl-ivp}, and so that it's Jacobian approximates $\mathcal{N}$, satisfying Equation \eqref{eq:dl-ode}.
 
 For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}}=\left\{ t\in I \right\} $. Then, we can construct \[
     J_b\left( \gls{param} \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|D_{\gls{param}}(t) - \bm{y}\|_2 = \|D_{\gls{param}}\left( t_0 \right) -\bm{y}_0\|_2
 ,\] which looks like a usual cost function, and \[
 J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d D_{\gls{param}}\left( t \right) }{dt} - \mathcal{N}\left( t,D_{\gls{param}}\left( t \right)  \right)  \right\|_2
-,\] which resembles a gradient regularization as discussed in sec. \ref{sec:regularization}, the difference here is that instead of penalizing high derivatives, we want them to approach a desired value.
+,\] which resembles a gradient regularization as discussed in Section \ref{sec:regularization}, the difference here is that instead of penalizing high derivatives, we want them to approach a desired value.
 Then, the cost function used to train the model is defined as \[
 J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) 
 ,\] where $\lambda \in \R^+$ is a scalar value to weight in the components of the loss function.
 Originally, \textcite{Raissi2019} define this value as $\lambda = \frac{|X_{b}|}{|X_{\mathcal{N}}|}$, that is, proportional to the contribution of both sets in the training of the network.
 A neural network trained to learn a differential equation following a cost function as the one defined above is called a \gls{PINN}.
 
-The intuition of this approach is that $J_b$ will guide the optimization so that equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
+The intuition of this approach is that $J_b$ will guide the optimization so that Equation \eqref{eq:dl-ivp} is satisfied, while  $J_{\mathcal{N}}$ will ponder it towards satisfying \eqref{eq:dl-ode}.
 Unfortunately, no theoretical guarantees have been published to prove this intuition.
 Nevertheless, the authors have provided plenty of empirical evidence together with a robustness analysis, indicating that with enough samples in $X_{\mathcal{N}}$ and a sufficiently complex model $D_{\gls{param}}$, a small error (e.g., $\|D_{\gls{param}}\left( t \right)-\bm{\phi}\left( t \right) \| $) can be achieved \cite{Raissi2019}.
 This result has also been achieved by others in different applications, validating the claims \cite{noakoasteen_physics-informed_2020,zhang_physics-informed_2020,Arnold2021,Yucesan2022}.

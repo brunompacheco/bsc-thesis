@@ -70,7 +70,7 @@ This restricts us to using differentiable root-finding algorithms to compute the
 Finally, we propose to use a cost function for training a \gls{PIDEQ} model of the form \[
     J\left( \gls{param} \right) = J_b\left( \gls{param} \right) + \lambda J_{\mathcal{N}}\left( \gls{param} \right) + \kappa \left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F
 ,\] 
-in which $J_b$, $J_{\mathcal{N}}$ and $\lambda$ are as defined in section \ref{sec:PI}, while $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F$ is the Frobenius norm of the Jacobian of the equilibrium function, as exposed in Sec. \ref{sec:deq-jac-reg}, a regularization term weighted by $\kappa \in \R_+$.
+in which $J_b$, $J_{\mathcal{N}}$ and $\lambda$ are as defined in Section \ref{sec:PI}, while $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F$ is the Frobenius norm of the Jacobian of the equilibrium function, as exposed in Sec. \ref{sec:deq-jac-reg}, a regularization term weighted by $\kappa \in \R_+$.
 This cost function ensures the physics-informed training from \gls{PINN}s with the regularization term which was shown essential to \gls{DEQ}s.
 
 \section{Training}
@@ -138,7 +138,7 @@ This analysis motivates the training of models with fewer states.
 The experiment was defined as an iterative procedure based on the intuition above.
 A new model was trained with fewer states, its $A$ matrix was analyzed, and a new model was proposed with even fewer states if there were still empty rows in the $A$ matrix.
 This procedure was repeated for models with 40, 20, 10 and 5 states.
-The models with 5 states showed no ``empty rows'' in the $A$ matrix, as shown in figure \ref{fig:mat-pideq-5}, but still a model with only two states was trained.
+The models with 5 states showed no ``empty rows'' in the $A$ matrix, as shown in Figure \ref{fig:mat-pideq-5}, but still a model with only two states was trained.
 The results can be seen in Figure \ref{fig:states-iae}.
 
 \begin{figure}[h]
@@ -217,7 +217,7 @@ Of course, as was discussed in Section \ref{sec:deq-forward}, simple iteration i
 As the previous experiment showed, the simple iteration was the best approach, given the trade-off between prediction quality and training speed.
 Then, the $\varepsilon$ parameter is explored next.
 Intuitively, it is expected that a smaller tolerance imply in a slower training but a smaller error.
-The results with models trained using the simple iteration algorithm with $\varepsilon \in \left[ 10^{-2}, 10^{-4},10^{-6} \right] $, as exposed in figure \ref{fig:epsilon-iae}, confirm that the tolerance is indeed impactful, as increasing the "default" tolerance (of $10^{-4}$) tends to increase the error of the trained models.
+The results with models trained using the simple iteration algorithm with $\varepsilon \in \left[ 10^{-2}, 10^{-4},10^{-6} \right] $, as exposed in Figure \ref{fig:epsilon-iae}, confirm that the tolerance is indeed impactful, as increasing the "default" tolerance (of $10^{-4}$) tends to increase the error of the trained models.
 At the same time, a decreased tolerance did not provide improve the performance, possibly pointing that the default value is already sufficient for the problem.
 
 \begin{figure}[h]
