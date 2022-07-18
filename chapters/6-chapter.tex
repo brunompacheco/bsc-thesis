@@ -175,7 +175,7 @@ Table \ref{tab:n-states-times} exposes the times for each model.
     \end{tabular}
 \end{table}
 
-\subsection{Jacobian Regularization}
+\subsection{Jacobian Regularization}\label{sec:exp-jac}
 
 Following the previous results, the impact of the Jacobian regularization term in the cost function is explored for the model with 5 states.
 From the work of \textcite{bai_stabilizing_2021}, it is expected that this regularization term will have an impact on the results.
@@ -259,11 +259,14 @@ The performance of the final model and the small \gls{PINN} model can be assesse
     \label{fig:final-vdp}
 \end{figure}
 
-Both final models take around the same number of epochs to converge, but the \gls{PINN} models are able to achieve much smaller error, almost as low as the baseline model.
-The small \gls{PINN} models, though, have a smaller training time.
+Both final models take around the same number of epochs to converge, but the \gls{PINN} models are able to achieve much smaller errors, almost as low as the baseline models.
+The small \glspl{PINN}, though, have a smaller training time.
 A breakdown of the time per epoch spent by each approach can be seen in Figure \ref{fig:final-times}.
-It is surprising how the \gls{PIDEQ} models did not take longer than \gls{PINN} models to compute the gradients.
-In fact, the biggest impact was on the forward pass, which contributes almost alone to the time difference, overcoming the unexpected efficiency of the cost function computation. 
+As expected, \glspl{PIDEQ} take longer to compute the output, which is a direct implication of computing the equilibrium and storing intermediate values to compute the derivatives.
+This, however, does not translate to inference, as both approaches take approximately the same to compute the validation results each epoch.
+Computing the total cost is a more expensive operation for \glspl{PIDEQ}.
+This extra cost comes mostly from the regularization term necessary to convergence, as seen in the experiments from Section \ref{sec:exp-jac}.
+It is surprising, however, how the \glspl{PIDEQ} did not take longer than \gls{PINN} models to back-propagate the cost and update the parameters..
 
 \begin{figure}[h]
     \centering

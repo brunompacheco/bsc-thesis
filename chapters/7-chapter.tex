@@ -14,8 +14,8 @@ In fact, we have not found any published result reporting higher-order derivativ
 The requirement for higher-order derivatives imposes limitations to the model, namely the use of a differentiable solver to compute the first derivative.
 
 To validate the implementation of the model, we trained \gls{PIDEQ}s to solve \gls{IVP}s of the Van der Pol oscillator, a well-known, \gls{ODE}-governed system.
-The experimental results showed that differentiating through the solver used for computing the first derivative did not have a big impact in the speed of training.
-Computing the equilibrium (forward pass) is still the most costly operation and the biggest difference in comparison to \gls{PINN}s.
+The experimental results showed that differentiating through the backward-pass solver (used to compute the first derivative) did not have a big impact in the speed of training.
+Computing the equilibrium (forward pass) and the Jacobian regularization are the most costly operations in comparison to \gls{PINN}s, at least for small \glspl{PIDEQ}.
 We hypothesize that larger models and more complex problems may result in harder-to-compute derivatives, as it may be harder to find equilibria efficiently.
 This would change not only the forward pass but also the Jacobian used by the backward pass, therefore, requiring more iterations of the differentiable solver (simple iteration method) or even a more robust solver.
 
