@@ -6,9 +6,9 @@ In this chapter, we build on the theoretical foundations exposed above and propo
 The main goal of the chapter is to validate the approach and explore its performance under different hyperparameter configurations.
 This is done through a series of experiments on the Van der Pol oscillator.
 
-We benchmark our approach to \glspl{PINN}, a well-established approach for this kind of problems using deep learning.
+We benchmark our approach to \glspl{PINN}, a well-established deep learning solution to this kind of problem.
 The comparison is made both in terms of approximation error and in solution speed.
-Overall, this chapter lays out the groundwork for the analysis provided in Chapter \ref{ch:conclusion}.
+Overall, this chapter lays out the results for the discussion provided in Chapter \ref{ch:conclusion}.
 
 \section{Problem Definition}
 
@@ -17,8 +17,8 @@ This system is known for having no analytical solution, thus becoming a benchmar
 As well, \textcite{Antonelo2021} have already studied a solution using \gls{PINN}s, which is considered as a starting point and a reference for performance in the experiments.
 
 More specifically, we define the first-order formulation of the Van der Pol oscillator (as presented in Equation \eqref{eq:vdp}) as the \gls{ODE} system, with $\mu=1$.
-Then, the \gls{IVP} is defined with initial condition $\bm{y}(0) = \bm{y}_0 = \left( 0, 0.1 \right) $, simulating a small perturbation to the system around the unstable equilibrium at the origin, and the solution is desired for a horizon of 2 seconds. 
-This way, the resulting solution is expected to gravitate to a limit cycle, but not within the solution interval, as illustrated in Figure \ref{fig:vdp_example}.
+Then, the \gls{IVP} is defined with initial condition $\bm{y}(0) = \bm{y}_0 = \left( 0, 0.1 \right) $, simulating a small perturbation to the system around the unstable equilibrium at the origin. The solution is desired for a horizon of 2 seconds. 
+In this interval, the solution is expected to gravitate to a limit cycle, as illustrated in Figure \ref{fig:vdp_example}.
 
 \subsection{Evaluation Metrics}
 
@@ -31,13 +31,13 @@ Then, a solution's approximation to the reference is measured through the \gls{I
 Therefore, a solution is said to be suitable for the problem if it achieves a low \gls{IAE}.
 
 Besides the quality of the approximation, the time required to achieve such an approximation is also of interest, as many applications (e.g., model predictive control) are highly time-dependent.
-As well, the hardware resources used are valuable metrics, as the computing power necessary limits the range of equipment that can support a given solution.
+The hardware resources used are valuable metrics, as the necessary computing power limits the range of equipment that can support a given solution.
 These will be auxiliary to the \gls{IAE} in the analysis of the approximations.
 
 \section{PIDEQ}\label{sec:pideq}
 
 As already discussed in Section \ref{sec:pinn-problem}, solving \gls{IVP}s is (mostly) only reasonable if using a physics-informed approach, that is, if ``teaching'' the model through the known dynamics instead of through actual samples of the target function.
-Therefore, a reasonable solution using \gls{DEQ}s must follow the same principle, which implies in a physics-informed training of \gls{DEQ}s (thus, \gls{PIDEQ}).
+Therefore, a reasonable solution using \gls{DEQ}s must follow the same principle, which implies in a physics-informed training of \gls{DEQ}s (thus the naming \gls{PIDEQ}).
 
 For the \gls{IVP} defined above, we recall the definition of Section \ref{sec:deq-definition} and propose a \gls{DEQ} similar to \textcite{Ghaoui2019}, that is, a model
 \begin{align*}
@@ -57,7 +57,7 @@ in which the parameters \gls{param} are a vectorization of the matrices and vect
 Notice that this formulation is very close to the one used in Chapter \ref{ch:deq}, except for the linear transformation of the equilibrium point at the model's output.
 This implies that both forward and backward operations can occur in the same way, except that the term  \[
     \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C
-\] must be multiplied in the computation of the gradients.
+\] must be considered in the computation of the gradients.
 The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power \cite{Ghaoui2019}.
 
 The challenge in physics-informing a \gls{DEQ} is to optimize a cost function on its derivatives.
@@ -77,13 +77,13 @@ This cost function ensures the physics-informed training from \gls{PINN}s with t
 
 Early experiments helped to define the design choices for the training algorithm and the hyperparameters.
 Adam~\cite{kingma_adam_2015} was the optimizer of choice, with $\gls{lr}=0.001$ and default configuration.
-The cost weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
+The cost-weighting coefficients were initially set as $\lambda=0.1$ and $\kappa=1.0$.
 The solver used for the forward pass of the model was the Anderson Acceleration~\cite{walker_anderson_2011}, while best results were found using simple iteration to compute the backward pass.
 % \footnotetext{More complex solvers, even if made differentiable for the automatic differentiability package, had such an increased cost for computing the second derivative that the simple iteration became a much better choice.}
 For both algorithms, the tolerance was set as $\varepsilon=10^{-4}$ and they were limited to 200 iterations.
 The initial guess was always $\bm{z}_0=\bm{0}$.
 
-In regards to the data, $X_b$, of course, contained only the initial condition, while $X_{\mathcal{N}}$ contained $10^5$ random samples within $I$.
+The set $X_b$, of course, contained only the initial condition, while $X_{\mathcal{N}}$ contained $10^5$ random samples within $I$.
 The regularization term $\left\lVert \frac{d \bm{f}_{\gls{param}}}{d \bm{z}}\right\rVert_F$ was computed on the input values of both data sets.
 
 \section{Experiments}
@@ -136,7 +136,7 @@ Having ``empty'' rows implies that the states associated with these rows are not
 
 This analysis motivates the training of models with fewer states.
 The experiment was defined as an iterative procedure based on the intuition above.
-A new model was trained with fewer states, its $A$ matrix was analyzed, and a new model was proposed with even fewer states if there were still empty rows in the $A$ matrix.
+A new model was trained with fewer states, its $A$ matrix was analyzed, and, if there were still empty rows in the $A$ matrix, a new model was proposed with even fewer states.
 This procedure was repeated for models with 40, 20, 10 and 5 states.
 The models with 5 states showed no ``empty rows'' in the $A$ matrix, as shown in Figure \ref{fig:mat-pideq-5}, but still a model with only two states was trained.
 The results can be seen in Figure \ref{fig:states-iae}.
@@ -189,7 +189,7 @@ The results are shown in Figure \ref{fig:jac-lamb-iae}.
     \label{fig:jac-lamb-iae}
 \end{figure}
 
-The experiments confirm the theory in that training without the regularization is ineffective.
+The experiments confirm the theory in that training without the regularization was ineffective.
 Not using the regularization term resulted in models not learning the task and taking over 30 times longer to train.
 At the same time, increasing or decreasing the impact of the regularization term in the cost function resulted in worse models overall.
 
@@ -197,7 +197,7 @@ At the same time, increasing or decreasing the impact of the regularization term
 
 As discussed in Section \ref{sec:pideq}, the solver used within the computation of the first derivative of \glspl{PIDEQ} must be differentiable, and, for the experiments, was fixed as the simple iteration method.
 Nevertheless, the impact of the solver used for the forward pass can be explored.
-Since the derivative is computed implicitly, solver's impact in the inference and training speed is more clear.
+Since the derivative is computed implicitly, solver's impact in the inference and training speed is clearer.
 Yet, as the algorithm of different solvers define different paths through the domain to find an equilibrium point, different equilibria can be found given distinct solvers, which can change the performance of the model with respect to error levels. 
 
 In fact, this behavior is observed in the results of the experiments comparing Anderson's Acceleration with simple iteration and Broyden's method~\cite{broyden_class_1965} for the forward pass, as seen in Figure \ref{fig:solver-iae}.
@@ -218,7 +218,7 @@ As the previous experiment showed, the simple iteration was the best approach, g
 Then, the $\varepsilon$ parameter is explored next.
 Intuitively, it is expected that a smaller tolerance imply in a slower training but a smaller error.
 The results with models trained using the simple iteration algorithm with $\varepsilon \in \left[ 10^{-2}, 10^{-4},10^{-6} \right] $, as exposed in Figure \ref{fig:epsilon-iae}, confirm that the tolerance is indeed impactful, as increasing the "default" tolerance (of $10^{-4}$) tends to increase the error of the trained models.
-At the same time, a decreased tolerance did not provide improve the performance, possibly pointing that the default value is already sufficient for the problem.
+At the same time, a decreased tolerance did not improve the performance within the training budget, possibly pointing that the default value is already sufficient for the problem.
 
 \begin{figure}[h]
     \centering
@@ -229,7 +229,7 @@ At the same time, a decreased tolerance did not provide improve the performance,
 
 \subsection{Final Model}
 
-The previous experiments showed how much smaller a model can be used and with the simple iteration method, which provides a faster training.
+The previous experiments showed how a much smaller a model can be used together with the simple iteration method, which provides a faster training.
 In comparison to the initial \gls{PIDEQ}, there was a significant decrease in the error.
 Yet, the biggest impact was in training time, which decreased from 99 ms to 9 ms for each epoch (median value). 
 The \gls{PIDEQ} with only 5 states also has significantly fewer parameters (52), since the number of parameters grows quadratically with the number of states.
@@ -260,7 +260,7 @@ The performance of the final model and the small \gls{PINN} model can be assesse
 \end{figure}
 
 Both final models take around the same number of epochs to converge, but the \gls{PINN} models are able to achieve much smaller errors, almost as low as the baseline models.
-The small \glspl{PINN}, though, have a smaller training time.
+The small \glspl{PINN} also have a smaller training time.
 A breakdown of the time per epoch spent by each approach can be seen in Figure \ref{fig:final-times}.
 As expected, \glspl{PIDEQ} take longer to compute the output, which is a direct implication of computing the equilibrium and storing intermediate values to compute the derivatives.
 This, however, does not translate to inference, as both approaches take approximately the same to compute the validation results each epoch.

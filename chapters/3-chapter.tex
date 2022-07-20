@@ -8,7 +8,7 @@ Here, the approach of \textcite{goodfellow_deep_2016} is followed, being altered
 Furthermore, even though physics-informed learning and implicit models can be seen as branches of deep learning, they are introduced in separated chapters for their relevance.
 
 % ----------------------------------------------------------
-\section{Origin/Introduction/Definition?}
+\section{Introduction and Definition}
 % ----------------------------------------------------------
 
 Even though \textit{Deep Learning} may seem like a novel and exciting technology, it has been studied under many different names since the 1940s \cite{goodfellow_deep_2016}.
@@ -26,11 +26,11 @@ A simple way of putting this definition into terms would be to define a model wi
 \end{equation}
 From this notation, it is easy to see that each function $f^{[i]}$ maps the outputs of the previous layer into the input of the next, ideally achieving a higher abstraction level.
 
-In this context, we can see the goal of \textit{learning} as finding parameters $\gls{param}$ such that the layers indeed extract the desired information, culminating in the model returning the desired output.
+In this context, we can see the goal of \textit{learning} as finding functions $f^{[i]}$ that indeed extract the desired information, culminating in the model returning the desired output.
 A classic toy example in deep learning models is to approximate the Exclusive-OR function, that is, to find a model $D : \R^2 \to \R$ such that
 \begin{align*}
     D([0,0]^T) = D([1,1]^T) = 0 \\
-    D([1,0]^T) = D([0,1]^T) = 1 \\
+    D([1,0]^T) = D([0,1]^T) = 1 
 .\end{align*}
 We can construct this model's layers as functions $f^{[1]}:\R^2\to\R^2$ and $f^{[2]}:\R^2\to\R$ such that
 \begin{align*}
@@ -46,9 +46,9 @@ Note how these functions are extracting simple information from the input, yet t
 
 Deep feedforward networks, often times also called \emph{Neural Networks}\footnotemark, are the most essential deep learning models.
 \footnotetext{Neural Networks are usually regarded as a more broad set of models, that include the deep feedforward networks. However, for the sake of simplicity, both will be treated as synonyms in this work.}
-They were inspired by the works of \textcite{rosenblatt_perceptron_1957} and refined through the many decades since, culminating in one of the most important deep learning models for practitioners and the basis of the most prominent results seen in the recent years \cite{goodfellow_deep_2016}.
+They were inspired by the works of \textcite{rosenblatt_perceptron_1957} and refined through the many decades since, culminating in one of the most important deep learning models for practitioners and the basis of the most prominent results seen in recent years \cite{goodfellow_deep_2016}.
 
-In this model, each component is a simple affine operator followed by a nonlinear \textit{activation} function, i.e., following the notation previously presented, we can define a deep feedforward neural network $D_{\gls{param}}^{FN}$ with $L$ layers as a stacking of \textit{parametrized} functions, such that, for a given input $\bm{x}$,
+In this model, each layer is a simple affine operator followed by a nonlinear \textit{activation} function. Following the notation previously presented, we can define a deep feedforward neural network $D_{\gls{param}}^{FN}$ with $L$ layers as a stacking of \textit{parametrized} functions, such that, for a given input $\bm{x}$,
 \begin{align*}
     \bm{z}^{[0]} &= \bm{x} \\
     \bm{z}^{[i]} &= f_{\gls{param}^i}^{[i]}(\bm{z}^{[i-1]}) = g^{[i]}\left(A^{[i]}\bm{z}^{[i-1]} + \bm{b}^{[i]}\right) ,\,i=1,\ldots,L \\
@@ -57,9 +57,10 @@ In this model, each component is a simple affine operator followed by a nonlinea
 in which $\gls{param}=\left( \gls{param}^1,\ldots,\gls{param}^L \right) $ are the vectors of parameters and $g^{[i]}$ are the activation functions.
 It is common to see each of the $\gls{param}^i$ as a vector composed of the individual elements of the respective $A^{[i]}$ and $\bm{b}^{[i]}$.
 Usually, one denotes a single parameter vector $\gls{param}$ shared by all functions, assuming that each function "selects" only its own parameters, therefore, writing $f_{\gls{param}}^{[i]} = f_{\gls{param}^i}^{[i]}$.
-Using this notation, we can say that, given a \textit{target} function $f^*$ and input data $X$, a deep feedforward network $D_{\gls{param}}^{FN}$ must learn a set of parameters $\gls{param}$ such that $D^{FN}_{\gls{param}}(x) \approx f^*(x),\,\forall x \in X$.
 
-Let us recall the Exclusive-OR example from the previous section. One can construct a two-layer deep feedforward network such that the functions $f_{\gls{param}}^{[1]}:\R^2\to\R^2$ and $f_{\gls{param}}^{[2]}:\R^2\to\R$ are
+Using this notation, we can say that, given a \textit{target} function $f^*$ and input data $X$, the task of learning a deep feedforward network $D_{\gls{param}}^{FN}$ is resumed to finding a set of parameters $\gls{param}$ such that $D^{FN}_{\gls{param}}(x) \approx f^*(x),\,\forall x \in X$.
+
+Following the Exclusive-OR example, one can construct a two-layer deep feedforward network such that the functions $f_{\gls{param}}^{[1]}:\R^2\to\R^2$ and $f_{\gls{param}}^{[2]}:\R^2\to\R$ are
 \begin{align*}
     f_{\gls{param}}^{[1]}(\bm{z}) &= \gls{sigmoid}\left(
     \begin{bmatrix}
@@ -86,25 +87,27 @@ In practice, a network with a single hidden layer might need to be unfeasibly la
 
 \section{Learning}
 
-The Exclusive-OR example illustrates well how a model built of multiple simple functions can approximate very well a target behavior.
+The Exclusive-OR example illustrates how a model built of multiple simple functions can approximate very well a target behavior.
 Yet, if we consider complex tasks (such as predicting age from humans' photographs), it is easy to see that many components and hundreds, maybe millions of parameters may be necessary\footnotemark.
-Thus, it is not always reasonable (or even feasible) to design these components manually.
+Thus, it is not always reasonable (or even possible) to design these components manually.
 That is the reason \textit{learning algorithms} are essential to make these models useful for realistic tasks.
 
 \footnotetext{A simple example would be to consider a deep feedforward network designed to have images as inputs and output a single value. Even if small, 32-by-32 pixels, grayscale images are expected, the domain will have dimension 1024. Thus, if a single hidden layer of dimension 256 (a quarter of the input size) is desired before the output layer, the network will have over 200 thousand parameters.}
 
 One can understand what a learning algorithm is from the definition from \textcite{mitchell_machine_1997}:
 ``A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$.''
-To narrow down this broad definition to the scope of the presented work, we can consider the tasks in $T$ as target functions which we want our model to approximate.
-For this class of tasks, it is natural that the performance measure $P$ be some sort of distance measure between the model and the target function.
+To narrow down this broad definition to the scope of the presented work, we can consider the tasks in $T$ to approximate a target function.
+Then, the experience given is the target function itself.
+Furthermore, the performance measure $P$ is some sort of distance measure between the model and the target function.
 
-It is often impractical to evaluate both the model and the target function in the entirety of the domain desired.
-Both because such evaluation can be too expensive to compute, and because the behavior of the target function might not be known beforehand.
-Thus, the experience $E$ usually comes from data in the form of a (finite) set of samples from the domain paired with the outputs of the target function of interest.
+However, it is often impractical to evaluate both the model and the target function in the entirety of the domain of interest.
+Such evaluation can be too expensive to compute and the behavior of the target function might not be known beforehand.
+Thus, the experience $E$ is usually a (finite) set of samples from the domain paired with the outputs of the target function of interest.
+These can be measurements of a real process, like time (input) and the evolution of a quantity of interest (target function).
 % The performance is also usually measured on the data, discarding the need to evaluate the target function and the model on the entirety of the domain.
 
-Roughly speaking, the deep learning algorithms of interest for this work are those that, given data on the target function, provide a deep learning model that maximizes a performance measure.
-This is usually called \emph{training} a model.
+Roughly speaking, the deep learning algorithms of interest for this work are those that provide a deep learning model that maximizes a performance measure on data of the target function.
+This is called \emph{training} a model.
 
 \subsection{Gradient Descent}
 
@@ -113,25 +116,25 @@ It would be natural to frame the definition of a learning algorithm as an optimi
 Yet, not always the performance measure of interest is easy to compute or provides useful features for the optimization (e.g, differentiability).
 Therefore, it is usual to optimize indirectly, minimizing a \textit{loss function} while aiming to improve the performance measure.
 
-Given a model $D_{\gls{param}}:\R^n\to\R^m$ and a target function $\bm{f}^*:U\subset\R^n\to\R^m$, an ideal performance measure could be $\int_U \|D_{\gls{param}}(\bm{x}) - \bm{f}^*(\bm{x})\|d\bm{x}$.
+Given a model $D_{\gls{param}}^{FN}:\R^n\to\R^m$ and a target function $\bm{f}^*:U\subset\R^n\to\R^m$, an ideal performance measure could be $\int_U \|D_{\gls{param}}(\bm{x}) - \bm{f}^*(\bm{x})\|d\bm{x}$.
 Yet, this integral could be costly to compute and might not even be easily defined.
 Instead, one could evaluate the model on a finite set of points from the domain $X=\{(\bm{x},\bm{y})\in U\times\R^m : \bm{y}=\bm{f}^*(\bm{x})\}$ (the data that forms the experience $E$), defining a loss function $l:\R^m\times\R^m\to\R$ (over the model's output and the target) that can be evaluated for each sample, e.g., the $\ell^2$-norm.
-This way, the outcome of a deep learning algorithm would be a model $D_{\gls{param}^*}$, such that \[
-\gls{param}^* = \arg\min_{\gls{param}} \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y})
-.\] Usually, though, given the data $X$ and the model $D_{\gls{param}}$, one defines a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y})$.
+This way, the outcome of a deep learning algorithm would be a model $D_{\gls{param}^*}^{FN}$, such that \[
+\gls{param}^* = \arg\min_{\gls{param}} \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}^{FN}(\bm{x}), \bm{y})
+.\] Usually, though, given the data $X$ and the model $D_{\gls{param}}^{FN}$, it is easy to define a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}^{FN}(\bm{x}), \bm{y})$.
 Therefore, to train a model one can solve the optimization problem
 \begin{align*}
     \min_{\gls{param}} \quad & J\left( \gls{param} \right)  \\
     \text{s.t.} \quad & \gls{param} \in \Theta
 ,\end{align*}
-where $\Theta$ is the set of feasible parameters for the model.
+where $\Theta$ is the set of feasible parameters for $D_{\gls{param}}^{FN}$.
 
 The most common way to solve this optimization for deep learning models is to use the \textit{gradient descent} algorithm.
 This method was first proposed by Cauchy in the XIX century \cite{lemarechal_cauchy_2012} based on the definition of the gradient of a differentiable function.
 It is known that, given a differentiable function $f:A\to\R$ and $\bm{a} \in A$, if $\| \nabla f(\bm{a}) \| \neq 0,\,\exists \gls{lr} > 0$ such that $f(\bm{a} - \gls{lr} \nabla f(\bm{a})) < f(\bm{a})$, that is, if one takes a small enough step in the opposite direction of the gradient, the function is certain to decrease.
 The scalar $\gls{lr}$ is called the \textit{learning rate}, and defines the size of the step that is taken \cite{goodfellow_deep_2016}.
 
-Therefore, following the notation of the previous example, if we assume that both the model and the cost function are differentiable, given parameters $\gls{param}_k$ such that $\| \nabla J(\gls{param}_k) \| \neq 0$, if we set
+Following the notation of the previous example, if we assume that both the model and the cost function are differentiable, given parameters $\gls{param}_k$ such that $\| \nabla J(\gls{param}_k) \| \neq 0$, if we set
 \begin{equation}\label{eq:gradient-descent-step}
 \gls{param}_{k+1} \gets \gls{param}_k - \gls{lr} \nabla J(\gls{param}_k) 
 ,\end{equation}
@@ -143,29 +146,29 @@ In the context of the learning algorithm, every iteration in which the cost is c
 
 % Maybe introduce the gradient step with regards to the cost function = sum of per-sample loss function?
 
-Yet, gradient descent provides poor convergence conditions \cite{wolfe_convergence_1969}, being considered unreliable and slow for many practical optimization problems.
+Gradient descent usually provides poor convergence conditions \cite{wolfe_convergence_1969}, being considered unreliable and slow for many practical optimization problems.
 Still, gradient descent is known to work very well for deep learning.
 In this area, it has shown to achieve low values of the cost function fast enough to be useful, even if it does not find a local minimum \cite{goodfellow_deep_2016}
 
 \subsection{Gradient Descent Variations}
 
-Over the year, many improvements on the gradient descent algorithms made it even more reliable and efficient for learning deep networks.
-In particular, the use of \textit{momentum} on the update of the parameters.
-Computing a velocity vector over the parameter update steps, and taking this into account when performing the update, has shown to accelerate significantly the learning process \cite{sutskever_importance_2013}.
-The classical way of doing this is to replace the update in \eqref{eq:gradient-descent-step} by
+Over the years, many improvements on the gradient descent algorithms made it even more reliable and efficient for learning deep networks.
+In particular, the use of \textit{momentum} on the update of the parameters has shown to accelerate significantly the learning process \cite{sutskever_importance_2013}.
+Momentum can be seen as computing a "velocity" vector over the parameter update steps, and taking this into account when performing the update.
+The classical way of doing this is to replace the update in Equation \eqref{eq:gradient-descent-step} by
 \begin{align*}
     v_{k+1} &\gets \mu v_k - \gls{lr} \nabla J(\gls{param}_k) \\
     \gls{param}_{k+1} &\gets \gls{param}_k + v_{k+1}
 ,\end{align*}
-where $v_k$ is the velocity at the $k$ step, and $\mu$ is the momentum coefficient.
+where $v_k$ is the velocity at the $k$-th step, and $\mu$ is the momentum coefficient.
 
-A major challenge of the gradient descent as a learning algorithm is that it introduces a parameter that is not learned in the process (which are commonly called \emph{hyperparameters}) and that is crucial to finding a good model: the learning rate.
+A major challenge of the gradient descent as a learning algorithm is that it introduces a parameter that is not learned in the process (those are called \emph{hyperparameters}) and that is crucial to finding a good model: the learning rate.
 Using momentum reduces a little the sensitivity of the results to the choice of the learning rate, but does so while introducing a new hyperparameter (the momentum coefficient $\mu$).
 Furthermore, it is known that the cost function can be sensitive to some of the parameters while being numb to others \cite{goodfellow_deep_2016}.
 
-It was natural, in the face of these challenges, to think of strategies that use different learning rates for each parameter and automatically change these learning rates throughout the learning process.
-The most simple way of doing this is following the idea that, if the gradient with respect to a given parameter does not change sign (i.e., remains positive (or negative) over the iterations), its associated learning rate should increase; otherwise, it should decrease.
-This way, if the cost function is sensitive to a given parameter, its associated learning rate will decrease over time, making the training less unstable.
+In face of these challenges, strategies were proposed that use different learning rates for each parameter and automatically change these learning rates throughout the learning process.
+The simplest way of doing this is through the rationale that if the gradient with respect to a given parameter does not change sign (i.e., remains positive (or negative)) over the epochs, the cost is not very sensitive to changes in this parameter and, thus, its associated learning rate should increase; otherwise, it should decrease.
+This adaptive learning rate approach makes the training more stable.
 
 Adam \cite{kingma_adam_2015} combined two gradient descent variations proposed by \textcite{duchi_adaptive_2011} and \textcite{tieleman_lecture_2012}, encompassing both adaptive learning rates and momentum, and taking them one step further.
 After showing excellent empirical results over many application areas, Adam became one of the most commonly used algorithms and is seen as one of the best choices overall \cite{ruder_overview_2017}.
@@ -173,14 +176,14 @@ After showing excellent empirical results over many application areas, Adam beca
 \section{Regularization}\label{sec:regularization}
 
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are not in the data provided during training, i.e., models that \emph{generalize} well.
-The strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
+Strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 
-One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
-It can be seen as an incentive for the model to be built on simple features, in an effort to approximate the training data with the simplest model possible \cite{goodfellow_deep_2016}.
+One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function such as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
+This can be seen as an incentive for the model to be built on simple features, in an effort to approximate the training data with the simplest model possible \cite{goodfellow_deep_2016}.
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful, when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).
 Unfortunately, properly defining these hard constraints is not trivial, as finding the ``simplest'' model that is still able to approximate the target function can be hard.
-Furthermore, in practice, more complex models properly regularized almost always perform better than simpler models \cite{goodfellow_deep_2016}.
+In practice, complex models properly regularized almost always perform better than simpler models \cite{goodfellow_deep_2016}.
 
 Another way to improve generalization is to use regularization to drive the learning towards models that present some desired characteristics.
 One of the most common of such characteristics is noise robustness.

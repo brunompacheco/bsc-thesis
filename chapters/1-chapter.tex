@@ -22,7 +22,7 @@ With such a fame, one could easily suppose that it can be a powerful tool to sol
 % The ability to learn from experience and to interpret the world through stacks of concepts on top of simpler concepts \cite{goodfellow_deep_2016} is what makes 
 
 Yet, deep learning models gather knowledge by learning from experience, which gives them a data-driven nature.
-Unfortunately, gathering enough data (samples, records, experiment history) from physical phenomena of dynamical systems can be expensive, as it may require an assortment of measurement devices and expensive material to stimulate and observe the phenomena of interest.
+Unfortunately, gathering sufficient data (samples, records, experiment history) from real-life dynamical systems can be costly, as it may require an assortment of measurement devices and expensive material to stimulate and observe the phenomena of interest.
 This makes training deep learning models, in such context, quite challenging.
 
 \textcite{Raissi2019} proposed to optimize the dynamics of the model instead of its outputs.
@@ -34,27 +34,9 @@ At the same time, \textcite{Bai2019} and \textcite{Ghaoui2019} proposed a novel 
 A model defined this way is effectively an infinite-depth network \cite{Bai2019} with residual connections\cite{he_deep_2016}, which results in a great representational power with a small amount of parameters.
 This reduced set of parameters improves the model's explainability, which in turn helps with deriving causality and robustness, all of which are desirable features in safety-critical applications (e.g., in the automation industry).
 
-Even though successful applications of \gls{DEQ}s have already appeared in the literature \cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, in which problems \gls{DEQ}s can succeed over traditional models.
-As to generate the output of an equilibrium model one has to solve an equilibrium equation, these models present an iterative behavior, hence similar to commonly used differential equation solvers such as the Runge-Kutta algorithm.
-Therefore, given the novelty of the model and its iterative behavior, the question this work aims to answer is: can a \gls{DEQ} learn to solve an \gls{IVP} of an \gls{ODE} in a physics-informed approach?
-
-
-% \textbf{Instruções da Coordenação do PFC:}
-
-% Neste primeiro capítulo é muito importante deixar bem claro (de uma maneira mais resumida, sem entrar em detalhes técnicos, apenas para passar a ideia geral ao leitor):
-
-% \begin{itemize}
-%     \item o problema tratado no PFC;
-%     \item a importância do problema para a empresa ou instituição em que o PFC foi realizado;
-%     \item a solução proposta;
-%     \item a metodologia utilizada;
-%     \item os resultados obtidos e a sua importância para a empresa/clientes;
-%     \item o que de fato foi feito pelo autor, diferenciando do que foi aproveitado de trabalhos anteriores/outras equipes da empresa. \textbf{Importante}: esta preocupação em diferenciar o trabalho do autor daquele de possíveis colegas em um trabalho em equipe deve permear todo o documento.
-% \end{itemize}
-
-% Apesar de o tamanho da monografia não ter uma correlação direta com a nota, bons trabalhos não costumam ser relatados suficientemente bem com menos de 50 páginas. Acima de 100 páginas a monografia pode se tornar ``massante'', discorrendo além do necessário para o entendimento do trabalho, portanto perdendo o foco do leitor.
-
-% A linguagem a ser utilizada em um trabalho acadêmico deve ser técnico-científica, portanto formal (e não informal, como se o trabalho estivesse sendo explicado a um colega ou familiar). Portanto não devem ser usadas gírias. Utilize correto ortográfico e verifique a gramática (pontuação, uso da vírgula, concordância, coesão textual etc.).
+Even though successful applications of \gls{DEQ}s have already appeared in the literature \cite{bai_multiscale_2020}, it is still unknown, for the majority of deep learning applications, the problems in which \gls{DEQ}s can succeed over traditional models.
+Since to generate the output of an equilibrium model one has to solve an equilibrium equation, these models present an iterative behavior, hence similar to commonly used differential equation solvers such as the Runge-Kutta algorithm.
+Therefore, given the novelty of the model and its iterative behavior, the question this work aims to answer is: can a \gls{DEQ} be trained to solve an \gls{IVP} of an \gls{ODE} in a physics-informed approach?
 
 % ----------------------------------------------------------
 \section{Objectives}
@@ -81,6 +63,7 @@ With these steps, it is expected that a solid conclusion will be achieved on the
 
 \section*{}
 
-In the first two chapters below, a brief introduction to \gls{ODE}s (Ch. \ref{ch:ode}) and deep learning (Ch. \ref{ch:deep-learning}) is presented, aiming to lay a foundation and establish a reference for the following chapters.
+In the first two chapters below, a brief introduction to \gls{ODE}s (Ch. \ref{ch:ode}) and deep learning (Ch. \ref{ch:deep-learning}) is presented, aiming to lay a foundation and establish a concise reference.
 The following chapters are dedicated to the novel contributions of \gls{PINN}s (Ch. \ref{ch:pinn}) and \gls{DEQ}s (Ch. \ref{ch:deq}), which are central for the aim of this work.
-Finally, Chapter \ref{ch:experiments} presents the experimental results of a physics-informed \gls{DEQ} trained to solve an \gls{IVP}, the results of which are discussed in Chapter \ref{ch:conclusion} together with an outlook of future work.
+Finally, Chapter \ref{ch:experiments} presents the experimental results of a physics-informed \gls{DEQ} trained to solve an \gls{IVP}.
+These results are discussed in Chapter \ref{ch:conclusion} together with an outlook of future work.

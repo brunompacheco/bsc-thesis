@@ -2,8 +2,8 @@
 \chapter{Deep Equilibrium Models}\label{ch:deq}
 % ----------------------------------------------------------
 
-This chapter is dedicated to lay out the foundations of the model architecture that is the central investigation point of this work.
-\gls{DEQ}s have been proposed by \textcite{Bai2019} and \textcite{Ghaoui2019}, the latter naming them \emph{implicit models}.
+This chapter's focus is to define the deep learning model that is the central investigation point of this work.
+\glspl{DEQ} have been proposed by \textcite{Bai2019} and \textcite{Ghaoui2019}, the latter naming them \emph{implicit models}.
 In this chapter, we follow the notation of the former.
 
 Furthermore, one of the greatest challenges in working with \gls{DEQ}s is that, by their implicit nature, they do not fit perfectly well with current deep learning tools.
@@ -16,7 +16,7 @@ Besides the network defined in Section \ref{sec:neural-nets} (which is the base 
     Some of the architectures with the most surprising results involve composing the models with the same function applied multiple times, i.e., following the notation of Chapter \ref{ch:deep-learning}, instead of defining the model as a composition similar to $D_{\gls{param}}=f_{\gls{param}}^{[L]}\circ \cdots \circ f_{\gls{param}}^{[1]}$, these architectures suggest a model similar to $D_{\gls{param}}=f_{\gls{param}}^{[1]}\circ \cdots \circ f_{\gls{param}}^{[1]}$.
 Inspired by this, \textcite{Bai2019} take a step further, defining the model with a (possibly) infinite stack of the same function, which was named \gls{DEQ}.
 
-For the definition of a \gls{DEQ} $D^{EQ}_{\gls{param}}$, let us start with the definition of a deep learning model as proposed in Equation \eqref{eq:dl-model}, but imagine it has an infinite number of layers (infinite depth).
+For the definition of a \gls{DEQ} $D^{EQ}_{\gls{param}}$, let us start with the definition of a deep learning model as proposed in Equation \eqref{eq:dl-model}, but imagine it having an infinite number of layers (infinite depth).
 Of course, if each $f^{[i]}_{\gls{param}}$ is a different function (with different parameters), then this would be impossible to fit in memory.
 Therefore, let us assume that $f_{\gls{param}}^{[i]}=f_{\gls{param}},\forall i$, i.e.,
 \begin{equation*}
@@ -48,7 +48,7 @@ defines its output as the equilibrium point of a function $\bm{f}_{\gls{param}}:
 
 \section{Forward}\label{sec:deq-forward}
 
-The most simple way to perform the forward pass of a \gls{DEQ}, i.e., to compute the output of the model given an input, is to iterate the application of the equilibrium function $\bm{f}_{\gls{param}}$ until the current value is close enough to the previous.
+The simplest way to perform the forward pass of a \gls{DEQ}, i.e., to compute the output of the model given an input, is to iterate the application of the equilibrium function $\bm{f}_{\gls{param}}$ until the current value is close enough to the previous.
 More specifically, given an input $\bm{x}$ and an initial guess $\bm{z}^{[0]}$, the procedure is to update the equilibrium guess $\bm{z}^{[i]}$ by \[
     \bm{z}^{[i]} = \bm{f}_{\gls{param}}(\bm{x}, \bm{z}^{[i-1]})
 \] until $\|\bm{z}^{[i]}-\bm{z}^{[i-1]}\|$ is small enough.
@@ -67,7 +67,7 @@ Perhaps the most classical root-finding algorithm is \emph{Newton's method}, whi
     \bm{z}^{[i+1]} = \bm{z}^{[i]} - \left( \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}}  \right)^{-1} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})
 ,\] 
 in which $\frac{d} {d\bm{z}} \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ represents the Jacobian of  $\bm{f}_{\gls{param}}$ with respect to $\bm{z}$\footnotemark.
-\footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses instead in solving $ \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ instead.}
+\footnotetext{To avoid the computational burden of inverting the Jacobian matrix, it is usual that the iteration focuses on solving $ \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})}{d\bm{z}} \left(\bm{z}^{[i+1]} - \bm{z}^{[i]}\right) = -\bm{f}_{\gls{param}}(\bm{x},\bm{z}^{[i]})$ instead.}
 Newton's method not only has guaranteed convergence for a broader class of functions in comparison to simple iteration, but also converges much faster~\cite{suli_introduction_2003}.
 
 \subsection{Practical Considerations}
@@ -96,34 +96,34 @@ In the case of \gls{DEQ}s, this computation is not straight-forward.
 Given $D^{EQ}_{\gls{param}}:\R^{n}\to \R^{m}$ a \gls{DEQ} as defined above, computing the derivative of a cost function $J:\Omega\to \R$ with respect to the parameters can be seen as \[
     \nabla_{\gls{param}} J\left( \gls{param} \right) = \nabla_{\bm{z}^{\star}} J(D^{EQ}_{\gls{param}}(\bm{x})) \frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d\gls{param}}
 .\] 
-At the same time, we know that the output of a model is given by an equilibrium point of $\bm{f}_{\gls{param}}$, which is computed using a root finding method, i.e., \[
+At the same time, we know that the output of a model is given by an equilibrium point of $\bm{f}_{\gls{param}}$, which is computed using a root finding method as \[
     D^{EQ}_{\gls{param}}(\bm{x}) = RootFind(\bm{g}, \bm{z}^{[0]})
-,\] where $\bm{g}$ is a function so that $\bm{g}(\bm{z}) = \bm{f}_{\gls{param}}(\bm{x},\bm{z}) - \bm{z}$.
+,\] where $\bm{g}$ is the function $\bm{g}(\bm{x},\bm{z}) = \bm{f}_{\gls{param}}(\bm{x},\bm{z}) - \bm{z}$.
 Therefore, directly computing the derivatives of $D^{EQ}_{\gls{param}}$ requires the computation of the derivatives of the root-finding algorithm.
-Yet, not only root-finding algorithms are not usually differentiable, but even those that are differentiable may have an enormous computational cost to compute the actual derivatives.
+Yet, not only root-finding algorithms are not usually differentiable, but even those that are differentiable may have an enormous computational cost to compute the derivatives.
 To illustrate the point, if we restrain ourselves to using the simple iteration method as the root-finding algorithm, we can apply the chain rule and decompose the derivative in computing the derivative of $\bm{f}_{\gls{param}}$ for as many times as there were iterations until convergence, which can make practical applications impossible.
 
-Luckily, we can exploit the fact that the output of the model ($D^{EQ}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}$, as proposed by \textcite{Bai2019}.
+Luckily, we can exploit the fact that the output of the model ($D^{EQ}_{\gls{param}}\left( \bm{x} \right) = \bm{z}^{\star}$) is an equilibrium point of $\bm{f}_{\gls{param}}$, as done by \textcite{Bai2019}.
 This implies that, in a neighborhood of the input vector $\bm{x}$, $D^{EQ}_{\gls{param}}$ is a \emph{parametrization} of $\bm{z}$ with respect to $\bm{x}$, i.e., \[
     \bm{f}_{\gls{param}}\left( \bm{x},D^{EQ}_{\gls{param}}(\bm{x}) \right) -D^{EQ}_{\gls{param}}\left( \bm{x} \right) = \bm{0}
 \] is true. Then, by the definition of $\bm{g}$, it is also true that \[
-\bm{g}\left( D^{EQ}_{\gls{param}}\left( \bm{x} \right) \right) = \bm{0}
+\bm{g}\left( \bm{x}, D^{EQ}_{\gls{param}}\left( \bm{x} \right) \right) = \bm{0}
 \] holds in a neighborhood of the input.
 Therefore, by the \emph{implicit function theorem} (applied to $\bm{g}$ with $D^{EQ}_{\gls{param}}$ as the parametrization), we can write
 \begin{equation}\label{eq:ift-g}
-    \frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d \gls{param}} = - \left[ \frac{d \bm{g}(D^{EQ}_{\gls{param}}(\bm{x}))}{d \bm{z}} \right]^{-1} \frac{d \bm{g}(D^{EQ}_{\gls{param}}(\bm{x}))}{d \gls{param}}
+    \frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d \gls{param}} = - \left[ \frac{d \bm{g}(\bm{x}, D^{EQ}_{\gls{param}}(\bm{x}))}{d \bm{z}} \right]^{-1} \frac{d \bm{g}(\bm{x}, D^{EQ}_{\gls{param}}(\bm{x}))}{d \gls{param}}
 .\end{equation}
 Now, by the definition of $\bm{g}$ we know that \[
-    \frac{d \bm{g}(\bm{z})}{d \bm{z}} = \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z})}{d \bm{z}} - I 
+    \frac{d \bm{g}(\bm{x}, \bm{z})}{d \bm{z}} = \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z})}{d \bm{z}} - I 
 \] and \[
-\frac{d \bm{g}(\bm{z})}{d \gls{param}} = \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z})}{d \gls{param}}
+\frac{d \bm{g}(\bm{x}, \bm{z})}{d \gls{param}} = \frac{d \bm{f}_{\gls{param}}(\bm{x},\bm{z})}{d \gls{param}}
 .\] Therefore, we can rewrite \eqref{eq:ift-g} as
 \begin{equation}\label{eq:deq-jacobian}
     \frac{d D^{EQ}_{\gls{param}}(\bm{x})}{d \gls{param}} = - \left[ \frac{d \bm{f}_{\gls{param}}(\bm{x},D^{EQ}_{\gls{param}}(\bm{x}))}{d \bm{z}} - I \right]^{-1} \frac{d \bm{f}_{\gls{param}}(\bm{x},D^{EQ}_{\gls{param}}(\bm{x}))}{d \gls{param}}
 ,\end{equation}
 which allows us to compute the derivative of the \gls{DEQ} model \emph{regardless of how the equilibrium was computed}.
 This makes it possible for us to use \emph{any} root-finding algorithm in the forward pass and still optimize the parameters of the model.
-Furthermore, the implicit function theorem can also be applied to find the derivatives of the DEQ model with respect to the input vector, enabling back-propagation even when the \gls{DEQ} model is a component of a larger deep learning model.
+Furthermore, the implicit function theorem can also be applied to find the derivatives of the DEQ model with respect to the input vector, enabling back-propagation even if the "infinite depth" is just a component of a larger deep learning model.
 
 \subsection{Implementation}\label{sec:deq-backward-implementation}
 
