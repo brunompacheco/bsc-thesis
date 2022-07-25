@@ -15,6 +15,7 @@
 \usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{soul}
+\usepackage{enumitem}
 
 \usepackage[backend=biber,style=abnt,repeatfields,maxbibnames=9,maxcitenames=3,uniquelist=false, uniquename=full,extrayear]{biblatex}
 \renewcommand*{\bibfont}{\scriptsizsmalle}
@@ -438,27 +439,53 @@ Defesa de Projeto de Fim de Curso | DAS
 
 \begin{frame}
     \frametitle{PIDEQ Size}
-    This motivated the training of smaller PIDEQs.
-    \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{../images/exp_2_iae.pdf}
-	\caption{Learning curves of the models trained with fewer states.}
-	\label{fig:states-iae}
-    \end{figure}
+    \begin{columns}[c]
+    \begin{column}{.4\textwidth}
+	This motivated the training of smaller PIDEQs, iterating over the analysis on the $A$ matrix.
+    \end{column}
+    \begin{column}{.6\textwidth}
+	\begin{figure}[h]
+	    \centering
+	    \includegraphics[width=\textwidth]{../images/exp_2_iae.pdf}
+	    \caption{Learning curves of the models trained with fewer states.}
+	    \label{fig:states-iae}
+	\end{figure}
+    \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
     \frametitle{Hyperparameter Tuning}
 
     \begin{columns}[c]
-    \begin{column}{.3\textwidth}
-    Besides the number of states, we also tuned:
-    \begin{itemize}
-	\item Weight of the Jacobian regularization term ($\kappa$);
-	\item Root-finding algorithm used in the forward pass;
-	\item Tolerance of the root-finding algorithms.
-    \end{itemize}
-
+    \begin{column}{.4\textwidth}
+	Besides the number of states, we also tuned:
+	\begin{itemize}[label={\textbullet}]
+	    \item<1-> Weight of the Jacobian regularization term ($\kappa$);
+	    \item<2-> Root-finding algorithm used in the forward pass;
+	    \item<3-> Tolerance of the root-finding algorithms ($\varepsilon$).
+	\end{itemize}
+    \end{column}
+    \begin{column}{.6\textwidth}
+	\only<1>{\begin{figure}[h]
+            \centering
+            \includegraphics[width=1.\textwidth]{../images/exp_4_iae.pdf}
+            \caption{Learning curves of the models trained with different $\kappa$.}
+            \label{fig:kappa-iae}
+	\end{figure}}
+        \only<2>{\begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{../images/exp_5_iae.pdf}
+            \caption{Learning curves of the models trained with different root-finding algorithms.}
+            \label{fig:solver-iae}
+	\end{figure}}
+        \only<3>{\begin{figure}[h]
+            \centering
+            \includegraphics[width=\textwidth]{../images/exp_6_iae.pdf}
+            \caption{Learning curves of the models trained with different $\varepsilon$.}
+            \label{fig:solver-iae}
+	\end{figure}}
+    \end{column}
     \end{columns}
 \end{frame}
 
@@ -499,10 +526,10 @@ Logo da UFSC na Figura \ref{fig:rotulo}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[allowframebreaks]
-    \frametitle{References}
-    \printbibliography
-\end{frame}
+% \begin{frame}[allowframebreaks]
+%     \frametitle{References}
+%     \printbibliography
+% \end{frame}
 
 %%%
 %%% Slide final
