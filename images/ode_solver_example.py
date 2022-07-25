@@ -71,9 +71,11 @@ if __name__ == '__main__':
 
     plt.xlim([0,200])
     plt.ylim([1,1e45])
+    plt.gcf().patch.set_alpha(.0)
     plt.savefig('ode_solver_comparison.pdf', bbox_inches='tight')
 
     plt.legend().set_visible(False)
     plt.xlim([0,20])
     plt.ylim([1,1e5])
+    # plt.gcf().patch.set_alpha(.5)
     plt.savefig('ode_solver_comparison_zoom.pdf', bbox_inches='tight')

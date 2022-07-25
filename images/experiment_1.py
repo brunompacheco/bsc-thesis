@@ -33,6 +33,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
+    fig.patch.set_alpha(.0)
 
     plot_learning_curve(ax, pinn_histories, 'PINN')
     plot_learning_curve(ax, pideq_histories, 'PIDEQ')
@@ -59,9 +60,9 @@ if __name__ == '__main__':
     print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
 
     ### VdP PLOT ###
-    # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    # T = 2
+    T = 2
 
     # K = 1000
     # dt = T / K
@@ -77,21 +78,22 @@ if __name__ == '__main__':
 
     # t = torch.Tensor(time).unsqueeze(-1).to(device)
 
-    # net = load_from_wandb(PIDEQ(T, n_out=2, n_states=80), 'zj7r8add', model_fname='model_last').to(device)
-    # net.eval()
-    # pideq_B = net.B.weight.cpu().detach().numpy()
+    net = load_from_wandb(PIDEQ(T, n_out=2, n_states=80), 'zj7r8add', model_fname='model_last').to(device)
+    net.eval()
+    pideq_B = net.B.weight.cpu().detach().numpy()
     # pideq_n_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
     # y_pred_pideq = net(t).cpu().detach().numpy()
 
-    # fig, ax = plt.subplots(1,1)
-    # fig.set_size_inches(3,3)
+    fig, ax = plt.subplots(1,1)
+    fig.set_size_inches(3,3)
+    fig.patch.set_alpha(.0)
 
-    # ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
-    # ax.set_xticks([])
-    # ax.set_yticks([])
+    ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
+    ax.set_xticks([])
+    ax.set_yticks([])
 
-    # plt.savefig('exp_1_matplot.pdf', bbox_inches='tight')
-    # # plt.show()
+    plt.savefig('exp_1_matplot.pdf', bbox_inches='tight')
+    # plt.show()
 
     # fig, ax = plt.subplots(1,1)
     # fig.set_size_inches(3,3)

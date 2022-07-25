@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
+    fig.patch.set_alpha(.0)
 
     for n_z, hs in histories.items():
         plot_learning_curve(ax, hs, n_z, shadow=False)
@@ -56,8 +57,8 @@ if __name__ == '__main__':
     ax.legend()
     ax.grid()
 
-    # plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
-    plt.show()
+    plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
+    # plt.show()
 
     print("Median training pass time (per epoch):")
     for n_z, hs in histories.items():
@@ -77,6 +78,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(3,3)
+    fig.patch.set_alpha(.0)
 
     ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
     ax.set_xticks([])

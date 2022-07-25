@@ -31,6 +31,7 @@ if __name__ == '__main__':
         plt.gca().set_title(f'$\mu={mu:.1f}$')
         if mu == 0:
             plt.legend()
+        plt.gcf().patch.set_alpha(.0)
         plt.savefig(f'vdp_timeplot_mu_{mu*10:02.0f}.pdf', bbox_inches='tight')
 
         # state-space
@@ -50,4 +51,5 @@ if __name__ == '__main__':
         plt.gca().set_title(f'$\mu={mu:.1f}$')
         plt.xlim((-lim,lim))
         plt.ylim((-lim,lim))
+        plt.gcf().patch.set_alpha(.0)
         plt.savefig(f'vdp_statespace_mu_{mu*10:02.0f}.pdf', bbox_inches='tight')
