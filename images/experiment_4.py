@@ -43,6 +43,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
+    fig.patch.set_alpha(.0)
 
     for j_l, hs in histories.items():
         plot_learning_curve(ax, hs, f"$\kappa={j_l:1.1f}$", shadow=False)

@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots(1,1)
     fig.set_size_inches(6,4)
+    fig.patch.set_alpha(.0)
 
     plot_learning_curve(ax, histories['1e-02'], '$\\varepsilon=10^{-2}$', shadow=False)
     plot_learning_curve(ax, histories['1e-04'], '$\\varepsilon=10^{-4}$', shadow=False)
