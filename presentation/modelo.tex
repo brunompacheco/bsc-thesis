@@ -489,41 +489,74 @@ Defesa de Projeto de Fim de Curso | DAS
     \end{columns}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Final Model}
+    Besides the tuned PIDEQ, a PINN with the same number of parameters was trained for a fair comparison.
+    \begin{figure}[h]
+	\centering
+	\includegraphics[width=.6\textwidth]{../images/final_iae.pdf}
+	\caption{Learning curve of the final models and the baselines. ``Final PINN'', ``Final PIDEQ'' have 52 parameters.}
+	\label{fig:final-iae}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    % \frametitle{Final Model}
+    \begin{figure}[h]
+	\vspace{.1\textheight}
+	\centering
+	\includegraphics[width=.45\textwidth]{../images/final_vdp_y1.pdf}
+	\includegraphics[width=.45\textwidth]{../images/final_vdp_y2.pdf}
+	\caption{Prediction of PINN and PIDEQ in comparison to the reference approximation resulting from RK4.}
+	\label{fig:final-vdp}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Final Model}
+    \begin{columns}[T] 
+	\begin{column}{.6\textwidth}
+	    \vspace{-10pt}
+	    \begin{figure}[h]
+	        \centering
+		\includegraphics[width=.6\textwidth]{../images/final_times.pdf}
+		\caption{Breakdown of median time per epoch for the final PIDEQ and PINN.}
+		\label{fig:final-times}
+	    \end{figure}
+        \end{column}
+	\begin{column}{.4\textwidth} 
+	    \begin{description}
+	        \item[forward] computing the output given the input during training;
+		\item[cost] computing the cost function;
+		\item[backwards] back-propagating the cost to the parameters;
+		\item[validation] computing the output during validation (inference).
+	    \end{description}
+	\end{column}
+    \end{columns}
+    
+\end{frame}
+
 \section{Discussion}
 
 \subsection{Conclusions}
 
-\subsection{Outlook}
-
-\subsection*{Subseção 2}
-
 \begin{frame}
-\frametitle{Título do texto}
-\begin{itemize}
-\item Item a
-\item Item b
-\begin{itemize}
-\item Item b.1
-\item Item b.2
-\end{itemize}
-\item Item c
-\end{itemize}
+    \frametitle{Conclusions}
+    \begin{itemize}[label={\textbullet}]
+        \item<1-> It is possible to train DEQs in a physics-informed manner, effectively solving IVPs of ODEs;
+	\item<2-> However, PIDEQs are slower to train and presented higher errors than PINNs in comparison to RK4;
+	\item<3-> We believe that this might be because IVPs of small ODEs do not benefit from deeper networks;
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Texto em duas colunas}
-\begin{columns}[c]
-\begin{column}{.5\textwidth}
-\begin{figure}[!ht]
-\centering
-\includegraphics[scale=.2]{logo.png}
-\caption{Legenda da imagem}
-\label{fig:rotulo}
-\end{figure}
-\end{column}
-\begin{column}{.5\textwidth}
-Logo da UFSC na Figura \ref{fig:rotulo}.
-\end{column}
-\end{columns}
+\subsection{Outlook}
+
+\begin{frame}
+    \frametitle{Outlook}
+    \begin{itemize}[label={\textbullet}]
+        \item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs (e.g., IVP of the 4 Tank system, IVPs of PDEs, state-informed/controllable PINNs);
+	\item<2-> Theoretically, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs, eliminating the requirement for differentiable root-finding algorithms.
+    \end{itemize}
 \end{frame}
 
 % \begin{frame}[allowframebreaks]
