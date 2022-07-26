@@ -17,8 +17,24 @@
 \usepackage{soul}
 \usepackage{enumitem}
 
-\usepackage[backend=biber,style=abnt,repeatfields,maxbibnames=9,maxcitenames=3,uniquelist=false, uniquename=full,extrayear]{biblatex}
+\usepackage[backend=biber,style=abnt,maxbibnames=3,maxcitenames=1,uniquelist=false, uniquename=full,doi,url=false]{biblatex}
 \renewcommand*{\bibfont}{\scriptsizsmalle}
+
+\AtEveryBibitem{% Clean up the bibtex rather than editing it
+    \clearlist{address}
+    \clearfield{date}
+    \clearfield{eprint}
+    \clearfield{isbn}
+    \clearfield{issn}
+    \clearlist{location}
+    \clearfield{month}
+    \clearfield{series}
+
+    \ifentrytype{book}{}{% Remove publisher and editor except for books
+	\clearlist{publisher}
+	\clearname{editor}
+    }
+}
 
 \usefonttheme[onlymath]{serif}
 \addbibresource{../aftertext/references.bib} % Seus arquivos de referências
@@ -28,6 +44,8 @@
 
 \newcommand{\highlight}[1]{%
   \colorbox{yellow!50}{$\displaystyle#1$}}
+
+\renewcommand*\footnoterule{}
 
 %%%
 %%% Define cores
@@ -166,7 +184,7 @@ Defesa de Projeto de Fim de Curso | DAS
 
 \begin{frame}
 \frametitle{Goal}
-\textbf{Study}, \textbf{implement} and \textbf{validate} the use of Deep Equilibrium models as effective and efficient solvers for IVPs, making use of physics-informed training.
+\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} as effective and efficient solvers for IVPs, making use of \emph{physics-informed} training.
 
 \begin{itemize}
     \item<2-> \textbf{Study} DEQs and PINNs;
@@ -234,10 +252,14 @@ Defesa de Projeto de Fim de Curso | DAS
 \begin{frame}
     \frametitle{Van der Pol oscillator}
     Widely used ODE to model natural phenomena \[
-    \frac{d^2 y(t)}{dt^2} = \mu\left( 1-y(t)^2 \right) \frac{d y(t)}{dt} + y(t)
-    \] where $\mu$ controls the dampening of the oscillation.
+    \frac{d}{dt}\begin{bmatrix} y_1\left( t \right) \\ y_2\left( t \right)  \end{bmatrix} = \begin{bmatrix} 
+y_2\left( t \right) \\
+\mu\left( 1-y_1\left( t \right) ^2 \right) y_2\left( t \right) - y_1(t)
+\end{bmatrix} 
+    ,\] where $\mu$ controls the dampening of the oscillation.
 
-    VdP has no analytical solution, so it is widely used as a benchmark.
+    VdP has no analytical solution \cite{panayotounakos_lack_2003}, so it is widely used as a benchmark.
+    % \footnotetext{\tiny PANAYOTOUNAKOS, D.e.; PANAYOTOUNAKOU, N.d.; VAKAKIS, A.f. 2003. On the lack of analytic solutions of the Van der Pol oscillator.}
 \end{frame}
 
 \begin{frame}
@@ -284,7 +306,7 @@ Defesa de Projeto de Fim de Curso | DAS
     ,\] 
     which would be senseless! \pause
 
-    A PINN, on the other hand, is trained on \[
+    A PINN\cite{Raissi2019}, on the other hand, is trained on \[
     \min \sum_{t \in I} \left\|  \frac{d D^{FN}_{\bm{\theta}}(t)}{dt} - \mathcal{N}\left( t, D^{FN}_{\bm{\theta}}(t) \right) \right\| 
     ,\] 
     optimizing the \emph{dynamics} of the network.
@@ -353,7 +375,7 @@ Defesa de Projeto de Fim de Curso | DAS
 
 \begin{frame}
     \frametitle{Deep Equilibrium Models}
-    Definition:
+    Definition \cite{Bai2019}:
     \begin{align*}
 	D^{EQ}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
 	t &\longmapsto 	D^{EQ}_{\bm{\theta}}(	t) = \bm{z}^{\star} \\
@@ -378,7 +400,7 @@ Defesa de Projeto de Fim de Curso | DAS
     ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$.
     \linebreak \pause
 
-    By the implicit function theorem, \[
+    By the implicit function theorem \cite{Bai2019}, \[
 	\frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} = - \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}}
     .\] 
 \end{frame}
@@ -554,15 +576,10 @@ Defesa de Projeto de Fim de Curso | DAS
 \begin{frame}
     \frametitle{Outlook}
     \begin{itemize}[label={\textbullet}]
-        \item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs (e.g., IVP of the 4 Tank system, IVPs of PDEs, state-informed/controllable PINNs);
-	\item<2-> Theoretically, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs, eliminating the requirement for differentiable root-finding algorithms.
+	\item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs (e.g., IVP of the 4 Tank system \cite{johansson_quadruple-tank_2000-1}, IVPs of PDEs \cite{Raissi2019}, state-informed/controllable PINNs \cite{Antonelo2021,Arnold2021});
+	\item<2-> In theory, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs, eliminating the requirement for differentiable root-finding algorithms.
     \end{itemize}
 \end{frame}
-
-% \begin{frame}[allowframebreaks]
-%     \frametitle{References}
-%     \printbibliography
-% \end{frame}
 
 %%%
 %%% Slide final
@@ -596,6 +613,11 @@ mpacheco.bruno@gmail.com
 \end{center}
 \end{frame}
 }
+
+\begin{frame}[allowframebreaks]
+    \frametitle{References}
+    \printbibliography
+\end{frame}
 
 \end{document}
 
