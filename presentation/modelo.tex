@@ -47,6 +47,11 @@
 
 \renewcommand*\footnoterule{}
 
+\definecolor{tabblue}{RGB}{0,107,164}
+\definecolor{taborange}{RGB}{255,128,14}
+\definecolor{tabgray}{RGB}{171,171,171}
+\definecolor{tabdarkgray}{RGB}{89,89,89}
+
 %%%
 %%% Define cores
 %%%
@@ -184,7 +189,7 @@ Defesa de Projeto de Fim de Curso | DAS
 
 \begin{frame}
 \frametitle{Goal}
-\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} as effective and efficient solvers for IVPs, making use of \emph{physics-informed} training.
+\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} as effective and efficient solvers for initial value problems (IVPs), making use of \emph{physics-informed} training.
 
 \begin{itemize}
     \item<2-> \textbf{Study} DEQs and PINNs;
@@ -226,9 +231,9 @@ Defesa de Projeto de Fim de Curso | DAS
     Numerical approximations $\left\{ \bm{y}_i \right\}_{i=1,\ldots}$ such that $\bm{y}_i \approx \phi(t_i)$ for $t_i \in I$. \pause
 
     Euler's method: \[
-\bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right)
+\bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right),\,h=t_{i+1}-t_i
     \] \pause
-    Runge-Kutta 4:
+    Runge-Kutta 4 (RK4):
     \begin{align*}
 	\bm{k}_1 &= \mathcal{N}\left( t_i , \bm{y}_i \right)  \\
 	\bm{k}_2 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_1 \right)  \\
@@ -239,12 +244,13 @@ Defesa de Projeto de Fim de Curso | DAS
 \end{frame}
 
 \begin{frame}
+    \frametitle{IVP Solvers}
     \begin{figure}[h]
-	\vspace{.1\textheight}
+	% \vspace{.1\textheight}
 	\centering
 	\includegraphics[width=0.45\textwidth]{../images/ode_solver_comparison_zoom.pdf}
 	\includegraphics[width=0.45\textwidth]{../images/ode_solver_comparison.pdf}
-	\caption{Comparison of Runge-Kutta 4 and Euler's method.}
+	\caption{Comparison of Runge-Kutta 4 and Euler's method. RK4 outperforms Euler's even when limited by number of function evaluations.}
 	\label{fig:ode_comparison}
     \end{figure}
 \end{frame}
@@ -385,22 +391,22 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{Forward Pass}
-    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}}$ iff $\bm{z}^{\star}$ is a root of $g_t(\bm{z}) = f_{\bm{\theta}}(t,\bm{z}) - \bm{z}$.
+    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}}$ iff $\bm{z}^{\star}$ is a root of $g(t,\bm{z}) = f_{\bm{\theta}}(t,\bm{z}) - \bm{z}$.
     \linebreak \pause
 
     Therefore, \[
-    D^{EQ}_{\bm{\theta}}(t) = \bm{z}^{\star} = RootFind(g)
+    D^{EQ}_{\bm{\theta}}(t) = \bm{z}^{\star} = RootFind(g,t)
     ,\] in which $RootFind$ is any root-finding algorithm (e.g., simple iteration, Newton's method, quasi-Newton methods).
 \end{frame}
 
 \begin{frame}
     \frametitle{Backward Pass}
     By the definition of the model's output, \[
-	f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t)) = 0
-    ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$.
+	g(t,D^{EQ}_{\bm{\theta}}(t)) = 0
+    ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$ for $g(t,\bm{z})=0$.
     \linebreak \pause
 
-    By the implicit function theorem \cite{Bai2019}, \[
+    Consequently, by applying the implicit function theorem \cite{Bai2019} and by the definition of $g$, \[
 	\frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} = - \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}}
     .\] 
 \end{frame}
@@ -513,7 +519,7 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{Final Model}
-    Besides the tuned PIDEQ, a PINN with the same number of parameters was trained for a fair comparison.
+    The tuned PIDEQ contains 52 parameters. A PINN with 2 hidden layers of 5 nodes (totaling 52 parameters) was trained.
     \begin{figure}[h]
 	\centering
 	\includegraphics[width=.6\textwidth]{../images/final_iae.pdf}
@@ -548,10 +554,10 @@ y_2\left( t \right) \\
         \end{column}
 	\begin{column}{.4\textwidth} 
 	    \begin{description}
-	        \item[forward] computing the output given the input during training;
-		\item[cost] computing the cost function;
-		\item[backwards] back-propagating the cost to the parameters;
-		\item[validation] computing the output during validation (inference).
+		\item[\textcolor{tabblue}{forward}] computing the output given the input during training;
+		\item[\textcolor{taborange}{cost}] computing the cost function;
+		\item[\textcolor{tabgray}{backward}] back-propagating the cost to the parameters;
+		\item[\textcolor{tabdarkgray}{validation}] computing the output during validation (inference).
 	    \end{description}
 	\end{column}
     \end{columns}
