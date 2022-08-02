@@ -80,7 +80,7 @@ The solution to this equation is of the form
 \[
     \begin{bmatrix} \frac{C}{2M}t^2 +a_1t + a_0 \\ \frac{C}{M}t + a_1 \end{bmatrix},\, a_1,a_0 \in \R
 ,\]
-which, from the definition of $\bm{y}(t)$, is in accord to the solution for the original ODE.
+which, from the definition of $\bm{y}(t)$, is in accord with the solution for the original ODE.
 
 \section{Initial Value Problems}
 
@@ -155,13 +155,13 @@ An example can be seen in Figure \ref{fig:ode_comparison}.
     \centering
     \includegraphics{images/ode_solver_comparison_zoom.pdf}
     \includegraphics{images/ode_solver_comparison.pdf}
-    \caption{Comparison of \gls{RK4} and Euler's method for $\frac{d y\left( t \right) }{dt} = y(t)\sin(t)^2$ with $y(0)=1$. The analytical solution $\phi(t)$ is shown in the solid line while the solvers with different step sizes are shown in broken lines. The image on the right shows the impact in a long-term run, highlighting the comparison between \gls{RK4} with $h=5$ and Euler's with $h=1$.}
+    \caption[Comparison of \gls{RK4} and Euler's method for $\frac{d y\left( t \right) }{dt} = y(t)\sin(t)^2$ with $y(0)=1$.]{Comparison of \gls{RK4} and Euler's method for $\frac{d y\left( t \right) }{dt} = y(t)\sin(t)^2$ with $y(0)=1$. The analytical solution $\phi(t)$ is shown in the solid line while the solvers with different step sizes are shown in broken lines. The image on the right shows the impact in a long-term run, highlighting the comparison between \gls{RK4} with $h=5$ and Euler's with $h=1$.}
     \label{fig:ode_comparison}
 \end{figure}
 
 \section{Van der Pol Oscillator}\label{sec:vdp}
 
-The Van der Pol oscillator was first described in \textcite{van_der_pol_theory_1920} on the study of oscillatory behavior in electrical circuits with triodes.
+The Van der Pol oscillator was first described by \textcite{van_der_pol_theory_1920} on the study of oscillatory behavior in electrical circuits with triodes.
 Since then, it has been used plenty to model natural phenomena \cite{lucero_modeling_2013,fitzhugh_impulses_1961,nagumo_active_1962,cartwright_dynamics_1999}.
 A common representation is as a second-order differential equation \[
     \frac{d^2 y(t)}{dt^2} = \mu\left( 1-y(t)^2 \right) \frac{d y(t)}{dt} + y(t)
@@ -197,6 +197,6 @@ These limit cycles can be seen in the examples shown in Figure \ref{fig:vdp_stat
 	\includegraphics{images/vdp_statespace_mu_10.pdf}
 	\caption{State-space}\label{fig:vdp_statespace}
     \end{subfigure}
-    \caption{Examples of (numerical) solutions for the Van der Pol oscillator. The notation of Equation \eqref{eq:vdp} is used. Different values of the dampening parameter are used, but the initial condition is fixed as $y_1(0)=0,\,y_2(0)=0.1$. In (a), the evolution of the numerical solution over 50 seconds is shown. In (b), the trajectory of the numerical solution ($y_2$ in the vertical axis and $y_1$ in the horizontal axis, i.e., a state-space plot) is shown for the same time horizon.}\label{fig:vdp_example}
+    \caption[Examples of (numerical) solutions for the Van der Pol oscillator.]{Examples of (numerical) solutions for the Van der Pol oscillator. The notation of Equation \eqref{eq:vdp} is used. Different values of the dampening parameter are used, but the initial condition is fixed as $y_1(0)=0,\,y_2(0)=0.1$. In (a), the evolution of the numerical solution over 50 seconds is shown. In (b), the trajectory of the numerical solution ($y_2$ in the vertical axis and $y_1$ in the horizontal axis, i.e., a state-space plot) is shown for the same time horizon.}\label{fig:vdp_example}
 \end{figure}
 

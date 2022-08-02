@@ -104,8 +104,8 @@ The results for both models can be seen in Figure \ref{fig:baseline-iae}.
 
 \begin{figure}[h]
     \centering
-	\includegraphics{images/exp_1_iae.pdf}
-    \caption{Learning curve for the baseline models trained on the \gls{IVP} for the Van der Pol oscillator. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \includegraphics{images/exp_1_iae.pdf}
+    \caption[Learning curve for the baseline models trained on the \gls{IVP} for the Van der Pol oscillator.]{Learning curve for the baseline models trained on the \gls{IVP} for the Van der Pol oscillator. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:baseline-iae}
 \end{figure}
 
@@ -122,15 +122,15 @@ Having ``empty'' rows implies that the states associated with these rows are not
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[t]{.45\textwidth}
-	\vspace{0pt}\includegraphics{images/exp_1_matplot.pdf}
-	\caption{Magnitude of the elements of $A$. White is 0.}
+    \begin{subfigure}[t]{.5\textwidth}
+	\hspace{-1.1cm}\includegraphics{images/exp_1_matplot.pdf}
+	\caption{Magnitude of the elements of $A$.}
     \end{subfigure}
     \begin{subfigure}[t]{.45\textwidth}
-	\vspace{0pt}\includegraphics{images/exp_1_hist.pdf}
+	\includegraphics{images/exp_1_hist.pdf}
 	\caption{Histogram of $\ell_1$ norm of the rows of $A$.}
     \end{subfigure}
-    \caption{$A$ matrix of the baseline \gls{PIDEQ} after training. From all models trained, the one with median final performance was used to generate the graphics.}
+    \caption[$A$ matrix of the baseline \gls{PIDEQ} after training.]{$A$ matrix of the baseline \gls{PIDEQ} after training. From all models trained, the one with median final performance was used to generate the graphics.}
     \label{fig:baseline-pideq-A}
 \end{figure}
 
@@ -144,7 +144,7 @@ The results can be seen in Figure \ref{fig:states-iae}.
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_2_iae.pdf}
-    \caption{Learning curve of the models trained with fewer states. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
+    \caption[Learning curve of the models trained with fewer states.]{Learning curve of the models trained with fewer states. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:states-iae}
 \end{figure}
 
@@ -185,7 +185,7 @@ The results are shown in Figure \ref{fig:jac-lamb-iae}.
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_4_iae.pdf}
-    \caption{Learning curve for \gls{PIDEQ}s with different $\kappa$ values. Only one model was trained with $\kappa=0$ because the training took over 30 times longer. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
+    \caption[Learning curve for \gls{PIDEQ}s with different $\kappa$ values.]{Learning curve for \gls{PIDEQ}s with different $\kappa$ values. Only one model was trained with $\kappa=0$ because the training took over 30 times longer. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:jac-lamb-iae}
 \end{figure}
 
@@ -208,7 +208,7 @@ Of course, as was discussed in Section \ref{sec:deq-forward}, simple iteration i
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_5_iae.pdf}
-    \caption{Learning curve of \gls{PIDEQ} models with 5 states using different solvers for the forward pass. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
+    \caption[Learning curve of \gls{PIDEQ} models with 5 states using different solvers for the forward pass.]{Learning curve of \gls{PIDEQ} models with 5 states using different solvers for the forward pass. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:solver-iae}
 \end{figure}
 
@@ -223,7 +223,7 @@ At the same time, a decreased tolerance did not improve the performance within t
 \begin{figure}[h]
     \centering
     \includegraphics{images/exp_6_iae.pdf}
-    \caption{Learning curve of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
+    \caption[Learning curve of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver.]{Learning curve of \gls{PIDEQ} models with 5 states when trained with different tolerances for the simple iteration solver. Solid lines are mean values ($n=5$). For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:epsilon-iae}
 \end{figure}
 
@@ -241,7 +241,7 @@ The performance of the final model and the small \gls{PINN} model can be assesse
 \begin{figure}[h]
     \centering
     \includegraphics{images/final_iae.pdf}
-    \caption{Learning curve of the final models in comparison to the baselines. ``Final PINN'' are the small \gls{PINN} models, with only 52 parameters. ``Final PIDEQ'' are the \gls{PIDEQ} models with 5 states and using the simple iteration method as solver for the forward pass. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
+    \caption[Learning curve of the final models in comparison to the baselines.]{Learning curve of the final models in comparison to the baselines. ``Final PINN'' are the small \gls{PINN} models, with only 52 parameters. ``Final PIDEQ'' are the \gls{PIDEQ} models with 5 states and using the simple iteration method as solver for the forward pass. Solid lines are mean values ($n=5$), shaded regions represent minimum and maximum values. For a better visualization, a moving average of 100 epochs was taken.}
     \label{fig:final-iae}
 \end{figure}
 
@@ -255,7 +255,7 @@ The performance of the final model and the small \gls{PINN} model can be assesse
 	\includegraphics{images/final_vdp_y2.pdf}
 	\caption{}
     \end{subfigure}
-    \caption{Prediction of \gls{PINN} and \gls{PIDEQ} in comparison to the reference approximation resulting from \gls{RK4}. Both models presented the median performance in the respective experiments.}
+    \caption[Prediction of \gls{PINN} and \gls{PIDEQ} in comparison to the reference approximation resulting from \gls{RK4}.]{Prediction of \gls{PINN} and \gls{PIDEQ} in comparison to the reference approximation resulting from \gls{RK4}. Both models presented the median performance in the respective experiments.}
     \label{fig:final-vdp}
 \end{figure}
 
@@ -271,7 +271,7 @@ It is surprising, however, how the \glspl{PIDEQ} did not take longer than \gls{P
 \begin{figure}[h]
     \centering
     \includegraphics{images/final_times.pdf}
-    \caption{Breakdown of median time per epoch for the final \gls{PIDEQ} and the small \gls{PINN}. ``forward'' represents the time necessary to compute the output given the input during the training time (with gradients computation enable). ``cost'' indicates the time necessary to compute the cost function, given the predictions. ``backwards'' is the time necessary to back-propagate the cost to the parameters.}
+    \caption[Breakdown of median time per epoch for the final \gls{PIDEQ} and the small \gls{PINN}.]{Breakdown of median time per epoch for the final \gls{PIDEQ} and the small \gls{PINN}. ``forward'' represents the time necessary to compute the output given the input during the training time (with gradients computation enable). ``cost'' indicates the time necessary to compute the cost function, given the predictions. ``backwards'' is the time necessary to back-propagate the cost to the parameters.}
     \label{fig:final-times}
 \end{figure}
 

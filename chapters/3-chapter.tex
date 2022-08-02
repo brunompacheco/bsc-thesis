@@ -178,7 +178,9 @@ After showing excellent empirical results over many application areas, Adam beca
 One of the biggest challenges in deep learning is to get models that perform well also on samples that are not in the data provided during training, i.e., models that \emph{generalize} well.
 Strategies designed to improve performance outside of the data seen during training at the cost of decreased performance in the training data are known as \emph{regularization} \cite{goodfellow_deep_2016}.
 
-One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function such as $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right) $, where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
+One of the most common regularization practices is to penalize the magnitude of the parameters by adding a term to the cost function such as \[
+J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}(\bm{x}), \bm{y}) + \alpha\Omega\left( \gls{param} \right)
+,\] where $\alpha$ is a hyperparameter that weighs the contribution of the new term and $\Omega:\Theta\to\R$ can be, e.g., the $\ell^1$-norm.
 This can be seen as an incentive for the model to be built on simple features, in an effort to approximate the training data with the simplest model possible \cite{goodfellow_deep_2016}.
 % A parallel can be traced with the task of interpolating data acquired sparsely: high frequency (complex) terms can be used to interpolate the data, but these might not describe the data generating function.
 One may ponder why this may be useful, when limiting the complexity of the model through hard constraints is rather easy (e.g., limiting the number of parameters, reducing $\Theta$, etc.).

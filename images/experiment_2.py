@@ -57,8 +57,8 @@ if __name__ == '__main__':
     ax.legend()
     ax.grid()
 
-    plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
-    # plt.show()
+    # plt.savefig('exp_2_iae.pdf', bbox_inches='tight')
+    plt.show()
 
     print("Median training pass time (per epoch):")
     for n_z, hs in histories.items():
@@ -80,9 +80,14 @@ if __name__ == '__main__':
     fig.set_size_inches(3,3)
     fig.patch.set_alpha(.0)
 
-    ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
+    cbar = ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
     ax.set_xticks([])
     ax.set_yticks([])
 
-    plt.savefig('exp_2_matplot.pdf', bbox_inches='tight')
-    # plt.show()
+    import matplotlib.ticker as ticker
+    # plt.colorbar(cbar, format='%.1e')
+    plt.colorbar(cbar, format=ticker.FuncFormatter(
+        lambda x, pos: np.format_float_scientific(x, precision=1, min_digits=1, exp_digits=1)
+    ))
+    # plt.savefig('exp_2_matplot.pdf', bbox_inches='tight')
+    plt.show()

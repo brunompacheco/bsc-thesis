@@ -20,44 +20,44 @@ if __name__ == '__main__':
     ### IAE PLOT ###
     api = wandb.Api()
 
-    keys = ['val_loss_iae', 'train_time', 'val_time']
+    # keys = ['val_loss_iae', 'train_time', 'val_time']
 
-    df_pinn, pinn_histories = get_runs_data(
-        api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
-        keys=keys
-    )
-    df_pideq, pideq_histories = get_runs_data(
-        api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
-        keys=keys
-    )
+    # df_pinn, pinn_histories = get_runs_data(
+    #     api.runs("brunompac/pideq-vdp", {'group': 'PINN-baseline'}),
+    #     keys=keys
+    # )
+    # df_pideq, pideq_histories = get_runs_data(
+    #     api.runs("brunompac/pideq-vdp", {'group': 'PIDEQ-baseline'}),
+    #     keys=keys
+    # )
 
-    fig, ax = plt.subplots(1,1)
-    fig.set_size_inches(6,4)
-    fig.patch.set_alpha(.0)
+    # fig, ax = plt.subplots(1,1)
+    # fig.set_size_inches(6,4)
+    # fig.patch.set_alpha(.0)
 
-    plot_learning_curve(ax, pinn_histories, 'PINN')
-    plot_learning_curve(ax, pideq_histories, 'PIDEQ')
+    # plot_learning_curve(ax, pinn_histories, 'PINN')
+    # plot_learning_curve(ax, pideq_histories, 'PIDEQ')
 
-    # ax.set_title('Performance of baseline models')
-    ax.set_ylabel('IAE')
-    ax.set_xlabel('Epoch')
-    ax.set_xlim([0,5e4])
-    # ax.set_ylim([0,0.5])
-    # ax.set_ylim([1e-4,1e-1])
-    ax.set_yscale('log')
+    # # ax.set_title('Performance of baseline models')
+    # ax.set_ylabel('IAE')
+    # ax.set_xlabel('Epoch')
+    # ax.set_xlim([0,5e4])
+    # # ax.set_ylim([0,0.5])
+    # # ax.set_ylim([1e-4,1e-1])
+    # ax.set_yscale('log')
 
-    ax.legend()
-    ax.grid()
+    # ax.legend()
+    # ax.grid()
 
-    plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
+    # # plt.savefig('exp_1_iae.pdf', bbox_inches='tight')
     # plt.show()
 
-    print("Average training pass time (per epoch):")
-    print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
-    print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
-    print("Average validation pass time (per epoch):")
-    print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
-    print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
+    # print("Average training pass time (per epoch):")
+    # print(f"\tPINN = {pinn_histories['train_time'].mean()*1e3:.3f} ms")
+    # print(f"\tPIDEQ = {pideq_histories['train_time'].mean()*1e3:.3f} ms")
+    # print("Average validation pass time (per epoch):")
+    # print(f"\tPINN = {pinn_histories['val_time'].mean()*1e3:.3f} ms")
+    # print(f"\tPIDEQ = {pideq_histories['val_time'].mean()*1e3:.3f} ms")
 
     ### VdP PLOT ###
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -88,12 +88,19 @@ if __name__ == '__main__':
     fig.set_size_inches(3,3)
     fig.patch.set_alpha(.0)
 
-    ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
+
+    cbar = ax.matshow(np.abs(pideq_B), cmap='Blues', vmin=0)
     ax.set_xticks([])
     ax.set_yticks([])
 
-    plt.savefig('exp_1_matplot.pdf', bbox_inches='tight')
-    # plt.show()
+    import matplotlib.ticker as ticker
+    # plt.colorbar(cbar, format='%.1e')
+    plt.colorbar(cbar, format=ticker.FuncFormatter(
+        lambda x, pos: np.format_float_scientific(x, precision=1, min_digits=1, exp_digits=1)
+    ))
+
+    # plt.savefig('exp_1_matplot.pdf', bbox_inches='tight')
+    plt.show()
 
     # fig, ax = plt.subplots(1,1)
     # fig.set_size_inches(3,3)

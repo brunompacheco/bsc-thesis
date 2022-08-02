@@ -83,7 +83,9 @@ Now, for the deep learning model, let us use a deep feedforward network with 2 h
     \bm{z}^{[i]} &= \bm{f}_{\gls{param}}^{[i]}(\bm{z}^{[i-1]}),\,i=1,2,3 \\
     D_{\gls{param}}^{FN}(t) &= \bm{z}^{[3]}
 ,\end{align*}
-in which $\bm{f}_{\gls{param}}^{[1]}:\R\to \R^{10}$, $\bm{f}_{\gls{param}}^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_{\gls{param}}^{[3]}:\R^{10}\to \R^2$, and $\bm{f}_{\gls{param}}^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) $.
+in which $\bm{f}_{\gls{param}}^{[1]}:\R\to \R^{10}$, $\bm{f}_{\gls{param}}^{[2]}:\R^{10}\to \R^{10}$, $\bm{f}_{\gls{param}}^{[3]}:\R^{10}\to \R^2$, and \[
+    \bm{f}_{\gls{param}}^{[i]}\left( \bm{z} \right) =\tanh\left( A^{[i]}\bm{z} + \bm{b}^{[i]} \right) 
+.\] 
 In the results shown in Figure \ref{fig:images-pinn_newton-pdf}, this model was implemented using PyTorch \cite{paszke_pytorch_2019} and trained using Adam with $\gls{lr} = 0.1$ and $\lambda=0.1$.
 Running the algorithm for 1000 epochs took less than 2 seconds on a high-end, 16-core processor (no GPU was used).
 Notice how the \gls{PINN} evolves over the epochs, achieving the same results of the numerical solver even though only the dynamics and the initial condition were experienced during training.
@@ -91,7 +93,7 @@ Notice how the \gls{PINN} evolves over the epochs, achieving the same results of
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{images/pinn_newton.pdf}
-    \caption{Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the \gls{PINN} trained after different numbers of epochs. \gls{PINN} results for 1000 epochs overlap \gls{RK4} results.}
+    \caption[Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law]{Performance of a \gls{PINN} in comparison to \gls{RK4} in solving an \gls{IVP} of Newton's second law for $I=\left[ 0,1 \right] $. In the graphic, $y_1$ and $y_2$ are the results of the numerical solver, while $\hat{y}_1$ and $\hat{y}_2$ are the results of the \gls{PINN} trained after different numbers of epochs. \gls{PINN} results for 1000 epochs overlap \gls{RK4} results.}
     \label{fig:images-pinn_newton-pdf}
 \end{figure}
 
