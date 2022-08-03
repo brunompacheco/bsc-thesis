@@ -26,7 +26,7 @@ As there is no analytical solution to the \gls{IVP} at hand, the solutions will 
 This reference was generated from 1000 points equally spaced in the solution interval $I=[0,2]$, with a time step of 2\,ms\footnotemark.
 \footnotetext{Of course, this set does not include the initial condition, which is already given, meaning that the first point of evaluation is at $t=0.002$.}
 Then, a solution's approximation to the reference is measured through the \gls{IAE}, which can be defined here as \[
-    IAE = \frac{1}{h}\sum_{i=1}^{1000} \|\bm{y}_i - \hat{\bm{y}}_i\|
+    IAE = \frac{1}{h}\sum_{i=1}^{1000} \|\bm{y}_i - \hat{\bm{y}}_i\|_1
 ,\] where $\bm{y}_i$ are the points in the \gls{RK4} solution,  $\hat{\bm{y}}_i$ are the points in the solution being evaluated, and $h=0.002$ is the time step.
 Therefore, a solution is said to be suitable for the problem if it achieves a low \gls{IAE}.
 
@@ -55,7 +55,7 @@ such that
 in which the parameters \gls{param} are a vectorization of the matrices and vectors, i.e., $\gls{param} = \left( A,C,\bm{a},\bm{b} \right)$, and the hyperbolic tangent function is applied to each element of the resulting vector.
 
 Notice that this formulation is very close to the one used in Chapter \ref{ch:deq}, except for the linear transformation of the equilibrium point at the model's output.
-This implies that both forward and backward operations can occur in the same way, except that the term  \[
+This implies that both forward and backward operations can be performed as previously shown, except that the term  \[
     \frac{d D^{EQ}_{\gls{param}}}{d \bm{z}^{\star}} = C
 \] must be considered in the computation of the gradients.
 The advantage of this modification is that we can have $\bm{z}$ with an arbitrary dimension, that is, we can have an arbitrary \emph{number of states}, which results in arbitrary representational power \cite{Ghaoui2019}.
@@ -259,7 +259,7 @@ The performance of the final model and the small \gls{PINN} model can be assesse
     \label{fig:final-vdp}
 \end{figure}
 
-Both final models take around the same number of epochs to converge, but the \gls{PINN} models are able to achieve much smaller errors, almost as low as the baseline models.
+Both final models take around the same number of epochs to converge, but the \gls{PINN} models trained were able to achieve much smaller errors, almost as low as the baseline models.
 The small \glspl{PINN} also have a smaller training time.
 A breakdown of the time per epoch spent by each approach can be seen in Figure \ref{fig:final-times}.
 As expected, \glspl{PIDEQ} take longer to compute the output, which is a direct implication of computing the equilibrium and storing intermediate values to compute the derivatives.

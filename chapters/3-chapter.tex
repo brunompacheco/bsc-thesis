@@ -117,8 +117,8 @@ Yet, not always the performance measure of interest is easy to compute or provid
 Therefore, it is usual to optimize indirectly, minimizing a \textit{loss function} while aiming to improve the performance measure.
 
 Given a model $D_{\gls{param}}^{FN}:\R^n\to\R^m$ and a target function $\bm{f}^*:U\subset\R^n\to\R^m$, an ideal performance measure could be $\int_U \|D_{\gls{param}}(\bm{x}) - \bm{f}^*(\bm{x})\|d\bm{x}$.
-Yet, this integral could be costly to compute and might not even be easily defined.
-Instead, one could evaluate the model on a finite set of points from the domain $X=\{(\bm{x},\bm{y})\in U\times\R^m : \bm{y}=\bm{f}^*(\bm{x})\}$ (the data that forms the experience $E$), defining a loss function $l:\R^m\times\R^m\to\R$ (over the model's output and the target) that can be evaluated for each sample, e.g., the $\ell^2$-norm.
+Yet, this integral could be costly to compute and might not even be easily defined, as the target function might be accessible only through a distribution due to, e.g., noise.
+Instead, one could evaluate the model on a finite set of points from the domain $X=\{(\bm{x},\bm{y})\in U\times\R^m : \bm{y}=\bm{f}^*(\bm{x})+\omega\}$ (the data that forms the experience $E$), where $\omega$ is, e.g., measurement error and noise, defining a loss function $l:\R^m\times\R^m\to\R$ (over the model's output and the target) that can be evaluated for each sample, e.g., the $\ell^2$-norm.
 This way, the outcome of a deep learning algorithm would be a model $D_{\gls{param}^*}^{FN}$, such that \[
 \gls{param}^* = \arg\min_{\gls{param}} \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}^{FN}(\bm{x}), \bm{y})
 .\] Usually, though, given the data $X$ and the model $D_{\gls{param}}^{FN}$, it is easy to define a \emph{cost function} $J: \Theta\to\R$, which can be an aggregation of the per-sample loss function like $J\left( \gls{param} \right) = \sum_{(\bm{x},\bm{y})\in X} l(D_{\gls{param}}^{FN}(\bm{x}), \bm{y})$.
@@ -193,7 +193,7 @@ If one wants to train a model that is robust to noise in its input, one way to a
 The output can be said less sensitive to variations of an input dimension if its derivative with respect to this input dimension has a small magnitude.
 This can be enforced through a regularization term on the gradients of the model's outputs \cite{drucker_improving_1992}.
 E.g., given a model $D_{\gls{param}}:\R^n\to\R$, one can use a regularization term of the form \[
-    \Omega\left( \gls{param} \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla D_{\gls{param}}\left( \bm{x} \right) \|
+    \Omega\left( \gls{param} \right) = \sum_{\left( \bm{x},y \right) \in X} \| \nabla D_{\gls{param}}\left( \bm{x} \right) \|_2
 .\] Note, however, that to use gradient descent with this type of regularization, one must be able to compute second-order derivatives of $D_{\gls{param}}$.
 
 \section{Back-Propagation}\label{sec:backprop}

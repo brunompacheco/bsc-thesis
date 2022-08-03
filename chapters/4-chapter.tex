@@ -43,10 +43,10 @@ This is precisely the turning point for making deep learning a viable option in 
 The approach of \textcite{Raissi2019} proposes to train the model using a regularization based on $\mathcal{N}$.
 This means to train $D^{FN}_{\gls{param}}$ to approximate $\bm{\phi}$ at the initial condition (since this is known by the definition), satisfying Equation \eqref{eq:dl-ivp}, but also to train its Jacobian to approximate $\mathcal{N}$, satisfying Equation \eqref{eq:dl-ode}.
 
-For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}}=\left\{ t\in I \right\} $. Then, we can construct \[
-    J_b\left( \gls{param} \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|D^{FN}_{\gls{param}}(t) - \bm{y}\|_2 = \|D^{FN}_{\gls{param}}\left( t_0 \right) -\bm{y}_0\|_2
+For this, let us define the singleton $X_b=\left\{ \left( t_0,\bm{y}_0 \right)  \right\} $ and the set $X_{\mathcal{N}} \subset I $. Then, we can construct \[
+    J_b\left( \gls{param} \right) = \sum_{\left( t,\bm{y} \right) \in X_b } \|D^{FN}_{\gls{param}}(t) - \bm{y}\|_2^{2} = \|D^{FN}_{\gls{param}}\left( t_0 \right) -\bm{y}_0\|_2^{2}
 ,\] which looks like a usual cost function, and \[
-J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\gls{param}}\left( t \right) }{dt} - \mathcal{N}\left( t,D^{FN}_{\gls{param}}\left( t \right)  \right)  \right\|_2
+J_{\mathcal{N}}\left( \gls{param} \right) = \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\gls{param}}\left( t \right) }{dt} - \mathcal{N}\left( t,D^{FN}_{\gls{param}}\left( t \right)  \right)  \right\|_2^{2}
 .\]
 Notice how the definition of $J_{\mathcal{N}}$ resembles a gradient regularization as discussed in Section \ref{sec:regularization}.
 The difference is that instead of penalizing high derivatives, we want them to approach a desired value.
