@@ -15,6 +15,13 @@
 %   - 11/03/2020: Alisson L. Furlani, changed greek letters in math and fixed citation style
 % ------------------------------------------------------------------------
 % ------------------------------------------------------------------------
+\begin{filecontents*}{main.xmpdata}
+    \Title{Physics-Informed Deep Equilibrium Models for Solving ODEs}
+    \Author{Bruno M. Pacheco}
+    \Language{en-US}
+    \Keywords{Physics-Informed Neural Network\sep Deep Equilibrium Model\sep Implict Model\sep Initial-Value Problem\sep Deep Learning}
+    \Subject{Physics-informed neural networks (PINNs) and deep equilibrium models (DEQs) are novel approaches that approximate deep learning's representational power to applications with realistic requirements such as robustness, data scarcity and explainability. PINNs propose an efficient way to train neural networks to model physical phenomena. DEQs are a new model architecture that can provide more representational power with fewer parameters. This work aims to study both and apply them to solve initial-value problems (IVPs) of ordinary differential equations (ODEs), in an approach coined physics-informed deep equilibrium model (PIDEQ). We implement the proposed approach and test it, analyzing the impacts of the multiple hyperparameters in the approximate solution of the Van der Pol oscillator. Our results show that indeed PIDEQs are able to solve IVPs, providing approximate solutions with small errors.}
+\end{filecontents*}
 
 \documentclass[
 	% -- opções da classe memoir --
@@ -36,6 +43,8 @@
 
 \usepackage{setup/ufscthesisA4-alf}
 \addbibresource{aftertext/references.bib} % Seus arquivos de referências
+
+\usepackage[a-2b]{pdfx}
 
 % ---
 % Filtering and Mapping Bibliographies
