@@ -647,13 +647,19 @@ y_2\left( t \right) \\
     \end{itemize}
 \end{frame}
 
-\subsection{Outlook}
+\subsection{Next steps}
 
 \begin{frame}
-    \frametitle{Outlook}
+    \frametitle{Next steps}
     \begin{itemize}[label={\textbullet}]
-	\item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs (e.g., IVP of the 4 Tank system \cite{johansson_quadruple-tank_2000-1}, IVPs of PDEs \cite{Raissi2019}, state-informed/controllable PINNs \cite{Antonelo2021,Arnold2021});
-	\item<2-> In theory, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs, eliminating the requirement for differentiable root-finding algorithms.
+	\item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs, e.g., 
+	    \begin{itemize}[label={\textbullet}]
+	        \item IVP of the 4 Tank system \cite{johansson_quadruple-tank_2000-1}
+		\item IVPs of PDEs \cite{Raissi2019}
+		\item state-informed/controllable PINNs \cite{Antonelo2021,Arnold2021}
+	    \end{itemize}
+	\item<2-> In theory, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs;
+	\item<3-> Implicit differentiation can be used to differentiate through optimization problems, learning convex optimization control policies (COCPs).
     \end{itemize}
 \end{frame}
 
@@ -692,7 +698,7 @@ mpacheco.bruno@gmail.com
 
 \begin{frame}[allowframebreaks,noframenumbering]
     \frametitle{References}
-    % \printbibliography
+    \printbibliography
 \end{frame}
 
 \end{document}
