@@ -175,7 +175,7 @@ Bruno M. Pacheco
 %%%
 \begin{flushright}
 \textcolor{cinza}{\scriptsize{
-Defesa de Projeto de Fim de Curso | DAS
+Projeto de Fim de Curso | DAS
 }}
 \end{flushright}
 
@@ -222,10 +222,10 @@ Defesa de Projeto de Fim de Curso | DAS
 
 \begin{frame}
 \frametitle{Goal}
-\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} as effective and efficient solvers for initial value problems (IVPs), making use of \emph{physics-informed} training.
+\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} (DEQs) as effective and efficient solvers for initial value problems (IVPs), making use of \emph{physics-informed} training.
 
 \begin{itemize}
-    \item<2-> \textbf{Study} DEQs and PINNs;
+    \item<2-> \textbf{Study} PINNs and DEQs;
     \item<3-> \textbf{Implement} a PIDEQ;
     \item<4-> \textbf{Validate} PIDEQ as an IVP solver.
 \end{itemize}
@@ -297,6 +297,9 @@ y_2\left( t \right) \\
 \end{bmatrix} 
     ,\] where $\mu$ controls the dampening of the oscillation.
 
+    \pause
+    \quad
+
     VdP has no analytical solution \cite{panayotounakos_lack_2003}, so it is widely used as a benchmark.
     % \footnotetext{\tiny PANAYOTOUNAKOS, D.e.; PANAYOTOUNAKOU, N.d.; VAKAKIS, A.f. 2003. On the lack of analytic solutions of the Van der Pol oscillator.}
 \end{frame}
@@ -336,6 +339,17 @@ y_2\left( t \right) \\
 	z^{[0]} &= t \\
 	\bm{z}^{[i]} &= f^{[i]}_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) ,\,i=1,\ldots,L
     .\end{align*}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Physics-Informed Neural Networks}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{deep-feedforward-network.pdf}
+        \caption{Deep Feedforward Network.}
+        \label{fig:deep-feedforward-network-pdf}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -398,7 +412,7 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{Deep Equilibrium Models}
-    $\bm{z}^{[\infty]}$ exists (and is well-defined) iff $\bm{z}^{[i]}$ converges.
+    $\bm{z}^{[\infty]}$ exists (and is well-defined) iff $\left\{  \bm{z}^{[i]} \right\}$ converges.
     \linebreak \pause
 
     Then, $\exists N\in \N$ such that $\forall i\ge N,\,z^{[i]}\approx z^{[i+1]}$.
@@ -420,6 +434,14 @@ y_2\left( t \right) \\
 	t &\longmapsto 	D^{EQ}_{\bm{\theta}}(	t) = \bm{z}^{\star} \\
 	\bm{z}^{\star} &= f_{\bm{\theta}}\left( t, \bm{z}^{\star} \right)
     .\end{align*}
+
+    \pause
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{deq-diagram.png}
+        \caption{deq-diagram.}
+        \label{fig:deq-diagram-}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -439,19 +461,34 @@ y_2\left( t \right) \\
     ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$ for $g(t,\bm{z})=0$.
     \linebreak \pause
 
-    Consequently, by applying the implicit function theorem \cite{Bai2019} and by the definition of $g$, \[
+    Consequently, by the implicit function theorem \cite{Bai2019}, \[
+	\frac{d g(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}} = \frac{d g(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} \frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}}
+    .\] 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Backward Pass}
+    
+    By the definition of $g$ we know that \[
+	\frac{d g(t, \bm{z})}{d \bm{z}} = \frac{d f_{\bm{\theta}}(t,\bm{z})}{d \bm{z}} - I 
+    \] and \[
+    \frac{d g(t, \bm{z})}{d \bm{\theta}} = \frac{d f_{\bm{\theta}}(t,\bm{z})}{d \bm{\theta}}
+    .\] Therefore, we can write \[
 	\frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} = - \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}}
     .\] 
 \end{frame}
 
 \begin{frame}
     \frametitle{Backward Pass}
-    We avoid the matrix inversion, however, by computing the solution to the vector-Jacobian product \[
-    \bm{v}^T = \bm{u}^T\left[ \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - I \right]^{-1}
-    \] by finding the equilibrium point of \[
-    \bm{v}^T = \bm{v}^T \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - \bm{u}^T
-    ,\] using once again a root-finding algorithm.
-    
+
+    Luckily, we do not need to do the matrix inversion, as we use automatic differentiation on
+    \begin{align*}
+	\nabla J\left( \bm{\theta} \right) &= \nabla_{\bm{z}^{\star}} J \frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} \\
+	&= - \nabla_{\bm{z}^{\star}} J \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}},
+    \end{align*}\pause
+    thus, by computing it step-by-step, with $\bm{u}^T=- \nabla_{\bm{z}^{\star}} J$, \[
+	\bm{v}^T = \bm{u}^T\left[ \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - I \right]^{-1} \implies \bm{v}^T = \bm{v}^T \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - \bm{u}^T
+    ,\] which is an equilibrium equation.
 \end{frame}
 
 \section{Experiments and Results}
