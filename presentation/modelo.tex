@@ -439,8 +439,36 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
+    \frametitle{DEQ Capacity}
+    \vfill
+    Restricting every layer of the networks to be the same is not an actual restrictions, as a DEQ can model a large number of deep neural networks, including CNNs, RNNs, ResNets, and many others. \pause
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{DEQ Capacity}
+
+    E.g., suppose a deep feedforward network \[
+	\bm{z}^{[i+1]} = \sigma^{i}\left( W^{[i]}\bm{z}^{[i]} + \bm{b}^{[i]} \right),\,i=0,\ldots,L-1,\,\bm{z}^{[0]} = \bm{u}
+    .\] \pause
+
+    It is not hard to see that it is equivalent to a DEQ with \[
+	\bm{z} = \sigma\left( W_z\bm{z} + W_u\bm{u} + \bm{\tilde{b}} \right) 
+    \] where \[
+    W_z=\begin{bmatrix} 
+	0 & \hdots & 0 & 0 \\
+	W^{[1]} & \hdots & 0 & 0 \\
+	\vdots & \ddots & \vdots & \vdots \\
+	0 & \hdots & W^{[L-1]} & 0
+    \end{bmatrix},
+    W_x = \begin{bmatrix} W^{[0]} \\ 0 \\ \vdots \\ 0 \end{bmatrix} ,
+    \bm{\tilde{b}} = \begin{bmatrix} \bm{b}^{[0]} \\ \vdots \\ \bm{b}^{[L-1]} \end{bmatrix}
+    .\] 
+\end{frame}
+
+\begin{frame}
     \frametitle{Forward Pass}
-    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}}$ iff $\bm{z}^{\star}$ is a root of $g_{\bm{x},t}(\bm{z}) = f_{\bm{\theta}}(\bm{x},t,\bm{z}) - \bm{z}$.
+    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}} \iff \bm{z}^{\star}$ is a root of $g_{\bm{x},t}(\bm{z}) = f_{\bm{\theta}}(\bm{x},t,\bm{z}) - \bm{z}$.
     \linebreak \pause
 
     Therefore, \[
@@ -509,7 +537,7 @@ y_2\left( t \right) \\
     \frametitle{PIDEQ}
     \vfill
     We propose to train the PIDEQ as \[
-	\min_{\bm{\theta}} J_b\left( \bm{\theta} \right) + \lambda \textcolor{red}{J_{\mathcal{N}}}\left( \bm{\theta} \right) + \kappa \highlight{\left\lVert \frac{d f_{\bm{\theta}}}{d \bm{z}}\right\rVert_F}
+	\min_{\bm{\theta}} J_b\left( \bm{\theta} \right) + \lambda \textcolor{red}{J_{\mathcal{N}}}\left( \bm{\theta} \right) + \kappa \left\lVert \frac{d f_{\bm{\theta}}}{d \bm{z}}\right\rVert_F
     .\] \pause
     Recall that \[
 	\textcolor{red}{J_{\mathcal{N}}}\left( \bm{\theta} \right) = \sum_{t \in I_{\mathcal{N}},\bm{x}\in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right) }{dt} - \mathcal{N}\left( \bm{x}, t,D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right)  \right)  \right\|
@@ -519,7 +547,7 @@ y_2\left( t \right) \\
     \textcolor{red}{$\implies$ Solving DEs requires (at least) second-order derivatives.}
 \end{frame}
 
-\subsection{Van der Pol oscillator}
+\subsection{Experiments}
 
 \begin{frame}
     \frametitle{Van der Pol experiments}
@@ -643,8 +671,6 @@ y_2\left( t \right) \\
     
 \end{frame}
 
-\subsection{Nonlinear Schrödinger}
-
 \begin{frame}
     \frametitle{Nonlinear Schrödinger experiments}
     Using the same approach, we compare a PIDEQ to the PINN trained by \cite{Raissi2019} for the NLS.
@@ -661,6 +687,90 @@ y_2\left( t \right) \\
     \end{figure}
 \end{frame}
 
+\subsection{Regularization of DEQs}
+
+\begin{frame}
+    \frametitle{Regularization of DEQs}
+    DEQs of the form \[
+    \begin{cases}
+	\bm{z} = \bm{f}_{\theta}\left( \bm{z},\bm{u} \right)  \\
+	\bm{y} = C\bm{z} + D\bm{u}
+    \end{cases}
+    \] are unstable to train and do not provide any guarantees on the equilibrium.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{reg-jac-f-theta.png}
+        \caption{Examples of convergence and divergence of a DEQ on the iterative approach.}
+        \label{fig:reg-jac-f-theta-png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Regularization of DEQs}
+
+    \begin{columns}
+	\begin{column}{0.5\textwidth}
+	    \cite{bai_stabilizing_2021}
+	    \begin{itemize}[label={\textbullet}]
+		\item Regularizes the spectral radius of $J_{\bm{f}_{\theta}}$;
+		\item $\lambda_{PF}\left( J_{\bm{f}_{\theta}}\left( \bm{z}^{\star} \right)  \right) = \max\left( |\lambda_i| \right) \le \sqrt{tr\left( J_{\bm{f}_{\theta}}J_{\bm{f}_{\theta}}^T \right) } = \highlight{\|J_{\bm{f}_{\theta}}\|_{F}} $.
+	    \end{itemize}
+	\end{column}
+	\pause
+        \begin{column}{0.5\textwidth}
+	    \cite{Ghaoui2019}
+	    \begin{itemize}[label={\textbullet}]
+		\item $\bm{f}_{\theta} = \sigma\left( A\bm{z} + B\bm{u} \right)$;
+	        \item $A$ is well-posed for $\sigma$ if the DEQ has a unique solution;
+		\item $A\in WP\left( \sigma \right) \impliedby \lambda_{PF}\left( |A| \right) < 1  $;
+		\item Enforces well-posedness through projected gradient descent on $1 > \highlight{\|A\|_{\infty}} \ge \lambda_{PF}\left( |A| \right)$.
+	    \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Regularization experiments}
+    We tried \cite{Ghaoui2019}'s approach on NLS but did not see significative improvement.\pause
+
+    Then, we compared different approaches on dummy data.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{dummy-val.png}
+        \caption{Validation loss on synthetic dataset $y=5\cos\left( \pi u \right)\exp(-|u|/2)$.}
+        \label{fig:dummy-val-png}
+    \end{figure}
+\end{frame}
+
+\subsection{Higher-order Derivatives}
+
+\begin{frame}
+    \frametitle{Derivative of DEQs}
+    Recap:
+    Given a model
+    \begin{align*}
+	D^{EQ}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	\bm{x},t &\longmapsto 	D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{\star} \\
+	\bm{z}^{\star} &= f_{\bm{\theta}}\left( \bm{x},t, \bm{z}^{\star} \right)
+    \end{align*}
+    its derivative can be expressed \[
+    \frac{d D^{EQ}_{\bm{\theta}}}{d (\cdot)}(\bm{x},t) = - \left[ \frac{d f_{\bm{\theta}}}{d \bm{z}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(t)) - I \right]^{-1} \frac{d f_{\bm{\theta}}}{d (\cdot)}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t))
+    .\] 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Derivative of DEQs}
+    As this inversion is impractical, the derivative is computed \[
+	\frac{d D^{EQ}_{\bm{\theta}}}{d (\cdot)}(\bm{x},t) = - RootFind\left( \bm{v}^T\frac{d f_{\bm{\theta}}}{d \bm{z}} -\bm{v}^T - \bm{u}^T  \right)  \frac{d f_{\bm{\theta}}}{d (\cdot)}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t))
+    .\] \pause
+
+    But any PIDEQ training requires (at least) second-order derivatives (Hessian) like $\frac{d^2 D^{EQ}_{\bm{\theta}}}{d t d (\cdot)}(\bm{x},t)$, which, through automatic differentiation, would imply in the \textcolor{red}{differentiation of $RootFind$} used in the backward pass. \pause
+
+    WIP: We can apply the implicit function theorem again and again to find analytical expressions for higher-order derivatives, which would speed up the training of PIDEQs on more complex applications (e.g., NLS).
+\end{frame}
+
 \section{Discussion}
 
 \subsection{Conclusions}
@@ -668,10 +778,11 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{Conclusions}
     \begin{itemize}[label={\textbullet}]
-        \item<1-> It is possible to train DEQs in a physics-informed manner, effectively solving IVPs of ODEs;
-	\item<2-> However, PIDEQs are slower to train and presented higher errors than PINNs in comparison to RK4;
-	\item<3-> We believe that this might be because IVPs of small ODEs do not benefit from deeper networks;
+        \item<1-> It is possible to train DEQs in a physics-informed manner, solving BVPs of PDEs;
+	\item<2-> However, PIDEQs are slower to train and present higher errors than PINNs (in comparison to numerical solvers);
+	\item<3-> DEQs have a great capacity\footnotemark that is not harnessed properly by current training/regularization techniques.
     \end{itemize}
+    \footnotetext{Capacity in the ML sense, i.e., the number of functions the model can represent. \\}
 \end{frame}
 
 \subsection{Next steps}
@@ -679,14 +790,8 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{Next steps}
     \begin{itemize}[label={\textbullet}]
-	\item<1-> More complex problems, that benefit from deeper networks, might be a better use case for PIDEQs, e.g., 
-	    \begin{itemize}[label={\textbullet}]
-	        \item IVP of the 4 Tank system \cite{johansson_quadruple-tank_2000-1}
-		\item IVPs of PDEs \cite{Raissi2019}
-		\item state-informed/controllable PINNs \cite{Antonelo2021,Arnold2021}
-	    \end{itemize}
-	\item<2-> In theory, the implicit function theorem can be further exploited to find higher-order derivatives of DEQs;
-	\item<3-> Implicit differentiation can be used to differentiate through optimization problems, learning convex optimization control policies (COCPs).
+	\item<1-> Investigate further the training/regularization of DEQs and repeat dummy-data experiments on NLS;
+	\item<2-> Validate, implement and test analytical higher-order derivatives of DEQs.
     \end{itemize}
 \end{frame}
 
@@ -699,7 +804,7 @@ y_2\left( t \right) \\
 \vspace{15mm}
 \begin{center}
 \textcolor{cinza}{
-\textbf{Obrigado pela Atenção}
+\textbf{Thank you all}
 }
 \end{center}
 \vspace{-6mm}
@@ -725,7 +830,7 @@ mpacheco.bruno@gmail.com
 
 \begin{frame}[allowframebreaks,noframenumbering]
     \frametitle{References}
-    % \printbibliography
+    \printbibliography
 \end{frame}
 
 \end{document}
