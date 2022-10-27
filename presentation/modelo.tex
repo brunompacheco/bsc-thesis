@@ -16,6 +16,7 @@
 \usepackage{xcolor}
 \usepackage{soul}
 \usepackage{enumitem}
+\usepackage{tikz}
 
 \usepackage[backend=biber,style=abnt,maxbibnames=3,maxcitenames=1,uniquelist=false, uniquename=full,doi,url=false]{biblatex}
 \renewcommand*{\bibfont}{\scriptsizsmalle}
@@ -220,16 +221,16 @@ Projeto de Fim de Curso | DAS
 %%% Objetivo do PFC
 %%%
 
-\begin{frame}
-\frametitle{Goal}
-\textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} (DEQs) as effective and efficient solvers for initial value problems (IVPs), making use of \emph{physics-informed} training.
-
-\begin{itemize}
-    \item<2-> \textbf{Study} PINNs and DEQs;
-    \item<3-> \textbf{Implement} a PIDEQ;
-    \item<4-> \textbf{Validate} PIDEQ as an IVP solver.
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Goal}
+% \textbf{Study}, \textbf{implement} and \textbf{validate} the use of \emph{Deep Equilibrium models} (DEQs) as effective and efficient solvers for initial value problems (IVPs), making use of \emph{physics-informed} training.
+% 
+% \begin{itemize}
+%     \item<2-> \textbf{Study} PINNs and DEQs;
+%     \item<3-> \textbf{Implement} a PIDEQ;
+%     \item<4-> \textbf{Validate} PIDEQ as an IVP solver.
+% \end{itemize}
+% \end{frame}
 
 
 %%%
@@ -242,54 +243,25 @@ Projeto de Fim de Curso | DAS
 
 \section{Background}
 
-\subsection{Ordinary Differential Equations}
+\subsection{Partial Differential Equations}
 
 \begin{frame}
-    \frametitle{Ordinary Differential Equations (ODEs)}
-    ODEs describe the relationship between unknown quantities and their rates of change.
+    \frametitle{Partial Differential Equations (PDEs)}
+    PDEs usually describe the relationship between unknown quantities and their rates of change in time and space.
     \begin{equation}
-    \frac{d \bm{y}\left( t \right) }{d t} = \mathcal{N}\left( t, \bm{y}\left( t \right)  \right) 
+	\frac{d \bm{y}\left( \bm{x}, t \right) }{d t} = \mathcal{N}\left( t, \bm{x}, \bm{y}\left( \bm{x},t \right)  \right) 
     \end{equation}\pause
 
-    \emph{Initial Value Problems} (IVPs):
+    \emph{Boundary Value Problems} (BVPs):
     \begin{align*}
-	\phi :\R&\to \R^{m} \\
-	\text{s.t.} \quad \frac{d \phi\left( t \right) }{d t} &= \mathcal{N}\left( t, \phi\left( t \right)  \right), t\in I \\
-		    \phi(t_0) &= \bm{y}_0
-    .\end{align*}
-\end{frame}
-
-\begin{frame}
-    \frametitle{IVP Solvers}
-    Numerical approximations $\left\{ \bm{y}_i \right\}_{i=1,\ldots}$ such that $\bm{y}_i \approx \phi(t_i)$ for $t_i \in I$. \pause
-
-    Euler's method: \[
-\bm{y}_{i+1} = \bm{y}_{i} + h\mathcal{N}\left( t_i, \bm{y}_i \right),\,h=t_{i+1}-t_i
-    \] \pause
-    Runge-Kutta 4 (RK4):
-    \begin{align*}
-	\bm{k}_1 &= \mathcal{N}\left( t_i , \bm{y}_i \right)  \\
-	\bm{k}_2 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_1 \right)  \\
-	\bm{k}_3 &= \mathcal{N}\left( t_i+\frac{h}{2}, \bm{y}_i + \frac{h}{2}\bm{k}_2 \right)  \\
-	\bm{k}_4 &= \mathcal{N}\left( t_i+h, \bm{y}_i + h \bm{k}_3 \right) \\
-	\bm{y}_{i+1} &= \bm{y}_i + h \frac{\bm{k}_1 + 2\bm{k}_2 + 2 \bm{k}_3 + \bm{k}_4}{6}
+	\phi :\R^{n+1}&\to \R^{m} &\\
+	\text{s.t.} \quad \frac{d \phi\left( \bm{x},t \right) }{d t} &= \mathcal{N}\left( \bm{x},t, \phi\left( \bm{x},t \right)  \right), \quad t\in I, \bm{x}\in X \\
+	\alpha_i\phi\left( \bm{x},t \right) + \beta_i \frac{d \phi\left( \bm{x},t \right) }{d t} &= \bm{f}_i\left( \bm{x},t \right), \quad\quad\bm{x}\in X_0^{(i)}, t\in I_0^{(i)}, i=1,\ldots
     \end{align*}
 \end{frame}
 
 \begin{frame}
-    \frametitle{IVP Solvers}
-    \begin{figure}[h]
-	% \vspace{.1\textheight}
-	\centering
-	\includegraphics[width=0.45\textwidth]{../images/ode_solver_comparison_zoom.pdf}
-	\includegraphics[width=0.45\textwidth]{../images/ode_solver_comparison.pdf}
-	\caption{Comparison of Runge-Kutta 4 and Euler's method. RK4 outperforms Euler's even when limited by number of function evaluations.}
-	\label{fig:ode_comparison}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Van der Pol oscillator}
+    \frametitle{Van der Pol oscillator (VdP)}
     Widely used ODE to model natural phenomena \[
     \frac{d}{dt}\begin{bmatrix} y_1\left( t \right) \\ y_2\left( t \right)  \end{bmatrix} = \begin{bmatrix} 
 y_2\left( t \right) \\
@@ -325,18 +297,40 @@ y_2\left( t \right) \\
     \end{figure}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Nonlinear Schrödinger (NLS)}
+    Nonlinear version of the classical Schrödinger equations, applies to the propagation of light in nonlinear optical fibers and others.  \[
+    \frac{d y}{dt}\left( x,t \right)  = i\frac{1}{2}\frac{\partial^2 y}{\partial x^2} + i|y|^2y
+    \]
+
+    \pause
+    \quad
+
+    In the NLS, $y$ is a complex function, but it is usually modeled as a function on $\R^2$.
+\end{frame}
+
+\begin{frame}
+    \vfill
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{nls.png}
+        \caption{Example solution to the NLS on a periodic domain.}
+        \label{fig:nls-example}
+    \end{figure}
+\end{frame}
+
 \subsection{Physics-Informed Neural Networks}
 
 \begin{frame}
     \frametitle{Physics-Informed Neural Networks}
     Let us define a neural network as a function
     \begin{align*}
-	D^{FN}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
-	t &\longmapsto 	D^{FN}_{\bm{\theta}}(	t) = \bm{z}^{[L]}
+	D^{FN}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	\bm{x},t &\longmapsto 	D^{FN}_{\bm{\theta}}(\bm{x}, t) = \bm{z}^{[L]}
     \end{align*}
     with $L$ layers such that
     \begin{align*}
-	z^{[0]} &= t \\
+	\bm{z}^{[0]} &= \left( \bm{x},t \right)  \\
 	\bm{z}^{[i]} &= f^{[i]}_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) ,\,i=1,\ldots,L
     .\end{align*}
 \end{frame}
@@ -354,13 +348,13 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{Physics-Informed Neural Networks}
-    Traditionally, training such neural network on an IVP would require to optimize \[
-    \min \sum_{t\in I} \|D^{FN}_{\bm{\theta}}(t) - \phi(t)\|
+    Traditionally, training such neural network to solve a PDE would require to optimize \[
+	\min \sum_{\bm{x}\in X, t\in I} \|D^{FN}_{\bm{\theta}}(\bm{x}, t) - \phi(\bm{x}, t)\|
     ,\] 
     which would be senseless! \pause
 
     A PINN\cite{Raissi2019}, on the other hand, is trained on \[
-    \min \sum_{t \in I} \left\|  \frac{d D^{FN}_{\bm{\theta}}(t)}{dt} - \mathcal{N}\left( t, D^{FN}_{\bm{\theta}}(t) \right) \right\| 
+    \min \sum_{\bm{x}\in X, t \in I} \left\|  \frac{d D^{FN}_{\bm{\theta}}(\bm{x}, t)}{dt} - \mathcal{N}\left( \bm{x}, t, D^{FN}_{\bm{\theta}}(t) \right) \right\| 
     ,\] 
     optimizing the \emph{dynamics} of the network.
 \end{frame}
@@ -371,10 +365,10 @@ y_2\left( t \right) \\
 	\min_{\bm{\theta}} J_b\left( \bm{\theta} \right) + \lambda J_{\mathcal{N}}\left( \bm{\theta} \right)
     ,\] with
     \begin{align*}
-	J_b\left( \bm{\theta} \right) &= \|D^{FN}_{\bm{\theta}}\left( t_0 \right) -\bm{y}_0\| \\
-	J_{\mathcal{N}}\left( \bm{\theta} \right) &= \sum_{t \in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\bm{\theta}}\left( t \right) }{dt} - \mathcal{N}\left( t,D^{FN}_{\bm{\theta}}\left( t \right)  \right)  \right\|
+	J_b\left( \bm{\theta} \right) &= \sum_{\bm{x}_0,t_0,i} \|\alpha_iD^{FN}_{\bm{\theta}}\left( \bm{x}_0,t_0 \right) + \beta_i \frac{d D^{FN}_{\bm{\theta}}\left( \bm{x}_0,t_0 \right) }{d t} - \bm{f}_i\left( \bm{x}_0,t_0 \right)\| \\
+	J_{\mathcal{N}}\left( \bm{\theta} \right) &= \sum_{t \in I_{\mathcal{N}},\bm{x}\in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right) }{dt} - \mathcal{N}\left( \bm{x}, t,D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right)  \right)  \right\|
     ,\end{align*}
-    in which $X_{\mathcal{N}}\subset I$ is a set of random points from the domain.
+    in which $I_{\mathcal{N}}\subset I$ and $X_{\mathcal{N}}\subset X$ are sets of random points from the domain.
 \end{frame}
 
 \begin{frame}
@@ -394,18 +388,18 @@ y_2\left( t \right) \\
 	\column{0.5\textwidth}
 	Deep Feedforward Network:
 	\begin{align*}
-	    D^{FN}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
-	    t &\longmapsto 	D^{FN}_{\bm{\theta}}(	t) = \bm{z}^{[L]} \\
-	    z^{[0]} &= t \\
-	    \bm{z}^{[i]} &= f^{\highlight{[i]}}_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) , i\highlight{=1,\ldots,L}
+	    D^{FN}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	    \bm{x}, t &\longmapsto D^{FN}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{[L]} \\
+	    z^{[0]} =&\, (\bm{x}, t) \\
+	    \bm{z}^{[i]} =&\, f^{\highlight{[i]}}_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) , i\highlight{=1,\ldots,L}
 	\end{align*} \pause
 	\column{0.5\textwidth}
 	Deep Equilibrium \hl{Model}:
 	\begin{align*}
-	    D^{EQ}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
-	    t &\longmapsto 	D^{EQ}_{\bm{\theta}}(	t) = \bm{z}^{[\infty]} \\
-	    z^{[0]} &= t \\
-	    \bm{z}^{[i]} &= f_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) , i\highlight{\to \infty}
+	    D^{EQ}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	    \bm{x}, t &\longmapsto D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{[\infty]} \\
+	    z^{[0]} =&\, (\bm{x}, t) \\
+	    \bm{z}^{[i]} =&\, f_{\bm{\theta}}\left( \bm{z}^{[i-1]} \right) , i\highlight{\to \infty}
 	\end{align*}
     \end{columns}
 \end{frame}
@@ -430,51 +424,51 @@ y_2\left( t \right) \\
     \frametitle{Deep Equilibrium Models}
     Definition \cite{Bai2019}:
     \begin{align*}
-	D^{EQ}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
-	t &\longmapsto 	D^{EQ}_{\bm{\theta}}(	t) = \bm{z}^{\star} \\
-	\bm{z}^{\star} &= f_{\bm{\theta}}\left( t, \bm{z}^{\star} \right)
+	D^{EQ}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	\bm{x},t &\longmapsto 	D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{\star} \\
+	\bm{z}^{\star} &= f_{\bm{\theta}}\left( \bm{x},t, \bm{z}^{\star} \right)
     .\end{align*}
 
     \pause
     \begin{figure}[h]
         \centering
-        \includegraphics[width=0.5\textwidth]{deq-diagram.png}
-        \caption{deq-diagram.}
+        \includegraphics[width=0.5\textwidth]{deq-diagram.pdf}
+        \caption{DEQ diagram.}
         \label{fig:deq-diagram-}
     \end{figure}
 \end{frame}
 
 \begin{frame}
     \frametitle{Forward Pass}
-    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}}$ iff $\bm{z}^{\star}$ is a root of $g(t,\bm{z}) = f_{\bm{\theta}}(t,\bm{z}) - \bm{z}$.
+    $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}}$ iff $\bm{z}^{\star}$ is a root of $g_{\bm{x},t}(\bm{z}) = f_{\bm{\theta}}(\bm{x},t,\bm{z}) - \bm{z}$.
     \linebreak \pause
 
     Therefore, \[
-    D^{EQ}_{\bm{\theta}}(t) = \bm{z}^{\star} = RootFind(g,t)
+	D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{\star} = RootFind(g_{\bm{x},t})
     ,\] in which $RootFind$ is any root-finding algorithm (e.g., simple iteration, Newton's method, quasi-Newton methods).
 \end{frame}
 
 \begin{frame}
     \frametitle{Backward Pass}
     By the definition of the model's output, \[
-	g(t,D^{EQ}_{\bm{\theta}}(t)) = 0
-    ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$ for $g(t,\bm{z})=0$.
+	g_{\bm{x},t}(D^{EQ}_{\bm{\theta}}(t)) = 0
+    ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$ for $g_{\bm{x},t}(\bm{z})=0$.
     \linebreak \pause
 
     Consequently, by the implicit function theorem \cite{Bai2019}, \[
-	\frac{d g(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}} = \frac{d g(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} \frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}}
+	\frac{d g_{\bm{x},t}}{d \bm{\theta}}(D^{EQ}_{\bm{\theta}}(\bm{x},t)) = \frac{d g_{\bm{x},t}}{d \bm{z}}(D^{EQ}_{\bm{\theta}}(\bm{x},t)) \frac{d D^{EQ}_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t)
     .\] 
 \end{frame}
 
 \begin{frame}
     \frametitle{Backward Pass}
     
-    By the definition of $g$ we know that \[
-	\frac{d g(t, \bm{z})}{d \bm{z}} = \frac{d f_{\bm{\theta}}(t,\bm{z})}{d \bm{z}} - I 
+    By the definition of $g_{\bm{x},t}$ we know that \[
+	\frac{d g_{\bm{x},t}}{d \bm{z}}(\bm{z}) = \frac{d f_{\bm{\theta}}}{d \bm{z}}(\bm{x},t,\bm{z}) - I 
     \] and \[
-    \frac{d g(t, \bm{z})}{d \bm{\theta}} = \frac{d f_{\bm{\theta}}(t,\bm{z})}{d \bm{\theta}}
+    \frac{d g_{\bm{x},t}}{d \bm{\theta}}(\bm{z}) = \frac{d f_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t,\bm{z})
     .\] Therefore, we can write \[
-	\frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} = - \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}}
+    \frac{d D^{EQ}_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t) = - \left[ \frac{d f_{\bm{\theta}}}{d \bm{z}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(t)) - I \right]^{-1} \frac{d f_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t))
     .\] 
 \end{frame}
 
@@ -483,8 +477,8 @@ y_2\left( t \right) \\
 
     Luckily, we do not need to do the matrix inversion, as we use automatic differentiation on
     \begin{align*}
-	\nabla J\left( \bm{\theta} \right) &= \nabla_{\bm{z}^{\star}} J \frac{d D^{EQ}_{\bm{\theta}}(t)}{d \bm{\theta}} \\
-	&= - \nabla_{\bm{z}^{\star}} J \left[ \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{z}} - I \right]^{-1} \frac{d f_{\bm{\theta}}(t,D^{EQ}_{\bm{\theta}}(t))}{d \bm{\theta}},
+	\nabla J\left( \bm{\theta} \right) &= \nabla_{\bm{z}^{\star}} J \frac{d D^{EQ}_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t) \\
+	&= - \nabla_{\bm{z}^{\star}} J \left[ \frac{d f_{\bm{\theta}}}{d \bm{z}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t)) - I \right]^{-1} \frac{d f_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t)),
     \end{align*}\pause
     thus, by computing it step-by-step, with $\bm{u}^T=- \nabla_{\bm{z}^{\star}} J$, \[
 	\bm{v}^T = \bm{u}^T\left[ \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - I \right]^{-1} \implies \bm{v}^T = \bm{v}^T \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - \bm{u}^T
@@ -497,23 +491,38 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{PIDEQ}
-    We propose a model 
+    We use a model based on \cite{Ghaoui2019}
     \begin{align*}
-	D^{EQ}_{\bm{\theta}}: \R &\longrightarrow \R^{m} \\
-	t &\longmapsto 	D^{EQ}_{\bm{\theta}}(	t) = \highlight{C} \bm{z}^{\star} \\
-	\bm{z}^{\star} &= f_{\bm{\theta}}\left( t, \bm{z}^{\star} \right)= \highlight{\tanh \left( A\bm{z} + t\bm{a} + \bm{b} \right)}
+	D^{EQ}_{\bm{\theta}}: \R^{n+1} &\longrightarrow \R^{m} \\
+	\bm{x},t &\longmapsto 	D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{y} = \highlight{C} \bm{z}^{\star} + D\bm{u} \\
+	\bm{z}^{\star} &= f_{\bm{\theta}}\left( \bm{x},t, \bm{z}^{\star} \right)= \highlight{\tanh \left( A\bm{z}^\star + B\bm{u} \right)},\, \bm{u} &= \begin{bmatrix} t \\ \bm{x} \end{bmatrix}
     \end{align*}
-    trained to \[
-     \min_{\bm{\theta}} J_b\left( \bm{\theta} \right) + \lambda J_{\mathcal{N}}\left( \bm{\theta} \right) + \kappa \highlight{\left\lVert \frac{d f_{\bm{\theta}}}{d \bm{z}}\right\rVert_F}
-    .\] \pause
-    
-    \textcolor{red}{In a DEQ, optimizing $J_{\mathcal{N}}$ requires the backward pass' root-finding algorithm to be differentiable.}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{pideq-diagram.pdf}
+        \caption{PIDEQ diagram.}
+        \label{fig:pideq-diagram}
+    \end{figure}
 \end{frame}
 
-\subsection{Experiments}
+\begin{frame}
+    \frametitle{PIDEQ}
+    \vfill
+    We propose to train the PIDEQ as \[
+	\min_{\bm{\theta}} J_b\left( \bm{\theta} \right) + \lambda \textcolor{red}{J_{\mathcal{N}}}\left( \bm{\theta} \right) + \kappa \highlight{\left\lVert \frac{d f_{\bm{\theta}}}{d \bm{z}}\right\rVert_F}
+    .\] \pause
+    Recall that \[
+	\textcolor{red}{J_{\mathcal{N}}}\left( \bm{\theta} \right) = \sum_{t \in I_{\mathcal{N}},\bm{x}\in X_{\mathcal{N}}} \left\| \frac{d D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right) }{dt} - \mathcal{N}\left( \bm{x}, t,D^{FN}_{\bm{\theta}}\left( \bm{x}, t \right)  \right)  \right\|
+    \] and that we need to differentiate the loss to train the model.
+    \pause
+
+    \textcolor{red}{$\implies$ Solving DEs requires (at least) second-order derivatives.}
+\end{frame}
+
+\subsection{Van der Pol oscillator}
 
 \begin{frame}
-    \frametitle{Baseline Results}
+    \frametitle{Van der Pol experiments}
     PINN based on \textcite{Antonelo2021} (4 layers of 20 nodes) and PIDEQ from the theoretical results of \textcite{Ghaoui2019} (80 states).
 
     \begin{figure}[h]
@@ -525,7 +534,7 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{PIDEQ Size}
+    \frametitle{Van der Pol experiments}
     The resulting PIDEQ seems unnecessarily big, with too many states.
     \begin{figure}[h]
 	% \centering
@@ -536,7 +545,7 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{PIDEQ Size}
+    \frametitle{Van der Pol experiments}
     \begin{columns}[c]
     \begin{column}{.4\textwidth}
 	This motivated the training of smaller PIDEQs, iterating over the analysis on the $A$ matrix.
@@ -553,7 +562,7 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{Hyperparameter Tuning}
+    \frametitle{Van der Pol experiments}
 
     \begin{columns}[c]
     \begin{column}{.4\textwidth}
@@ -588,7 +597,7 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{Final Model}
+    \frametitle{Van der Pol experiments}
     The tuned PIDEQ contains 52 parameters. A PINN with 2 hidden layers of 5 nodes (totaling 52 parameters) was trained.
     \begin{figure}[h]
 	\centering
@@ -611,7 +620,7 @@ y_2\left( t \right) \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{Final Model}
+    \frametitle{Van der Pol experiments}
     \begin{columns}[T] 
 	\begin{column}{.6\textwidth}
 	    \vspace{-10pt}
@@ -632,6 +641,24 @@ y_2\left( t \right) \\
 	\end{column}
     \end{columns}
     
+\end{frame}
+
+\subsection{Nonlinear Schrödinger}
+
+\begin{frame}
+    \frametitle{Nonlinear Schrödinger experiments}
+    Using the same approach, we compare a PIDEQ to the PINN trained by \cite{Raissi2019} for the NLS.
+    \pause
+    \begin{figure}[h]
+        \centering
+	\begin{tikzpicture}
+	    \node  (image) at (0,0) {\includegraphics[width=0.6\textwidth]{nls-validation-ls.png}};
+	    \node at (4,-1.7){PINN};
+	    \node at (4.2,0.3){PIDEQs};
+	\end{tikzpicture}
+        \caption{Validation error ($l_2$) of PINN and PIDEQs solving NLS equations.}
+        \label{fig:nls-validation-ls-png}
+    \end{figure}
 \end{frame}
 
 \section{Discussion}
@@ -698,7 +725,7 @@ mpacheco.bruno@gmail.com
 
 \begin{frame}[allowframebreaks,noframenumbering]
     \frametitle{References}
-    \printbibliography
+    % \printbibliography
 \end{frame}
 
 \end{document}
