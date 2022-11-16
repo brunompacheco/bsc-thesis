@@ -407,13 +407,13 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{Deep Equilibrium Models}
     $\bm{z}^{[\infty]}$ exists (and is well-defined) iff $\left\{  \bm{z}^{[i]} \right\}$ converges.
-    \linebreak \pause
+    \linebreak
 
     Then, $\exists N\in \N$ such that $\forall i\ge N,\,z^{[i]}\approx z^{[i+1]}$.
-    \linebreak \pause
+    \linebreak
 
-    Therefore, $\bm{z}^{\star}=\bm{z}^{[N]}\approx \bm{z}^{[\infty]}$,
-    \linebreak \pause
+    Therefore, $\bm{z}^{\star}=\bm{z}^{[\infty]}\approx \bm{z}^{[N]}$,
+    \linebreak
 
     and $\bm{z}^{\star}$ is an \emph{equilibrium point} of $f_{\bm{\theta}}$ \[
 	    \bm{z}^{\star} = f_{\bm{\theta}}\left( \bm{z}^{\star} \right)
@@ -441,18 +441,17 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{DEQ Capacity}
     \vfill
-    Restricting every layer of the networks to be the same is not an actual restrictions, as a DEQ can model a large number of deep neural networks, including CNNs, RNNs, ResNets, and many others. \pause
-
+    Restricting every layer of the networks to be the same is not an actual restriction, as a DEQ can model a large number of deep neural networks, including CNNs, RNNs, ResNets, and many others.
+    \vfill
 \end{frame}
 
 \begin{frame}
     \frametitle{DEQ Capacity}
 
-    E.g., suppose a deep feedforward network \[
+    E.g., given a deep feedforward network \[
 	\bm{z}^{[i+1]} = \sigma^{i}\left( W^{[i]}\bm{z}^{[i]} + \bm{b}^{[i]} \right),\,i=0,\ldots,L-1,\,\bm{z}^{[0]} = \bm{u}
-    .\] \pause
-
-    It is not hard to see that it is equivalent to a DEQ with \[
+    ,\]
+    it is not hard to see that it is equivalent to a DEQ with \[
 	\bm{z} = \sigma\left( W_z\bm{z} + W_u\bm{u} + \bm{\tilde{b}} \right) 
     \] where \[
     W_z=\begin{bmatrix} 
@@ -469,7 +468,7 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{Forward Pass}
     $\bm{z}^{\star}$ is an equilibrium of $f_{\bm{\theta}} \iff \bm{z}^{\star}$ is a root of $g_{\bm{x},t}(\bm{z}) = f_{\bm{\theta}}(\bm{x},t,\bm{z}) - \bm{z}$.
-    \linebreak \pause
+    \linebreak
 
     Therefore, \[
 	D^{EQ}_{\bm{\theta}}(\bm{x},t) = \bm{z}^{\star} = RootFind(g_{\bm{x},t})
@@ -481,7 +480,7 @@ y_2\left( t \right) \\
     By the definition of the model's output, \[
 	g_{\bm{x},t}(D^{EQ}_{\bm{\theta}}(t)) = 0
     ,\] i.e., $D^{EQ}_{\bm{\theta}}$ is a \emph{parametrization} of $z$ with respect to $t$ for $g_{\bm{x},t}(\bm{z})=0$.
-    \linebreak \pause
+    \linebreak
 
     Consequently, by the implicit function theorem \cite{Bai2019}, \[
 	\frac{d g_{\bm{x},t}}{d \bm{\theta}}(D^{EQ}_{\bm{\theta}}(\bm{x},t)) = \frac{d g_{\bm{x},t}}{d \bm{z}}(D^{EQ}_{\bm{\theta}}(\bm{x},t)) \frac{d D^{EQ}_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t)
@@ -507,7 +506,7 @@ y_2\left( t \right) \\
     \begin{align*}
 	\nabla J\left( \bm{\theta} \right) &= \nabla_{\bm{z}^{\star}} J \frac{d D^{EQ}_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t) \\
 	&= - \nabla_{\bm{z}^{\star}} J \left[ \frac{d f_{\bm{\theta}}}{d \bm{z}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t)) - I \right]^{-1} \frac{d f_{\bm{\theta}}}{d \bm{\theta}}(\bm{x},t,D^{EQ}_{\bm{\theta}}(\bm{x},t)),
-    \end{align*}\pause
+    \end{align*}
     thus, by computing it step-by-step, with $\bm{u}^T=- \nabla_{\bm{z}^{\star}} J$, \[
 	\bm{v}^T = \bm{u}^T\left[ \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - I \right]^{-1} \implies \bm{v}^T = \bm{v}^T \frac{d \bm{f}_{\bm{\theta}}}{d \bm{z}} - \bm{u}^T
     ,\] which is an equilibrium equation.
@@ -548,81 +547,6 @@ y_2\left( t \right) \\
 \end{frame}
 
 \subsection{Experiments}
-
-\begin{frame}
-    \frametitle{Van der Pol experiments}
-    PINN based on \textcite{Antonelo2021} (4 layers of 20 nodes) and PIDEQ from the theoretical results of \textcite{Ghaoui2019} (80 states).
-
-    \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{../images/exp_1_iae.pdf}
-	\caption{Learning curves of the baseline models.}
-	\label{fig:baseline-iae}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Van der Pol experiments}
-    The resulting PIDEQ seems unnecessarily big, with too many states.
-    \begin{figure}[h]
-	% \centering
-	\includegraphics[width=.4\textwidth]{../images/exp_1_matplot.pdf}
-	\caption{$A$ matrix of the baseline PIDEQ (80 states) after training.}
-	\label{fig:baseline-pideq-A}
-    \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Van der Pol experiments}
-    \begin{columns}[c]
-    \begin{column}{.4\textwidth}
-	This motivated the training of smaller PIDEQs, iterating over the analysis on the $A$ matrix.
-    \end{column}
-    \begin{column}{.6\textwidth}
-	\begin{figure}[h]
-	    \centering
-	    \includegraphics[width=\textwidth]{../images/exp_2_iae.pdf}
-	    \caption{Learning curves of the models trained with fewer states.}
-	    \label{fig:states-iae}
-	\end{figure}
-    \end{column}
-    \end{columns}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Van der Pol experiments}
-
-    \begin{columns}[c]
-    \begin{column}{.4\textwidth}
-	Besides the number of states, we also tuned:
-	\begin{itemize}[label={\textbullet}]
-	    \item<1-> Weight of the Jacobian regularization term ($\kappa$);
-	    \item<2-> Root-finding algorithm used in the forward pass;
-	    \item<3-> Tolerance of the root-finding algorithms ($\varepsilon$).
-	\end{itemize}
-    \end{column}
-    \begin{column}{.6\textwidth}
-	\only<1>{\begin{figure}[h]
-            \centering
-            \includegraphics[width=1.\textwidth]{../images/exp_4_iae.pdf}
-            \caption{Learning curves of the models trained with different $\kappa$.}
-            \label{fig:kappa-iae}
-	\end{figure}}
-        \only<2>{\begin{figure}[h]
-            \centering
-            \includegraphics[width=\textwidth]{../images/exp_5_iae.pdf}
-            \caption{Learning curves of the models trained with different root-finding algorithms.}
-            \label{fig:solver-iae}
-	\end{figure}}
-        \only<3>{\begin{figure}[h]
-            \centering
-            \includegraphics[width=\textwidth]{../images/exp_6_iae.pdf}
-            \caption{Learning curves of the models trained with different $\varepsilon$.}
-            \label{fig:solver-iae}
-	\end{figure}}
-    \end{column}
-    \end{columns}
-\end{frame}
 
 \begin{frame}
     \frametitle{Van der Pol experiments}
@@ -674,7 +598,7 @@ y_2\left( t \right) \\
 \begin{frame}
     \frametitle{Nonlinear Schrödinger experiments}
     Using the same approach, we compare a PIDEQ to the PINN trained by \cite{Raissi2019} for the NLS.
-    \pause
+
     \begin{figure}[h]
         \centering
 	\begin{tikzpicture}
@@ -717,7 +641,7 @@ y_2\left( t \right) \\
 		\item $\lambda_{PF}\left( J_{\bm{f}_{\theta}}\left( \bm{z}^{\star} \right)  \right) = \max\left( |\lambda_i| \right) \le \sqrt{tr\left( J_{\bm{f}_{\theta}}J_{\bm{f}_{\theta}}^T \right) } = \highlight{\|J_{\bm{f}_{\theta}}\|_{F}} $.
 	    \end{itemize}
 	\end{column}
-	\pause
+
         \begin{column}{0.5\textwidth}
 	    \cite{Ghaoui2019}
 	    \begin{itemize}[label={\textbullet}]
@@ -732,15 +656,24 @@ y_2\left( t \right) \\
 
 \begin{frame}
     \frametitle{Regularization experiments}
-    We tried \cite{Ghaoui2019}'s approach on NLS but did not see significative improvement.\pause
-
-    Then, we compared different approaches on dummy data.
+    Different approaches on synthetic problem.
 
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.6\textwidth]{dummy-val.png}
         \caption{Validation loss on synthetic dataset $y=5\cos\left( \pi u \right)\exp(-|u|/2)$.}
         \label{fig:dummy-val-png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Regularization experiments}
+    Different approaches on NLS.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{nls_reg.png}
+        \caption{Validation error on NLS.}
     \end{figure}
 \end{frame}
 
@@ -767,33 +700,27 @@ y_2\left( t \right) \\
     .\] \pause
 
     But any PIDEQ training requires (at least) second-order derivatives (Hessian) like $\frac{d^2 D^{EQ}_{\bm{\theta}}}{d t d (\cdot)}(\bm{x},t)$, which, through automatic differentiation, would imply in the \textcolor{red}{differentiation of $RootFind$} used in the backward pass. \pause
-
-    WIP: We can apply the implicit function theorem again and again to find analytical expressions for higher-order derivatives, which would speed up the training of PIDEQs on more complex applications (e.g., NLS).
 \end{frame}
-
-\section{Discussion}
-
-\subsection{Conclusions}
 
 \begin{frame}
-    \frametitle{Conclusions}
-    \begin{itemize}[label={\textbullet}]
-        \item<1-> It is possible to train DEQs in a physics-informed manner, solving BVPs of PDEs;
-	\item<2-> However, PIDEQs are slower to train and present higher errors than PINNs (in comparison to numerical solvers);
-	\item<3-> DEQs have a great capacity\footnotemark that is not harnessed properly by current training/regularization techniques.
-    \end{itemize}
-    \footnotetext{Capacity in the ML sense, i.e., the number of functions the model can represent. \\}
+    \frametitle{Derivative of DEQs}
+    Our idea: Apply the implicit function theorem again and again to find analytical expressions for higher-order derivatives.
+    \vfill
+
+    This would speed up the training of PIDEQs on more complex applications (e.g., NLS).
 \end{frame}
 
-\subsection{Next steps}
+\section{Current Status}
+
+\subsection{WIP}
 
 \begin{frame}
-    \frametitle{Next steps}
-    \begin{itemize}[label={\textbullet}]
-	\item<1-> Investigate further the training/regularization of DEQs and repeat dummy-data experiments on NLS;
-	\item<2-> Validate, implement and test analytical higher-order derivatives of DEQs.
-    \end{itemize}
+    \frametitle{WIP}
+    \vfill
+    @ overleaf
+    \vfill
 \end{frame}
+
 
 %%%
 %%% Slide final
